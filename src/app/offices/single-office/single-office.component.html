@@ -1,0 +1,9 @@
+<a (click)="back()">
+  <nb-icon icon="arrow-back-outline"></nb-icon>
+</a>
+<div *ngIf="office">
+  <p>Welcome to office {{office.name}}</p>
+  <pre>
+    {{office | json}}
+  </pre>
+</div>

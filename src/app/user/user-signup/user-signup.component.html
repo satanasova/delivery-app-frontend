@@ -1,0 +1,70 @@
+<nb-card class="user-signup-popup" accent="info" >
+  <nb-card-header class="user-signup-popup--header">Sign Up</nb-card-header>
+  <nb-card-body class="user-signup-popup--body">
+    <form (ngSubmit)="onsignup(signupForm.value)" #signupForm="ngForm" class="signup-form">
+      
+      <input class="signup-form-input" 
+      type="email" 
+      nbInput 
+      status="primary" 
+      placeholder="email"
+      required
+      minlength="6"
+      name="email"
+      ngModel
+      #emailInput>
+
+      <input class="signup-form-input" 
+        type="text" 
+        nbInput 
+        status="primary" 
+        placeholder="name"
+        required
+        minlength="6"
+        name="name"
+        ngModel
+        #nameInput>
+
+      <nb-form-field class="signup-form-input">
+        <input 
+          [type]="showPassword ? 'text' : 'password'" 
+          nbInput 
+          status="primary" 
+          placeholder="password"
+          name="password"
+          ngModel
+          #passwordInput>
+
+        <nb-icon (click)="toggleShowPassword()" nbSuffix nbButton ghost [icon]="showPassword ? 'eye-outline' : 'eye-off-outline'"></nb-icon>
+      </nb-form-field>
+
+      <nb-form-field class="signup-form-input">
+        <input 
+          [type]="showRepeatedPassword ? 'text' : 'password'" 
+          nbInput 
+          status="primary" 
+          placeholder="repeat password"
+          name="repeatPassword"
+          ngModel
+          #repeatedPasswordInput
+          passwordVisibilityToggle>
+
+        <nb-icon (click)="togglePasswordFieldVisibility(repeatedPasswordInput)" nbSuffix nbButton ghost [icon]="repeatedPasswordInput.type==='password' ? 'eye-outline' : 'eye-off-outline'"></nb-icon>
+      </nb-form-field>
+      Already have an account? Log In
+
+
+
+      
+
+      <button nbButton type="submit" status="success">Sign Up</button>
+    </form>
+
+    <div class="signup-buttons">
+      <button nbButton status="primary"><nb-icon icon="facebook"></nb-icon>Sign Up with Facebook</button>
+      <button nbButton status="danger"><nb-icon icon="google"></nb-icon>Sign Up with Google</button>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+

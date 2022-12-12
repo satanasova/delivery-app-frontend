@@ -1,0 +1,11 @@
+<div>
+  All trucks:
+  <ul>
+    <li *ngFor="let truckId of truckIds">
+      Truck #{{truckId}} - <a [routerLink]="truckId">Open</a>
+    </li>
+  </ul>
+</div>
+
+
+

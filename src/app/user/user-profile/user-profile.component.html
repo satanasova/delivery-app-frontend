@@ -1,0 +1,25 @@
+<!-- <div *ngIf="user | async">
+  <pre> {{(user|async) | json}}</pre>
+</div> -->
+
+<nb-card class="user-profile-popup" accent="info" >
+  <nb-card-header class="user-profile-popup--header">Your Profile</nb-card-header>
+  <nb-card-body class="user-profile-popup--body">
+    <div class="user-display">
+      <div class="user-avatar">
+        <img [src]="(user | async)?.avatarUrl" alt="">
+      </div>
+      <div class="user-details">
+        <p>{{(user | async)?.name}}</p>
+        <p>{{(user | async)?.email}}</p>
+        <p>Some other details..</p>
+      </div>
+    </div>
+
+    <div class="user-actions">
+      <button nbButton outline status="info" focus="false">Edit Profile</button>
+      <button (click)="userService.logout()" nbButton outline status="danger">Log Out</button>
+    </div>
+    
+  </nb-card-body>
+</nb-card>

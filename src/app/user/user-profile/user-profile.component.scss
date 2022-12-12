@@ -1,0 +1,32 @@
+.user-profile-popup {
+  width: 80vw;
+  &--header {
+    text-align: center;
+  }
+  &--body {
+    padding: 2rem 5rem;
+    .user-display {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      .user-avatar {
+        img {
+          width: 20vw;
+          border-radius: 50%;
+          border: var(--user-picture-box-border-width) solid var(--user-picture-box-border-color);
+        }
+      }
+    }
+    .user-actions {
+      text-align: center;
+      padding-top: 3rem;
+      button {
+        margin: 1rem;
+        min-width: 15vw;
+      }
+    }
+
+    
+  }
+  
+}

@@ -1,0 +1,8 @@
+<nb-card size="medium"> 
+  <nb-card-header> Offices </nb-card-header>
+  <nb-list>
+    <nb-list-item *ngFor="let office of offices" [routerLink]="office._id">
+      #{{office._id}} - Office {{office.name}}
+    </nb-list-item>
+  </nb-list>
+</nb-card>

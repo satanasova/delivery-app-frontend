@@ -1,1 +1,14 @@
+@use 'themes' as *;
+
+@use '@nebular/theme/styles/globals' as *;
+
+@include nb-install() {
+  @include nb-theme-global();
+  a {
+    color: nb-theme(color-info-500);
+    text-decoration: none;
+    font-weight: 400;
+    cursor: pointer;
+  }
+};
 /* You can add global styles to this file, and also import other style files */

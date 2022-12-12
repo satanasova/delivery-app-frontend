@@ -1,0 +1,31 @@
+<nb-card class="settings-popup" accent="info">
+  <nb-card-header>Settings</nb-card-header>
+  <nb-card-body>
+    <nb-card class="theme-select">
+      <nb-card-header>Change Theme:</nb-card-header>
+      <nb-card-body>
+        <nb-radio-group [(ngModel)]="themeOption">
+          <nb-radio 
+            *ngFor="let themeOption of themeOptions"
+            [value]="themeOption.value">
+            {{ themeOption.label }}
+          </nb-radio>
+        </nb-radio-group>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card class="Language-select">
+      <nb-card-header>Chnage Language:</nb-card-header>
+      <nb-card-body>
+        <nb-radio-group [(ngModel)]="langOption">
+          <nb-radio 
+            *ngFor="let langOption of languageOptions"
+            [value]="langOption.value"
+            [checked]="langOption.checked">
+            {{ langOption.label }}
+          </nb-radio>
+        </nb-radio-group>
+      </nb-card-body>
+    </nb-card>
+  </nb-card-body>
+</nb-card>

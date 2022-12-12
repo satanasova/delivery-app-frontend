@@ -1,0 +1,7 @@
+nb-list-item {
+  cursor: pointer;
+  &:hover {
+    background-color: var(--menu-item-hover-background-color);
+    color: var(--menu-item-hover-text-color);
+  }
+}
