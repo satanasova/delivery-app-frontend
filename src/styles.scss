@@ -10,5 +10,70 @@
     font-weight: 400;
     cursor: pointer;
   }
+
+
+
+  .nb-form-control-container {
+    max-width: unset;
+    [nbInput].size-medium:not(.input-full-width){
+      max-width: unset;
+    }
+  }
+
+  .popup {
+    width: 80vw;
+    &--header {
+      text-align: center;
+    }
+  
+    &--body {
+      padding: 2rem 5rem;
+  
+      .form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        &-input {
+          min-width: 50vw !important;
+          margin: 1rem 0;
+        }
+
+        button {
+          margin: 1rem;
+          min-width: 15vw;
+        }
+
+        p.caption.status-danger.error-message {
+          margin: 0 auto;
+          margin-top: -13px;
+          padding: 5px;
+          min-width: 50vw;
+      
+          // margin: 0 auto;
+          // margin-top: -16px;
+          // width: 50% !important;
+          // max-width: var(--form-field-medium-max-width);
+          // background-color: rgb(255 61 113 / 30%);
+          // color: white;
+          // padding: 5px 10px;
+          // border-bottom-left-radius: 6px;
+          // border-bottom-right-radius: 6px;
+          // border: 1px solid var(--text-danger-color);
+        }
+      }
+  
+      .social-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 1rem;
+        button {
+          min-width: 40vw;
+          margin: .5rem 0;
+        }
+      }
+    }
+  }
+  
 };
 /* You can add global styles to this file, and also import other style files */

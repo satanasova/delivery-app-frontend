@@ -4,7 +4,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserSignupComponent } from './user-signup/user-signup.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { NbButtonModule, NbCardModule, NbDialogModule, NbFormFieldModule, NbIconModule, NbInputModule } from '@nebular/theme';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UtilsModule } from '../utils/utils.module';
 
 
@@ -17,6 +17,7 @@ import { UtilsModule } from '../utils/utils.module';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     NbDialogModule,
     NbCardModule,
     NbButtonModule,

@@ -4,14 +4,12 @@ import { SettingsComponent } from './settings/settings.component';
 import { NbCardModule, NbDialogModule, NbIconModule, NbRadioModule } from '@nebular/theme';
 import { SettingsService } from './settings/settings.service';
 import { FormsModule } from '@angular/forms';
-import { PasswordVisibilityToggleDirective } from './password-visibility-toggle/password-visibility-toggle.directive';
 
 
 
 @NgModule({
   declarations: [
-    SettingsComponent,
-    PasswordVisibilityToggleDirective
+    SettingsComponent
   ],
   imports: [
     CommonModule,
@@ -20,9 +18,6 @@ import { PasswordVisibilityToggleDirective } from './password-visibility-toggle/
     NbCardModule,
     NbRadioModule,
     NbIconModule
-  ],
-  exports: [
-    PasswordVisibilityToggleDirective
   ]
 })
 export class UtilsModule { }

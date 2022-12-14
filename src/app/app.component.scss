@@ -1,21 +1,32 @@
 ::ng-deep nb-layout-header {
   nav {
     justify-content: space-between !important;
+
+    nb-user {
+      cursor: pointer;
+    }
+    
+    .sidebar-toggle {
+      [icon] {
+        font-size: 2rem;
+        cursor: pointer;
+      }
+      color: #8f9bb3;
+    }
+  }  
+}
+
+
+
+::ng-deep nb-sidebar {
+  .scrollable {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-height: 90vh;
   }
+
+  
 }
 
-nb-user {
-  cursor: pointer;
-}
 
-.sidebar-toggle {
-  [icon] {
-    font-size: 2rem;
-    cursor: pointer;
-  }
-  color: #8f9bb3;
-}
-
-.sidebar-menu-bottom {
-  margin-top: 100%;
-}

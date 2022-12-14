@@ -10,6 +10,7 @@ import { OfficesService } from '../offices.service';
 })
 export class AllOfficesComponent implements OnInit {
   offices: Office[] = [];
+  cols: any[] = [];
 
   constructor(private settingsService: SettingsService,
     private officesService: OfficesService) { }
@@ -17,12 +18,22 @@ export class AllOfficesComponent implements OnInit {
   async ngOnInit() {
     this.offices = await this.officesService.getAllOffices();
 
-    const currentTheme = this.settingsService.getSetting('theme')
-    console.log('currentTheme is ', currentTheme)
-    this.settingsService.onSettingsChanged((settings) => {
-      console.log('settings have changed!');
-      console.log('new theme: ', settings.theme);
-    })
+    this.cols = [
+      {field: '_id', header: '#'},
+      {field: 'name', header: 'Name'},
+      {field: 'address', header: 'Address'},
+      {field: 'phone', header: 'Phone'},
+      {field: 'packages', header: 'Packages', displayFn: (pkgs: any[]): string => `${pkgs.length} Package${pkgs.length != 1 ? 's' : ''}`}
+    ]
+  }
+
+  getValue(propConfig: any, office: any) {
+    const customDisplayFn = propConfig && propConfig.displayFn;
+    if (customDisplayFn) {
+      return customDisplayFn(office[propConfig.field], office)
+    } else {
+      return office[propConfig.field];
+    }
   }
 
 

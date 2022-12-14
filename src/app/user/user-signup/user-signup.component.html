@@ -1,66 +1,70 @@
-<nb-card class="user-signup-popup" accent="info" >
-  <nb-card-header class="user-signup-popup--header">Sign Up</nb-card-header>
-  <nb-card-body class="user-signup-popup--body">
-    <form (ngSubmit)="onsignup(signupForm.value)" #signupForm="ngForm" class="signup-form">
+<nb-card class="popup user-signup-popup" accent="info" >
+  <nb-card-header class="popup--header user-signup-popup--header">Sign Up</nb-card-header>
+  <nb-card-body class="popup--body user-signup-popup--body">
+    <form (ngSubmit)="signupForm.valid && userService.register(emailInput.value, nameInput.value, passwordInput.value)" [formGroup]="signupForm" class="form signup-form">
       
-      <input class="signup-form-input" 
+      <input class="form-input" 
       type="email" 
       nbInput 
-      status="primary" 
+      [status]="!email.touched ? 'basic' : email.valid ? 'success' : 'danger'" 
       placeholder="email"
-      required
-      minlength="6"
       name="email"
-      ngModel
+      [formControl]="email"
       #emailInput>
+      <p *ngIf="email.touched && email.hasError('required')" class="caption status-danger error-message">Email is required</p>
+      <p *ngIf="email.touched && email.hasError('email')" class="caption status-danger error-message">Email format is not valid</p>
 
-      <input class="signup-form-input" 
+
+      <input class="form-input" 
         type="text" 
         nbInput 
-        status="primary" 
+        [status]="!name.touched ? 'basic' : name.valid ? 'success' : 'danger'" 
         placeholder="name"
-        required
-        minlength="6"
         name="name"
-        ngModel
+        [formControl]="name"
         #nameInput>
+      <p *ngIf="name.touched && name.hasError('required')" class="caption status-danger error-message">Name is required</p>
+      <p *ngIf="name.touched && name.hasError('pattern')" class="caption status-danger error-message">Name should contain only letters</p>
+      <p *ngIf="name.touched && name.hasError('minlength')" class="caption status-danger error-message">Name should be at least 6 letters long</p>
+  
 
-      <nb-form-field class="signup-form-input">
+      <nb-form-field class="form-input">
         <input 
-          [type]="showPassword ? 'text' : 'password'" 
+          type="password" 
           nbInput 
-          status="primary" 
+          [status]="!password.touched ? 'basic' : password.valid ? 'success' : 'danger'" 
           placeholder="password"
           name="password"
-          ngModel
+          [formControl]="password"
           #passwordInput>
-
-        <nb-icon (click)="toggleShowPassword()" nbSuffix nbButton ghost [icon]="showPassword ? 'eye-outline' : 'eye-off-outline'"></nb-icon>
+          <nb-icon (click)="togglePasswordFieldVisibility(passwordInput)" nbSuffix nbButton ghost [icon]="passwordInput.type==='password' ? 'eye-outline' : 'eye-off-outline'"></nb-icon>
       </nb-form-field>
+      <p *ngIf="password.touched && password.hasError('required')" class="caption status-danger error-message">Password is required</p>
+      <p *ngIf="password.touched && password.hasError('minlength')" class="caption status-danger error-message">Password should be at least 6 charecters long</p>
 
-      <nb-form-field class="signup-form-input">
+
+      <nb-form-field class="form-input">
         <input 
-          [type]="showRepeatedPassword ? 'text' : 'password'" 
+          type="password" 
           nbInput 
-          status="primary" 
-          placeholder="repeat password"
-          name="repeatPassword"
-          ngModel
-          #repeatedPasswordInput
+          [status]="!confirmedPassword.touched ? 'basic' : confirmedPassword.valid ? 'success' : 'danger'"  
+          placeholder="confirm password"
+          name="confirmedPassword"
+          [formControl]="confirmedPassword"
+          #confirmedPasswordInput
           passwordVisibilityToggle>
-
-        <nb-icon (click)="togglePasswordFieldVisibility(repeatedPasswordInput)" nbSuffix nbButton ghost [icon]="repeatedPasswordInput.type==='password' ? 'eye-outline' : 'eye-off-outline'"></nb-icon>
+        <nb-icon (click)="togglePasswordFieldVisibility(confirmedPasswordInput)" nbSuffix nbButton ghost [icon]="confirmedPasswordInput.type==='password' ? 'eye-outline' : 'eye-off-outline'"></nb-icon>
       </nb-form-field>
-      Already have an account? Log In
-
-
+      <p *ngIf="confirmedPassword.touched && confirmedPassword.hasError('required')" class="caption status-danger error-message">Confirmed password is required</p>
+      <p *ngIf="confirmedPassword.touched && confirmedPassword.hasError('valueMatch')" class="caption status-danger error-message">Confirmed password should match Password</p>
 
       
-
+      <p>Already have an account? <a (click)="onLogin()">Log In</a></p>
+      
       <button nbButton type="submit" status="success">Sign Up</button>
     </form>
 
-    <div class="signup-buttons">
+    <div class="social-buttons">
       <button nbButton status="primary"><nb-icon icon="facebook"></nb-icon>Sign Up with Facebook</button>
       <button nbButton status="danger"><nb-icon icon="google"></nb-icon>Sign Up with Google</button>
     </div>

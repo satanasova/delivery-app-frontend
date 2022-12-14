@@ -4,6 +4,7 @@ import { AllOfficesComponent } from './all-offices/all-offices.component';
 import { SingleOfficeComponent } from './single-office/single-office.component';
 import { RouterModule } from '@angular/router';
 import { NbCardModule, NbIconModule, NbListModule } from '@nebular/theme';
+import { TableModule} from 'primeng/table'
 
 const routes = [
   {path: 'offices', component: AllOfficesComponent},
@@ -20,7 +21,9 @@ const routes = [
     RouterModule.forChild(routes),
     NbCardModule,
     NbListModule,
-    NbIconModule
+    NbIconModule,
+    TableModule
+    
   ]
 })
 export class OfficesModule { }

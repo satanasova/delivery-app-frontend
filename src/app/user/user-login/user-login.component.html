@@ -1,46 +1,40 @@
-<nb-card class="user-login-popup" accent="info" >
-  <nb-card-header class="user-login-popup--header">Login</nb-card-header>
-  <nb-card-body class="user-login-popup--body">
-    <form (ngSubmit)="userService.login(emailInput.value, passwordInput.value)" #loginForm="ngForm" class="login-form">
-      <input class="login-form-input" 
+<nb-card class="popup user-login-popup" accent="info" >
+  <nb-card-header class="popup--header user-login-popup--header">Login</nb-card-header>
+  <nb-card-body class="popup--body user-login-popup--body">
+    <form (ngSubmit)="loginForm.valid && userService.login(emailInput.value, passwordInput.value)" [formGroup]="loginForm" class="form">
+      <input class="form-input" 
         type="email" 
         nbInput 
-        status="primary" 
         placeholder="email"
         required
         minlength="6"
         name="email"
-        ngModel
+        [formControl]="email"
         #emailInput>
+      <p *ngIf="email.touched && email.hasError('required')" class="caption status-danger error-message">Email is required</p>
+      <p *ngIf="email.touched && email.hasError('email')" class="caption status-danger error-message">Email format is not valid</p>
+  
 
-      <nb-form-field class="login-form-input">
+      <nb-form-field class="form-input">
         <input 
           [type]="getInputType()" 
           nbInput 
-          status="primary" 
           placeholder="password"
           name="password"
-          ngModel
+          [formControl]="password"
           #passwordInput>
 
         <nb-icon (click)="toggleShowPassword()" nbSuffix nbButton ghost [icon]="showPassword ? 'eye-outline' : 'eye-off-outline'"></nb-icon>
       </nb-form-field>
+      <p *ngIf="password.touched && password.hasError('required')" class="caption status-danger error-message">Password is required</p>
+      <p *ngIf="password.touched && password.hasError('minlength')" class="caption status-danger error-message">Password should be at least 6 charecters long</p>
 
       <p>Don`t have an account? <a (click)="onSignup()">Sign Up</a></p>
 
       <button nbButton type="submit" status="primary"> Log In</button>
-
-      <nb-form-field class="signup-form-input">
-        <input 
-          type="password"
-          nbInput 
-          status="primary"      
-          passwordVisibilityToggle>
-          <!-- <nb-icon nbSuffix nbButton ghost icon="eye-outline"></nb-icon> -->
-      </nb-form-field>
     </form>
 
-    <div class="login-buttons">
+    <div class="social-buttons">
       <button nbButton status="primary"><nb-icon icon="facebook"></nb-icon>Log in with Facebook</button>
       <button nbButton status="danger"><nb-icon icon="google"></nb-icon>Log in with Google</button>
     </div>

@@ -35,8 +35,8 @@ export class UserService {
     console.log('login for user', username, password);
   }
 
-  register(username: any, password: any) {
-    console.log('registering user', username, password)
+  register(email: any, name: any, password: any) {
+    console.log('registering user', email, name, password)
   }
 
   logout() {

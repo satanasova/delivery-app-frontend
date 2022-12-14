@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 
 @Component({
@@ -8,10 +9,24 @@ import { UserService } from '../user.service';
 })
 export class UserLoginComponent implements OnInit {
   showPassword: boolean = false;
-  // username: string = '';
-  // password: string = '';
+  loginForm: FormGroup;
+  email: AbstractControl;
+  password: AbstractControl;
 
-  constructor(public userService: UserService) { }
+
+  constructor(private fb: FormBuilder, public userService: UserService) {
+    this.loginForm = this.fb.group({
+      'email': ['', Validators.compose([
+        Validators.required, Validators.email,
+      ])],
+      'password': ['', Validators.compose([
+        Validators.required, Validators.minLength(6)
+      ])]
+    });
+
+    this.email = this.loginForm.controls['email'];
+    this.password = this.loginForm.controls['password'];
+  }
 
   ngOnInit(): void {
   }

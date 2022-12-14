@@ -1,8 +1,22 @@
 <nb-card size="medium"> 
   <nb-card-header> Offices </nb-card-header>
-  <nb-list>
-    <nb-list-item *ngFor="let office of offices" [routerLink]="office._id">
-      #{{office._id}} - Office {{office.name}}
-    </nb-list-item>
-  </nb-list>
+  <nb-card-body>
+    <p-table [value]="offices" >
+      <ng-template pTemplate="header">
+          <tr>
+              <th *ngFor="let col of cols" [pSortableColumn]="col.field">
+                {{col.header}}
+              </th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-office>
+          <tr>
+              <td *ngFor="let col of cols">
+                {{getValue(col, office)}}
+              </td>
+          </tr>
+      </ng-template>
+  </p-table>
+  </nb-card-body>
 </nb-card>
+
