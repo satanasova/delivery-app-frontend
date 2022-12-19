@@ -6,4 +6,5 @@ export type Office = {
   lat: number;
   lng: number;
   packages: any[] //TODO - should be Packages[]
+  owner: any;
 }

@@ -17,4 +17,4 @@ export class OfficesService {
   getOffice(officeId: string): Promise<Office> {
     return firstValueFrom(this.http.get<Office>(`http://localhost:3000/offices/${officeId}`))
   }
-}
+} 

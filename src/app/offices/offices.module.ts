@@ -4,7 +4,13 @@ import { AllOfficesComponent } from './all-offices/all-offices.component';
 import { SingleOfficeComponent } from './single-office/single-office.component';
 import { RouterModule } from '@angular/router';
 import { NbCardModule, NbIconModule, NbListModule } from '@nebular/theme';
-import { TableModule} from 'primeng/table'
+import { TableModule} from 'primeng/table';
+import { DemoTableComponent } from './demo-table/demo-table.component'
+import { CustomerService } from './demo-table/customerservice';
+import {SliderModule} from 'primeng/slider';
+import {ProgressBarModule} from 'primeng/progressbar';
+import { FormsModule } from '@angular/forms';
+import {MultiSelectModule} from 'primeng/multiselect';
 
 const routes = [
   {path: 'offices', component: AllOfficesComponent},
@@ -14,7 +20,8 @@ const routes = [
 @NgModule({
   declarations: [
     AllOfficesComponent,
-    SingleOfficeComponent
+    SingleOfficeComponent,
+    DemoTableComponent
   ],
   imports: [
     CommonModule,
@@ -22,8 +29,12 @@ const routes = [
     NbCardModule,
     NbListModule,
     NbIconModule,
-    TableModule
-    
-  ]
+    TableModule,
+    SliderModule,
+    ProgressBarModule,
+    FormsModule,
+    MultiSelectModule
+  ],
+  providers: [CustomerService]
 })
 export class OfficesModule { }

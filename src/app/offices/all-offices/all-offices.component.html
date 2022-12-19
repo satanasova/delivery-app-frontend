@@ -4,15 +4,59 @@
     <p-table [value]="offices" >
       <ng-template pTemplate="header">
           <tr>
-              <th *ngFor="let col of cols" [pSortableColumn]="col.field">
+              <th *ngFor="let col of cols" [pSortableColumn]="col.field" [ngSwitch]="col.filterConfig?.filterType">
                 {{col.header}}
+
+                <p-columnFilter *ngSwitchCase="'range'" [field]="col.field" matchMode="between" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                  <ng-template pTemplate="filter" let-filter="filterCallback">
+                      <p-slider [ngModel]="getRangeModel(col)" [min]="getRangeValues(col)[0]" [max]="getRangeValues(col)[1]" [range]="true" (onSlideEnd)="filter($event.values)" styleClass="m-3"></p-slider>
+                        <div class="flex align-items-center justify-content-center p-2">
+                          <span>{{getRangeModel(col)[0]}}&nbsp;-&nbsp;</span>
+                          <span>{{getRangeModel(col)[1]}}</span>
+                        </div>
+                  </ng-template>
+                </p-columnFilter>
+
+                <p-columnFilter *ngSwitchCase="'select'" [field]="col.field"  matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                  <ng-template pTemplate="header">
+                      <div class="px-3 pt-3 pb-0">
+                          <span class="font-bold">{{col.header}} Picker</span>
+                      </div>
+                  </ng-template>
+                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                      <p-multiSelect [ngModel]="value" [options]="getOptions(col)" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name" [showHeader]="false">
+                          <ng-template let-option pTemplate="item">
+                              <div class="p-multiselect-representative-option">
+                                  <!-- <img src="assets/demo-table/images/{{option.image}}" width="32" style="vertical-align: middle" /> -->
+                                  <!-- <span class="ml-1">{{option}}</span> -->
+                                  {{getOptionText(col, option)}}
+                              </div>
+                          </ng-template>
+                      </p-multiSelect>
+                  </ng-template>
+                </p-columnFilter>
+
+                <p-columnFilter *ngSwitchDefault [type]="'text'" [field]="col.field" display="menu">
+
+                </p-columnFilter>
+   
+                <div [ngSwitch]="col.filterConfig?.filterType">
+                  <div *ngSwitchCase="'range'">range</div>
+                  <div *ngSwitchCase="'select'">select</div>
+                  <div *ngSwitchCase="'date'">date</div>
+                  <div *ngSwitchCase="'boolean'">boolean</div>
+                  <div *ngSwitchDefault>text</div>
+                </div>
+
               </th>
           </tr>
+    
+  
       </ng-template>
       <ng-template pTemplate="body" let-office>
           <tr>
               <td *ngFor="let col of cols">
-                {{getValue(col, office)}}
+                {{getDisplayText(col, office)}}
               </td>
           </tr>
       </ng-template>
@@ -20,3 +64,4 @@
   </nb-card-body>
 </nb-card>
 
+<!-- <app-demo-table></app-demo-table> -->
