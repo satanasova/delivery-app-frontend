@@ -26,20 +26,18 @@ export class AllOfficesComponent implements OnInit {
 
   async ngOnInit() {
     this.offices = await this.officesService.getAllOffices();
-    this.seedOfficeOwners()
+    this.seedOfficeOwners();
+    this.seedLastPkgDate();
+    this.seedAvailability();
+    this.seedNumberOfEmployees();
     console.log(this.offices);
     this.cities = this.offices.map((office) => office.name)
       .filter((cityName, idx, cityNames) => cityNames.indexOf(cityName) === idx);
-
-      [{_id: ''},
-      {egn: ''},
-      {type: '', model: '', frame:{ _id: '' }}]
 
     this.cols = [
       {
         field: '_id', 
         header: '#', 
-
       },
       {
         field: 'name',
@@ -55,34 +53,81 @@ export class AllOfficesComponent implements OnInit {
         displayFn: (owner: any): string => `${owner.firstName} ${owner.lastName}`,
         filterConfig: {
           filterType: 'select',
-          uniqueFilterFn: (owner: any) => owner._id,
-          displayFn: (owner: any): string => `${owner.firstName}`
+          uniqueFn: (owner: any) => owner._id,
+          displayFn: (owner: any): string | HTMLElement[] => {
+            // return owner.firstName;
+            const elements: HTMLElement[] = [];
+            let ownerImg = document.createElement('img');
+            let ownerName = document.createElement('span');
+            ownerImg.setAttribute('src', 'https://picsum.photos/30')
+            ownerName.innerText = owner.firstName
+
+            elements.push(ownerImg, ownerName);
+            return elements;
+
+            return '<img src=".."><span>Name</span>'
+          }
         }
       },
-      {
-        field: 'address', 
-        header: 'Address', 
-        filterConfig: {
-          filterType: 'date'
-        }
-      },
-      {
-        field: 'phone', 
-        header: 'Phone', 
-        filterConfig: {
-          filterType: 'text'
-        }
-      },
+      // {
+      //   field: 'address', 
+      //   header: 'Address', 
+      //   filterConfig: {
+      //     filterType: 'date'
+      //   }
+      // },
+      // {
+      //   field: 'phone', 
+      //   header: 'Phone', 
+      //   filterConfig: {
+      //     filterType: 'boolean'
+      //   }
+      // },
       {
         field: 'packages',
         header: 'Packages',
         displayFn: (pkgs: any[], office): string => `${pkgs.length} Package${pkgs.length != 1 ? 's' : ''}`,
+        getValue: (pkgs: any[]) => pkgs.length,
         filterConfig: {
           filterType: 'range',
-          rangeValues: [-20,50],
+          rangeValues: ['min', 'max'],
           // getRangeValues: () => {} 
         }
+      },
+      {
+        field: 'employeesNumber',
+        header: '# Employees',
+        filterConfig: {
+          filterType: 'range',
+          rangeValues: ['min', 'max']
+        }
       }
+      // {
+      //   field: 'date',
+      //   header: 'Last Pkg Date',
+      //   displayFn: (date: Date) => `${('0'+ date.getDate()).slice(-2)}/${date.getMonth()+1}/${date.getFullYear()}`,
+      //   filterConfig: {
+      //     filterType: 'date'
+      //   }
+      // },
+      // {
+      //   field: 'availability',
+      //   header: 'Is working',
+      //   displayFn: (isWorking: boolean): string | HTMLElement[] => {
+      //     const elements: HTMLElement[] = [];
+      //     const iconEl = document.createElement('i');
+      //     // iconEl.classList.add(...(isWorking ? ['pi', 'pi-check'] : ['pi', 'pi-times']));
+      //     let classesToAdd = isWorking ? ['pi', 'pi-check'] : ['pi', 'pi-times'];
+      //     iconEl.classList.add(...classesToAdd);
+      //     // iconEl.setAttribute('icon', `${isWorking ? 'checkmark-circle-2-outline' : 'close-circle-outline'}`)
+      //     elements.push(iconEl);
+      //     return elements
+      //   },
+
+      //   filterConfig: {
+      //     filterType: 'boolean'
+      //   }
+      // }
     ]
   }
 
@@ -91,7 +136,13 @@ export class AllOfficesComponent implements OnInit {
     // const customFilterDisplayFn = propConfig && propConfig.filterConfig && propConfig.filterConfig.displayFn;
 
     if (customDisplayFn) {
-      return customDisplayFn(office[propConfig.field], office)
+      const resultToPrint: string | HTMLElement[] = customDisplayFn(office[propConfig.field], office);
+      
+      if(typeof resultToPrint === 'string') {
+        return `<span>${resultToPrint}</span>`
+      } else {
+        return resultToPrint.map(r => r.outerHTML).join('');
+      }
     } else {
       return office[propConfig.field];
     }
@@ -99,21 +150,38 @@ export class AllOfficesComponent implements OnInit {
 
   getOptionText(colConfig: ColumnConfig<Office>, option: any) {
     const customOptionDisplayFn = colConfig && colConfig.filterConfig && colConfig.filterConfig.displayFn;
-    console.log(option);
 
     if (customOptionDisplayFn) {
       // return customOptionDisplayFn(option[colConfig.field])
-      return customOptionDisplayFn(option);
+      const resultToPrint: string | HTMLElement[] = customOptionDisplayFn(option);
+      
+      // document.querySelector('option#id div')?.innerHTML = resultToPrint
+      if (typeof resultToPrint === 'string') {
+        return `<span>${resultToPrint}</span>`
+      } else {
+        return resultToPrint.map(e => e.outerHTML).join('');
+      }
     } else {
       return option
     }
   }
 
   getOptions(colConfig: ColumnConfig<Office>): any[] {
-    let allPropValues = this.offices.map(office => (office as any)[colConfig.field])
+    const customUniqueFn = colConfig && colConfig.filterConfig && colConfig.filterConfig.uniqueFn;
+
+    let allPropValues = this.offices.map(office => (office as any)[colConfig.field]);
+    
     let allOptions = allPropValues.reduce((prev: any[], curr: any, i) => {
-      let isOfficeAdded = prev.some((addedOffice) => addedOffice === curr);
-      if(!isOfficeAdded) {
+      let isOptionAdded = prev.some((addedOption) => {
+        if (customUniqueFn) {
+          return customUniqueFn(addedOption) === customUniqueFn(curr);
+        } else {
+          return addedOption === curr;
+        }
+      });
+
+
+      if(!isOptionAdded) {
         prev.push(curr)
       }
 
@@ -125,9 +193,38 @@ export class AllOfficesComponent implements OnInit {
     return allOptions;
   }
 
-  getRangeValues(propConfig: ColumnConfig<Office>): number[] {
-    return (propConfig.filterConfig && propConfig.filterConfig.rangeValues) || [0, 100]
+  getRangeValues(propConfig: ColumnConfig<Office>) {
+    const rangeValues = propConfig.filterConfig?.rangeValues || [0, 100];
+    const customGetValueFn = propConfig.getValue;
+    const fieldValues = this.offices.map(office => {
+      if (customGetValueFn) {
+        return  customGetValueFn((office as any)[propConfig.field])
+      } else {
+        return (office as any)[propConfig.field]
+      }
+    });
+    const min = Math.min(...fieldValues);
+    const max = Math.max(...fieldValues);
+    const result = rangeValues.map(rangeValue => {
+      if(rangeValue === 'min') {
+        return min;
+      } else if (rangeValue === 'max') {
+        return max;
+      } else {
+        return rangeValue;
+      }
+    })
+    
+    console.log(rangeValues);
+    console.log(fieldValues);
+    console.log(min,max);
+    console.log(result);
+    return result
   }
+  
+   
+
+    
 
   getRangeModel(propConfig: ColumnConfig<Office>): number[] {
     if (!this.rangeModels[propConfig.field]) {
@@ -135,10 +232,6 @@ export class AllOfficesComponent implements OnInit {
     }
 
     return this.rangeModels[propConfig.field]
-  }
-
-  filterSelect(event: any) {
-    console.log('select values', event);
   }
 
   seedOfficeOwners() {
@@ -149,23 +242,45 @@ export class AllOfficesComponent implements OnInit {
     })
   }
 
+  seedLastPkgDate() {
+    this.offices.map(office => {
+      office.date = new Date();
+      return office
+    })
+  }
+
+  seedNumberOfEmployees() {
+    this.offices.map(office => {
+      office.employeesNumber = Math.round(Math.random() * 100);
+      return office;
+    })
+  }
+
+  seedAvailability() {
+    this.offices.map(office => {
+      office.availability = Math.random() < 0.5 ? true : false;
+      return office
+    })
+  }
+
 
 }
 
 type ColumnConfig<T> = {
   field: string;
   header: string;
-  displayFn?: (propData: any, rowData: T) => string;
+  displayFn?: (propData: any, rowData: T) => string | HTMLElement[];
+  getValue?: (propData: any) => number,
   filterConfig?: FilterConfig
 }
 
 
 type FilterConfig = {
   filterType?: string;
-  rangeValues?: number[];
+  rangeValues?: (string|number)[];
   selectOptions?: any[];
   displayFn?: (option: any) => string | HTMLElement[];
-  uniqueFilterFn?: (option: any) => any
+  uniqueFn?: (option: any) => any
 }
 
 

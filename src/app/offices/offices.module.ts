@@ -11,6 +11,8 @@ import {SliderModule} from 'primeng/slider';
 import {ProgressBarModule} from 'primeng/progressbar';
 import { FormsModule } from '@angular/forms';
 import {MultiSelectModule} from 'primeng/multiselect';
+import {CalendarModule} from 'primeng/calendar';
+import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
 
 const routes = [
   {path: 'offices', component: AllOfficesComponent},
@@ -33,7 +35,9 @@ const routes = [
     SliderModule,
     ProgressBarModule,
     FormsModule,
-    MultiSelectModule
+    MultiSelectModule,
+    CalendarModule,
+    TriStateCheckboxModule
   ],
   providers: [CustomerService]
 })

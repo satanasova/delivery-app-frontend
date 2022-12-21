@@ -17,7 +17,7 @@
                   </ng-template>
                 </p-columnFilter>
 
-                <p-columnFilter *ngSwitchCase="'select'" [field]="col.field"  matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                <p-columnFilter *ngSwitchCase="'select'" [field]="col.field" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                   <ng-template pTemplate="header">
                       <div class="px-3 pt-3 pb-0">
                           <span class="font-bold">{{col.header}} Picker</span>
@@ -26,25 +26,35 @@
                   <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                       <p-multiSelect [ngModel]="value" [options]="getOptions(col)" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name" [showHeader]="false">
                           <ng-template let-option pTemplate="item">
-                              <div class="p-multiselect-representative-option">
-                                  <!-- <img src="assets/demo-table/images/{{option.image}}" width="32" style="vertical-align: middle" /> -->
-                                  <!-- <span class="ml-1">{{option}}</span> -->
-                                  {{getOptionText(col, option)}}
+                              <div class="p-multiselect-representative-option" [innerHtml]="getOptionText(col, option)">
                               </div>
                           </ng-template>
                       </p-multiSelect>
                   </ng-template>
                 </p-columnFilter>
 
-                <p-columnFilter *ngSwitchDefault [type]="'text'" [field]="col.field" display="menu">
-
+                <p-columnFilter *ngSwitchCase="'date'" type="date" [field]="col.field" display="menu" [showAddButton]="false">
+                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                    <p-calendar #calendar [ngModel]="value" (onSelect)="filter(calendar.value)" (onInput)="setup(calendar.value, col.field)" dateFormat="dd/mm/yy" ></p-calendar>
+                  </ng-template>
                 </p-columnFilter>
+
+                <p-columnFilter *ngSwitchCase="'boolean'" type="boolean" [field]="col.field" display="menu">
+                  <!-- <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                    <p-triStateCheckbox [ngModel]="value" label="Item Label"></p-triStateCheckbox>
+                  </ng-template> -->
+                </p-columnFilter>
+
+                <p-columnFilter *ngSwitchCase="'number'" type="numeric" [field]="col.field" display="menu" [showAddButton]="false"></p-columnFilter>
+
+                <p-columnFilter *ngSwitchDefault type="text" [field]="col.field" display="menu" [showAddButton]="false"></p-columnFilter>
    
                 <div [ngSwitch]="col.filterConfig?.filterType">
                   <div *ngSwitchCase="'range'">range</div>
                   <div *ngSwitchCase="'select'">select</div>
                   <div *ngSwitchCase="'date'">date</div>
                   <div *ngSwitchCase="'boolean'">boolean</div>
+                  <div *ngSwitchCase="'number'">number</div>
                   <div *ngSwitchDefault>text</div>
                 </div>
 
@@ -55,8 +65,7 @@
       </ng-template>
       <ng-template pTemplate="body" let-office>
           <tr>
-              <td *ngFor="let col of cols">
-                {{getDisplayText(col, office)}}
+              <td *ngFor="let col of cols" [innerHtml]="getDisplayText(col, office)"> 
               </td>
           </tr>
       </ng-template>

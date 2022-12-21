@@ -7,4 +7,7 @@ export type Office = {
   lng: number;
   packages: any[] //TODO - should be Packages[]
   owner: any;
+  date: Date;
+  availability: boolean;
+  employeesNumber: number;
 }
