@@ -1,1 +1,9 @@
-<p>Packages</p>
+<nb-card size="medium"> 
+  <nb-card-header> Packages </nb-card-header>
+  <nb-card-body>
+    <app-smart-table *ngIf="packages.length > 0" [data]="packages" [tableConfig]="cols"></app-smart-table>
+    <div *ngIf="packages.length === 0">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+  </nb-card-body>
+</nb-card>
