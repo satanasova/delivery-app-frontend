@@ -3,16 +3,17 @@ import { CommonModule } from '@angular/common';
 import { AllOfficesComponent } from './all-offices/all-offices.component';
 import { SingleOfficeComponent } from './single-office/single-office.component';
 import { RouterModule } from '@angular/router';
-import { NbCardModule, NbIconModule, NbListModule } from '@nebular/theme';
+import { UtilsModule } from '../utils/utils.module';
+import { NbCardModule, NbIconModule} from '@nebular/theme';
 import { TableModule} from 'primeng/table';
-import { DemoTableComponent } from './demo-table/demo-table.component'
-import { CustomerService } from './demo-table/customerservice';
-import {SliderModule} from 'primeng/slider';
-import {ProgressBarModule} from 'primeng/progressbar';
-import { FormsModule } from '@angular/forms';
-import {MultiSelectModule} from 'primeng/multiselect';
-import {CalendarModule} from 'primeng/calendar';
-import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+// import {SliderModule} from 'primeng/slider';
+// import { FormsModule } from '@angular/forms';
+// import {MultiSelectModule} from 'primeng/multiselect';
+// import {CalendarModule} from 'primeng/calendar';
+// import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
+// import {ProgressBarModule} from 'primeng/progressbar';
+
 
 const routes = [
   {path: 'offices', component: AllOfficesComponent},
@@ -23,22 +24,16 @@ const routes = [
   declarations: [
     AllOfficesComponent,
     SingleOfficeComponent,
-    DemoTableComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    UtilsModule,
     NbCardModule,
-    NbListModule,
     NbIconModule,
     TableModule,
-    SliderModule,
-    ProgressBarModule,
-    FormsModule,
-    MultiSelectModule,
-    CalendarModule,
-    TriStateCheckboxModule
+    ProgressSpinnerModule
   ],
-  providers: [CustomerService]
+  providers: []
 })
 export class OfficesModule { }

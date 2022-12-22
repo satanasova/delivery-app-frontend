@@ -1,0 +1,58 @@
+<p-table [value]="data" >
+  <ng-template pTemplate="header">
+      <tr>
+          <th *ngFor="let col of tableConfig" [pSortableColumn]="col.field" [ngSwitch]="col.filterConfig?.filterType">
+            {{col.header}}
+
+            <p-columnFilter *ngSwitchCase="'range'" [field]="col.field" [matchMode]="hasCustomFilter(col) ? ('custom-' + col.field) : 'between'" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+              <ng-template pTemplate="filter" let-filter="filterCallback">
+                  <p-slider [ngModel]="getRangeModel(col)" [min]="getRangeValues(col)[0]" [max]="getRangeValues(col)[1]" [range]="true" (onSlideEnd)="filter($event.values)" styleClass="m-3"></p-slider>
+                    <div class="flex align-items-center justify-content-center p-2">
+                      <span>{{getRangeModel(col)[0]}}&nbsp;-&nbsp;</span>
+                      <span>{{getRangeModel(col)[1]}}</span>
+                    </div>
+              </ng-template>
+            </p-columnFilter>
+
+            <p-columnFilter *ngSwitchCase="'select'" [field]="col.field" [matchMode]="hasCustomFilter(col) ? ('custom-' + col.field) : 'in'" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+              <ng-template pTemplate="header">
+                  <div class="px-3 pt-3 pb-0">
+                      <span class="font-bold">{{col.header}} Picker</span>
+                  </div>
+              </ng-template>
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                  <p-multiSelect [ngModel]="value" [options]="getOptions(col)" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name" [showHeader]="false">
+                      <ng-template let-option pTemplate="item">
+                          <div class="p-multiselect-representative-option" [innerHtml]="getOptionText(col, option)">
+                          </div>
+                      </ng-template>
+                  </p-multiSelect>
+              </ng-template>
+            </p-columnFilter>
+
+            <p-columnFilter *ngSwitchCase="'date'" type="date" [matchMode]="hasCustomFilter(col) ? ('custom-' + col.field) : 'equals'" [field]="col.field" display="menu" [showAddButton]="false" [showOperator]="false">
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-calendar #calendar [ngModel]="value" (onSelect)="filter(calendar.value)" (onInput)="setup(calendar.value, col.field)" dateFormat="dd/mm/yy" ></p-calendar>
+              </ng-template>
+            </p-columnFilter>
+
+            <p-columnFilter *ngSwitchCase="'boolean'" type="boolean" [matchMode]="hasCustomFilter(col) ? ('custom-' + col.field) : 'equals'" [field]="col.field" display="menu">
+            </p-columnFilter>
+
+            <p-columnFilter *ngSwitchCase="'number'" type="numeric" [matchMode]="hasCustomFilter(col) ? ('custom-' + col.field) : 'equals'" [field]="col.field" display="menu" [showAddButton]="false"></p-columnFilter>
+
+            <p-columnFilter *ngSwitchDefault type="text" [matchMode]="hasCustomFilter(col) ? ('custom-' + col.field) : 'contains'" [field]="col.field" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"></p-columnFilter>
+  
+
+          </th>
+      </tr>
+
+
+  </ng-template>
+  <ng-template pTemplate="body" let-singleData>
+      <tr>
+          <td *ngFor="let col of tableConfig" [innerHtml]="getDisplayText(col, singleData)"> 
+          </td>
+      </tr>
+  </ng-template>
+</p-table>

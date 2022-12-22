@@ -1,3 +1,5 @@
+import { Package } from "../packages/models";
+
 export type Office = {
   _id: string;
   name: string;
@@ -5,9 +7,10 @@ export type Office = {
   phone: string;
   lat: number;
   lng: number;
-  packages: any[] //TODO - should be Packages[]
+  packages: Package[]; 
   owner: any;
   date: Date;
   availability: boolean;
   employeesNumber: number;
 }
+
