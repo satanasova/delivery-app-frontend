@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FilterService } from 'primeng/api';
 import { ColumnConfig } from './models';
 
@@ -10,6 +10,7 @@ import { ColumnConfig } from './models';
 export class SmartTableComponent<T> implements OnInit {
   @Input() data: T[] = [];
   @Input() tableConfig: ColumnConfig<T>[] = [];
+  @Output() itemClick: EventEmitter<any> = new EventEmitter();
   rangeModels: any = {};
 
   constructor(private filterService: FilterService) { }
@@ -129,6 +130,8 @@ export class SmartTableComponent<T> implements OnInit {
     })
   }
 
-
+  itemClicked(event: any, itemData: any) {
+    this.itemClick.emit(itemData);
+  }
 
 }

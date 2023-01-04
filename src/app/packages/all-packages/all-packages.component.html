@@ -1,7 +1,7 @@
 <nb-card size="medium"> 
   <nb-card-header> Packages </nb-card-header>
   <nb-card-body>
-    <app-smart-table *ngIf="packages.length > 0" [data]="packages" [tableConfig]="cols"></app-smart-table>
+    <app-smart-table *ngIf="packages.length > 0" (itemClick)="packageClicked($event)" [data]="packages" [tableConfig]="cols"></app-smart-table>
     <div *ngIf="packages.length === 0">
       <p-progressSpinner></p-progressSpinner>
     </div>

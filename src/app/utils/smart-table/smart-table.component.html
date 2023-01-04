@@ -50,7 +50,7 @@
 
   </ng-template>
   <ng-template pTemplate="body" let-singleData>
-      <tr>
+      <tr (click)="itemClicked($event, singleData)">
           <td *ngFor="let col of tableConfig" [innerHtml]="getDisplayText(col, singleData)"> 
           </td>
       </tr>

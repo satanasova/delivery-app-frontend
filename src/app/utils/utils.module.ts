@@ -10,13 +10,14 @@ import { FormsModule } from '@angular/forms';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {CalendarModule} from 'primeng/calendar';
 import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
-
+import { GoBackDirective } from './go-back/go-back.directive';
 
 
 @NgModule({
   declarations: [
     SettingsComponent,
-    SmartTableComponent
+    SmartTableComponent,
+    GoBackDirective
   ],
   imports: [
     CommonModule,
@@ -31,6 +32,6 @@ import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
     CalendarModule,
     TriStateCheckboxModule
   ],
-  exports: [SmartTableComponent]
+  exports: [SmartTableComponent, GoBackDirective]
 })
 export class UtilsModule { }

@@ -21,7 +21,4 @@ export class SingleTruckComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  back(): void {
-    this.location.back();
-  }
 }

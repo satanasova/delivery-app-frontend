@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { AllTrucksComponent } from './all-trucks/all-trucks.component';
 import { SingleTruckComponent } from './single-truck/single-truck.component';
 import { RouterModule } from '@angular/router';
+import { GoBackDirective } from '../utils/go-back/go-back.directive';
+import { UtilsModule } from '../utils/utils.module';
 
 let routes = [
   {path: 'trucks', component: AllTrucksComponent},
@@ -16,7 +18,8 @@ let routes = [
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    UtilsModule
   ]
 })
 export class TrucksModule { }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ColumnConfig } from 'src/app/utils/smart-table/models';
 import { Package } from '../models';
 import { PackagesService } from '../packages.service';
@@ -12,7 +13,7 @@ export class AllPackagesComponent implements OnInit {
   packages: Package[] = [];
   cols: ColumnConfig<Package>[] = [];
 
-  constructor(private packagesService: PackagesService) {
+  constructor(private packagesService: PackagesService, private router: Router) {
   }
 
   async ngOnInit() {
@@ -53,7 +54,12 @@ export class AllPackagesComponent implements OnInit {
       },      {
         field: 'destinationOffice', 
         header: 'Destination Office',
-        displayFn: (office: any): string => office.name,
+        displayFn: (office: any): HTMLElement[] => {
+          const link = document.createElement('a');
+          link.setAttribute('href', `../offices/${office._id}`);
+          link.text = office.name;
+          return [link];
+        },
         filterConfig: {
           displayFn: (office: any): string => office.name,
           filterType: 'select',
@@ -119,6 +125,10 @@ export class AllPackagesComponent implements OnInit {
 
     this.packages = await this.packagesService.getAllPackages();
     this.convertDateFromString();
+  }
+
+  packageClicked(pkgData: Package) {
+    this.router.navigate(['packages', pkgData._id])
   }
 
   convertDateFromString(): void {
