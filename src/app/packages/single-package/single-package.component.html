@@ -1,2 +1,15 @@
-<a goBackBtn>Go Back</a>
-<p>single-package works!</p>
+<a goBackBtn>
+  <nb-icon icon="arrow-back-outline"></nb-icon>
+</a>
+<nb-card *ngIf="package" accent="info">
+  <nb-card-header> Package #{{package._id}} </nb-card-header>
+  <nb-card-body>
+    <nb-list>
+      <nb-list-item *ngFor="let item of itemConfig">
+        <div class="key-list">{{item.header}}</div>
+        <div class="value-list" [innerHtml]="displayValue(item)" [ngClass]="item.classes" (click)="onOfficeClick($event, item)"></div>
+      </nb-list-item>
+    </nb-list>
+  </nb-card-body>
+</nb-card>
+

@@ -1,9 +1,9 @@
-<nb-card size="medium"> 
+<!-- <nb-card size="medium"> 
   <nb-card-header> Offices </nb-card-header>
-  <nb-card-body>
+  <nb-card-body> -->
     <app-smart-table *ngIf="offices.length > 0" [data]="offices" [tableConfig]="cols"></app-smart-table>
     <div *ngIf="offices.length === 0">
       <p-progressSpinner></p-progressSpinner>
     </div>
-  </nb-card-body>
-</nb-card>
+  <!-- </nb-card-body>
+</nb-card> -->

@@ -23,7 +23,4 @@ export class SingleOfficeComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  back(): void {
-    this.location.back();
-  }
 }

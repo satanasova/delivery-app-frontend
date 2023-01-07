@@ -1,4 +1,4 @@
-<p-table [value]="data" >
+<p-table [value]="data" [rowHover]="true"  [scrollable]="true" scrollHeight="flex">
   <ng-template pTemplate="header">
       <tr>
           <th *ngFor="let col of tableConfig" [pSortableColumn]="col.field" [ngSwitch]="col.filterConfig?.filterType">
@@ -50,8 +50,8 @@
 
   </ng-template>
   <ng-template pTemplate="body" let-singleData>
-      <tr (click)="itemClicked($event, singleData)">
-          <td *ngFor="let col of tableConfig" [innerHtml]="getDisplayText(col, singleData)"> 
+      <tr class="p-selectable-row">
+          <td *ngFor="let col of tableConfig" (click)="onCellClick($event, col, singleData)" [innerHtml]="getDisplayText(col, singleData)" [ngClass]="col.classes"> 
           </td>
       </tr>
   </ng-template>

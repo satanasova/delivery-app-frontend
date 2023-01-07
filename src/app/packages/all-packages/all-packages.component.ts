@@ -37,15 +37,20 @@ export class AllPackagesComponent implements OnInit {
           filterType: 'select'
         }
       },
-      {
-        field: 'description',
-        header: 'Description',
-        displayFn: (desc?: any): string => desc ? desc : '-'
-      },
+      // {
+      //   field: 'description',
+      //   header: 'Description',
+      //   displayFn: (desc?: any): string => desc ? desc : '-'
+      // },
       {
         field: 'originOffice', 
         header: 'Origin Office',
+        classes: 'text-link',
         displayFn: (office: any): string => office.name,
+        onClick: (office: any, pkg: any): boolean => {
+          this.router.navigate(['offices', office._id]);
+          return true;
+        },
         filterConfig: {
           displayFn: (office: any): string => office.name,
           filterType: 'select',
@@ -54,11 +59,13 @@ export class AllPackagesComponent implements OnInit {
       },      {
         field: 'destinationOffice', 
         header: 'Destination Office',
-        displayFn: (office: any): HTMLElement[] => {
-          const link = document.createElement('a');
-          link.setAttribute('href', `../offices/${office._id}`);
-          link.text = office.name;
-          return [link];
+        classes: 'text-link',
+        displayFn: (office: any): string => {
+          return office.name;
+        },
+        onClick: (office: any, pkg: any): boolean => {
+          this.router.navigate(['offices', office._id]);
+          return true;
         },
         filterConfig: {
           displayFn: (office: any): string => office.name,

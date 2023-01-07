@@ -13,8 +13,7 @@ export class PackagesService {
 
   async getAllPackages(ignoreCache = false): Promise<Package[]> {
     if (this.allPackages.length === 0 || ignoreCache) {
-      this.allPackages = (await firstValueFrom(this.http.get<Package[]>('http://localhost:3000/packages/')))
-        .slice(0, 15);
+      this.allPackages = (await firstValueFrom(this.http.get<Package[]>('http://localhost:3000/packages/')));
     } 
     
     return this.allPackages;

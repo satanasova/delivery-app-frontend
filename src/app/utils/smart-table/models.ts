@@ -8,7 +8,9 @@ export type ColumnConfig<T> = {
   /** Optional: custom function to be called when trying to get the value of the property */
   getValue?: (propData: any) => number,
   /** Optional: config for filtering of the property */
-  filterConfig?: FilterConfig
+  filterConfig?: FilterConfig,
+  onClick?: (propData: any, rowData: T) => boolean,
+  classes?: string
 }
 
 

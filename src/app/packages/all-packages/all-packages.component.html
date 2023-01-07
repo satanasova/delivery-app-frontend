@@ -1,4 +1,4 @@
-<nb-card size="medium"> 
+<nb-card size="giant"> 
   <nb-card-header> Packages </nb-card-header>
   <nb-card-body>
     <app-smart-table *ngIf="packages.length > 0" (itemClick)="packageClicked($event)" [data]="packages" [tableConfig]="cols"></app-smart-table>

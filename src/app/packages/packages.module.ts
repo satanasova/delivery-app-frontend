@@ -25,7 +25,9 @@ const routes = [
     UtilsModule,
     TableModule,
     ProgressSpinnerModule,
-    NbCardModule
+    NbCardModule,
+    NbIconModule,
+    NbListModule
   ]
 })
 export class PackagesModule { }

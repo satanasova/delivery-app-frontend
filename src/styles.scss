@@ -4,14 +4,36 @@
 
 @include nb-install() {
   @include nb-theme-global();
-  a {
+  a, .text-link {
     color: nb-theme(color-info-500);
     text-decoration: none;
     font-weight: 400;
     cursor: pointer;
   }
 
+  nb-list {
+    &-item{
+      padding: 0;
+      &:first-child {
+        border-top: 0;
+      }
 
+      &:last-child {
+        border-bottom: 0;
+      }
+      
+      div {
+        padding: var(--list-item-padding);
+        &.key-list {
+          flex: 1;
+        }
+        &.value-list {
+          flex: 4;
+          border-left: var(--list-item-divider-width) var(--list-item-divider-style) var(--list-item-divider-color);
+        }
+      }
+    }
+  }
 
   .nb-form-control-container {
     max-width: unset;
@@ -73,6 +95,32 @@
         }
       }
     }
+  }
+
+  .p-datatable-wrapper {
+    @include nb-scrollbars(
+      nb-theme(layout-scrollbar-color),
+      nb-theme(layout-scrollbar-background-color),
+      nb-theme(layout-scrollbar-width)
+    )
+    // &::-webkit-scrollbar {
+    //   // width: $size;
+    //   // height: $size;
+    // }
+  
+    // &::-webkit-scrollbar-thumb {
+    //   background: color-info-500;
+    //   cursor: pointer;
+    //   border-radius: $border-radius;
+    // }
+  
+    // &::-webkit-scrollbar-track {
+    //   background: $bg;
+    // }
+  
+    // &::-webkit-scrollbar-corner {
+    //   background: $bg;
+    // }
   }
   
 };

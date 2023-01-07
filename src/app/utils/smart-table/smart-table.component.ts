@@ -19,12 +19,12 @@ export class SmartTableComponent<T> implements OnInit {
     this.registerCustomFilterFns();
   }
 
-  getDisplayText(propConfig: ColumnConfig<T>, singleData: any) {
-    const customDisplayFn = propConfig && propConfig.displayFn;
+  getDisplayText(colConfig: ColumnConfig<T>, singleData: any) {
+    const customDisplayFn = colConfig && colConfig.displayFn;
     // const customFilterDisplayFn = propConfig && propConfig.filterConfig && propConfig.filterConfig.displayFn;
 
     if (customDisplayFn) {
-      const resultToPrint: string | HTMLElement[] = customDisplayFn(singleData[propConfig.field], singleData);
+      const resultToPrint: string | HTMLElement[] = customDisplayFn(singleData[colConfig.field], singleData);
       
       if(typeof resultToPrint === 'string') {
         return `<span>${resultToPrint}</span>`
@@ -32,7 +32,7 @@ export class SmartTableComponent<T> implements OnInit {
         return resultToPrint.map(r => r.outerHTML).join('');
       }
     } else {
-      return singleData[propConfig.field];
+      return singleData[colConfig.field];
     }
   }
 
@@ -132,6 +132,15 @@ export class SmartTableComponent<T> implements OnInit {
 
   itemClicked(event: any, itemData: any) {
     this.itemClick.emit(itemData);
+  }
+
+  onCellClick(event: any, colConfig: ColumnConfig<any>, itemData: any) {
+    const customClickFn = colConfig.onClick;
+    if(customClickFn) {
+      customClickFn(itemData[colConfig.field], itemData);
+    } else {
+      this.itemClicked(event, itemData)
+    }
   }
 
 }

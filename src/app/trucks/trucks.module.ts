@@ -5,6 +5,7 @@ import { SingleTruckComponent } from './single-truck/single-truck.component';
 import { RouterModule } from '@angular/router';
 import { GoBackDirective } from '../utils/go-back/go-back.directive';
 import { UtilsModule } from '../utils/utils.module';
+import { NbIconModule } from '@nebular/theme';
 
 let routes = [
   {path: 'trucks', component: AllTrucksComponent},
@@ -19,7 +20,8 @@ let routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    UtilsModule
+    UtilsModule,
+    NbIconModule
   ]
 })
 export class TrucksModule { }

@@ -11,3 +11,25 @@
 .p-2{
   padding: .5rem 2rem;
 }
+
+// ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+//   white-space: nowrap;
+// }
+
+::ng-deep .p-datatable {
+  &-thead {
+    & > tr {
+      & > th {
+        white-space: nowrap;
+      }
+    }
+  }
+
+  // &-tbody {
+  //   & > tr {
+  //     & > td {
+  //       text-align: center !important;
+  //     }
+  //   }
+  // }
+}
