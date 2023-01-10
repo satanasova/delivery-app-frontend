@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Office } from '../models';
 import { OfficesService } from '../offices.service';
 import { ColumnConfig } from 'src/app/utils/smart-table/models';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-all-offices',
@@ -13,7 +14,7 @@ export class AllOfficesComponent implements OnInit {
   cols: ColumnConfig<Office>[] = [];
   
 
-  constructor(private officesService: OfficesService) { }
+  constructor(private officesService: OfficesService, private router: Router) { }
   
   async ngOnInit() {
     this.cols = [
@@ -118,42 +119,46 @@ export class AllOfficesComponent implements OnInit {
       // }
     ]
     this.offices = await this.officesService.getAllOffices();
-    this.seedOfficeOwners();
-    this.seedLastPkgDate();
-    this.seedAvailability();
-    this.seedNumberOfEmployees();
+    // this.seedOfficeOwners();
+    // this.seedLastPkgDate();
+    // this.seedAvailability();
+    // this.seedNumberOfEmployees();
 
   }
 
-  seedOfficeOwners() {
-    this.offices.map(office => {
-      const newOwner = {_id: office.name, firstName: 'Mr. '+ office.name, lastName: 'Jr.'}
-      office.owner = newOwner;
-      return office;
-    })
+  officeClicked(officeData: Office) {
+    this.router.navigate(['offices', officeData._id ])
   }
 
-  seedLastPkgDate() {
-    this.offices.map(office => {
-      const curDate = new Date()
-      const threeDays = 3 * 24 * 60 * 60 * 1000
-      office.date = new Date((+curDate - threeDays) + Math.round(Math.random() * 2 * threeDays));
-      return office
-    })
-  }
+  // seedOfficeOwners() {
+  //   this.offices.map(office => {
+  //     const newOwner = {_id: office.name, firstName: 'Mr. '+ office.name, lastName: 'Jr.'}
+  //     office.owner = newOwner;
+  //     return office;
+  //   })
+  // }
 
-  seedNumberOfEmployees() {
-    this.offices.map(office => {
-      office.employeesNumber = Math.round(Math.random() * 100);
-      return office;
-    })
-  }
+  // seedLastPkgDate() {
+  //   this.offices.map(office => {
+  //     const curDate = new Date()
+  //     const threeDays = 3 * 24 * 60 * 60 * 1000
+  //     office.date = new Date((+curDate - threeDays) + Math.round(Math.random() * 2 * threeDays));
+  //     return office
+  //   })
+  // }
 
-  seedAvailability() {
-    this.offices.map(office => {
-      office.availability = Math.random() < 0.5 ? true : false;
-      return office
-    })
-  }
+  // seedNumberOfEmployees() {
+  //   this.offices.map(office => {
+  //     office.employeesNumber = Math.round(Math.random() * 100);
+  //     return office;
+  //   })
+  // }
+
+  // seedAvailability() {
+  //   this.offices.map(office => {
+  //     office.availability = Math.random() < 0.5 ? true : false;
+  //     return office
+  //   })
+  // }
 
 }

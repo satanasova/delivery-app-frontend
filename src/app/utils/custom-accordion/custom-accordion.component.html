@@ -1,0 +1,8 @@
+<nb-accordion>
+  <nb-accordion-item>
+   <nb-accordion-item-header>{{header}}</nb-accordion-item-header>
+   <nb-accordion-item-body (click)="onItemClicked($event, item)" *ngFor="let item of items">
+     {{item}}
+   </nb-accordion-item-body>
+  </nb-accordion-item>
+ </nb-accordion>

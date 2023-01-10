@@ -1,7 +1,8 @@
+import { TitleCasePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Office } from 'src/app/offices/models';
-import { ColumnConfig } from 'src/app/utils/smart-table/models';
+import { ItemConfig } from 'src/app/utils/display-item-card/models';
 import { Package } from '../models';
 import { PackagesService } from '../packages.service';
 
@@ -13,11 +14,10 @@ import { PackagesService } from '../packages.service';
 export class SinglePackageComponent implements OnInit {
   package!: Package;
   itemConfig: ItemConfig[] = []
-  // filteredItemConfig: ItemConfig[] = []
 
-  constructor(private router: Router, private route: ActivatedRoute, private packageService: PackagesService) {
-    this.route.params.subscribe(async ({packageId}) => {
-      if(packageId) {
+  constructor(private router: Router, private route: ActivatedRoute, private packageService: PackagesService, private titleCasePipe: TitleCasePipe) {
+    this.route.params.subscribe(async ({ packageId }) => {
+      if (packageId) {
         this.package = await this.packageService.getSinglePackage(packageId)
       }
     })
@@ -27,32 +27,7 @@ export class SinglePackageComponent implements OnInit {
         key: '_id',
         header: 'ID',
       },
-      {
-        key: 'createdAt',
-        header: 'Created at',
-        displayFn: (dateStr?: any): string => {
-          if (!dateStr) {
-            return '-'
-          }
 
-          const date =  new Date(dateStr);
-          const dateFormat = `${('0'+ date.getDate()).slice(-2)}/${('0'+ (date.getMonth()+1)).slice(-2)}/${date.getFullYear()} - ${date.getHours()}:${date.getMinutes()}`;
-          return dateFormat
-        },
-      },
-            {
-        key: 'updatedAt',
-        header: 'Updated at',
-        displayFn: (dateStr?: any): string => {
-          if (!dateStr) {
-            return '-'
-          }
-
-          const date =  new Date(dateStr);
-          const dateFormat = `${('0'+ date.getDate()).slice(-2)}/${('0'+ (date.getMonth()+1)).slice(-2)}/${date.getFullYear()} - ${date.getHours()}:${date.getMinutes()}`;
-          return dateFormat
-        },
-      },
       {
         key: 'description',
         header: 'Description',
@@ -61,7 +36,7 @@ export class SinglePackageComponent implements OnInit {
       {
         key: 'size',
         header: 'Size',
-        displayFn: (size: string) => size.charAt(0).toUpperCase() + size.slice(1)
+        displayFn: (size: string) => this.titleCasePipe.transform(size)
       },
       {
         key: 'price',
@@ -71,7 +46,33 @@ export class SinglePackageComponent implements OnInit {
       {
         key: 'status',
         header: 'Status',
-        displayFn: (size: string) => size.charAt(0).toUpperCase() + size.slice(1)
+        displayFn: (status: string) => this.titleCasePipe.transform(status)
+      },
+      {
+        key: 'createdAt',
+        header: 'Created at',
+        displayFn: (dateStr?: any): string => {
+          if (!dateStr) {
+            return '-'
+          }
+
+          const date = new Date(dateStr);
+          const dateFormat = `${('0' + date.getDate()).slice(-2)}/${('0' + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()} - ${date.getHours()}:${date.getMinutes()}`;
+          return dateFormat
+        },
+      },
+      {
+        key: 'updatedAt',
+        header: 'Updated at',
+        displayFn: (dateStr?: any): string => {
+          if (!dateStr) {
+            return '-'
+          }
+
+          const date = new Date(dateStr);
+          const dateFormat = `${('0' + date.getDate()).slice(-2)}/${('0' + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()} - ${date.getHours()}:${date.getMinutes()}`;
+          return dateFormat
+        },
       },
       {
         key: 'deliveredOn',
@@ -81,8 +82,8 @@ export class SinglePackageComponent implements OnInit {
             return '-'
           }
 
-          const date =  new Date(dateStr);
-          const dateFormat = `${('0'+ date.getDate()).slice(-2)}/${('0'+ (date.getMonth()+1)).slice(-2)}/${date.getFullYear()}`;
+          const date = new Date(dateStr);
+          const dateFormat = `${('0' + date.getDate()).slice(-2)}/${('0' + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()}`;
           return dateFormat
         },
       },
@@ -98,7 +99,7 @@ export class SinglePackageComponent implements OnInit {
 
           return elementsToPrint;
         }
-      },  
+      },
       {
         key: 'isFragile',
         header: 'Fragile',
@@ -116,14 +117,22 @@ export class SinglePackageComponent implements OnInit {
         key: 'originOffice',
         header: 'From Office',
         classes: 'text-link',
-        displayFn: (office: Office): string => office.name
+        displayFn: (office: Office): string => office.name,
+        onClick: (office: Office): boolean => {
+          this.router.navigate(['offices', office._id])
+          return true;
+        }
       },
       {
         key: 'destinationOffice',
         header: 'To Office',
         classes: 'text-link',
-        displayFn: (office: Office): string => office.name
-      }   
+        displayFn: (office: Office): string => office.name,
+        onClick: (office: Office): boolean => {
+          this.router.navigate(['offices', office._id])
+          return true;
+        }
+      }
     ]
   }
 
@@ -131,35 +140,4 @@ export class SinglePackageComponent implements OnInit {
 
   }
 
-  displayValue(itemConfig: ItemConfig): any {
-    const customDisplayFn = itemConfig.displayFn;
-    if (customDisplayFn) {
-      const resultToPrint = customDisplayFn((this.package as any)[itemConfig.key]);
-      if(typeof resultToPrint === 'string') {
-        return resultToPrint;
-      } else {
-        return resultToPrint.map(r => r.outerHTML).join('');
-      }
-    } else {
-      return (this.package as any)[itemConfig.key];
-    }
-  }
-
-  onOfficeClick(event: any, itemConfig: ItemConfig): any {
-    const target = event.target
-    const isTargetLink = target.classList.contains('text-link');
-    if(isTargetLink){
-      const officeClicked = (this.package as any)[itemConfig.key];
-      this.router.navigate(['offices', officeClicked._id]);
-    }
-    
-  }
-
-}
-
-type ItemConfig = {
-  key: string;
-  header: string;
-  classes?: string;
-  displayFn?: (data: any) => string | HTMLElement[];
 }

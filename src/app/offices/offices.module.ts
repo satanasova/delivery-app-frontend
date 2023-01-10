@@ -4,7 +4,7 @@ import { AllOfficesComponent } from './all-offices/all-offices.component';
 import { SingleOfficeComponent } from './single-office/single-office.component';
 import { RouterModule } from '@angular/router';
 import { UtilsModule } from '../utils/utils.module';
-import { NbCardModule, NbIconModule} from '@nebular/theme';
+import { NbAccordionModule, NbCardModule, NbIconModule} from '@nebular/theme';
 import { TableModule} from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 // import {SliderModule} from 'primeng/slider';
@@ -32,7 +32,8 @@ const routes = [
     NbCardModule,
     NbIconModule,
     TableModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    NbAccordionModule
   ],
   providers: []
 })

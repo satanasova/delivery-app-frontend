@@ -1,0 +1,7 @@
+<nb-list #nbList *ngIf="data">
+  <nb-list-item *ngFor="let item of itemConfig">
+    <div class="key-list">{{item.header}}</div>
+    <div class="value-list" #valueList [innerHtml]="displayValue(item, valueList)" [ngClass]="item.classes" (click)="onValueClick($event, item)">
+    </div>
+  </nb-list-item>
+</nb-list>

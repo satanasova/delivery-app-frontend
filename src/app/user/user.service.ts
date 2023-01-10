@@ -22,7 +22,7 @@ export class UserService {
   getLoggedInUser() {
     return new Promise<User | null>((res,rej) => {
       setTimeout(() => {
-        if (Math.random() > 1) {
+        if (Math.random() < 1) {
           res({id:'23', name: 'Haci Hacev', email: 'hackohackob@gmail.com', avatarUrl: 'https://ih1.redbubble.net/image.2253860100.5603/poster,504x498,f8f8f8-pad,600x600,f8f8f8.jpg'})
         } else {
           res(null)
