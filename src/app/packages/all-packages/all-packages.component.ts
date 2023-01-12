@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from 'src/app/user/user.model';
+import { UserService } from 'src/app/user/user.service';
 import { ColumnConfig } from 'src/app/utils/smart-table/models';
 import { Package } from '../models';
 import { PackagesService } from '../packages.service';
@@ -12,8 +14,9 @@ import { PackagesService } from '../packages.service';
 export class AllPackagesComponent implements OnInit {
   packages: Package[] = [];
   cols: ColumnConfig<Package>[] = [];
+  user?: Promise<User | null> ;
 
-  constructor(private packagesService: PackagesService, private router: Router) {
+  constructor(private packagesService: PackagesService, private router: Router, public userService: UserService) {
   }
 
   async ngOnInit() {
@@ -145,5 +148,9 @@ export class AllPackagesComponent implements OnInit {
       }
       return pkg
     })
+  }
+
+  onCreatePackage() {
+    this.packagesService.openCreatePackageModal();
   }
 }

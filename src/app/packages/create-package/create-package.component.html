@@ -1,0 +1,43 @@
+<nb-card class="popup create-package-popup" accent="info">
+  <nb-card-header class="popup--header create-package-popup--header">Create Package</nb-card-header>
+  <nb-card-body class="popup--body create-package-popup--body">
+    <form (ngSubmit)="onSubmit(createPkgForm.value)" class="form" [formGroup]="createPkgForm">
+      <div>
+        <label for="size">Size:</label>
+        <nb-select id="size" class="form-input" placeholder="size" [status]="size.touched && size.invalid ? 'danger' : 'basic'" [formControl]="size">
+          <nb-option *ngFor="let size of sizes" [value]="size">{{size}}</nb-option>
+        </nb-select>  
+        <p *ngIf="size.touched && size.invalid" class="caption status-danger error-message">Size is required</p>
+      </div>
+
+      <div>
+        <label for="description">Description:</label>
+        <textarea nbInput id="description" class="form-input" placeholder="description" [formControl]="description" status="basic"></textarea> 
+      </div>
+
+      <div *ngIf="offices.length > 0">
+        <label for="originOffice">From Office:</label>
+        <nb-select id="originOffice" class="form-input" placeholder="from office" [status]="originOffice.touched && originOffice.invalid ? 'danger' : 'basic'"  [formControl]="originOffice">
+          <nb-option *ngFor="let office of offices" [value]="office._id">{{office.name}}</nb-option>
+        </nb-select>  
+        <p *ngIf="originOffice.touched && originOffice.hasError('required')" class="caption status-danger error-message">Office is required</p>
+        <p *ngIf="originOffice.dirty && originOffice.hasError('valueDiffer')" class="caption status-danger error-message">Origin office shoud be different from destination office</p>
+      </div>
+
+      <div *ngIf="offices.length > 0">
+        <label for="destinationOffice">To Office:</label>
+        <nb-select id="destinationOffice" class="form-input" placeholder="to office" [status]="destinationOffice.touched && destinationOffice.invalid ? 'danger' : 'basic'"  [formControl]="destinationOffice">
+          <nb-option *ngFor="let office of offices" [value]="office._id">{{office.name}}</nb-option>
+        </nb-select> 
+        <p *ngIf="destinationOffice.touched && destinationOffice.hasError('required')" class="caption status-danger error-message">Office is required</p>
+        <p *ngIf="destinationOffice.dirty && destinationOffice.hasError('valueDiffer')" class="caption status-danger error-message">Destination office shoud be different from origin office</p>
+      </div>
+
+      <div>
+        <nb-checkbox [formControl]="isFragile">Fragile</nb-checkbox>
+      </div>
+
+      <button nbButton type="submit" status="info" [disabled]="createPkgForm.invalid">Create Package</button>
+    </form>
+  </nb-card-body>
+</nb-card>

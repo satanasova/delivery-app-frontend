@@ -7,11 +7,11 @@
   <nb-card-body class="user-profile-popup--body">
     <div class="user-display">
       <div class="user-avatar">
-        <img [src]="(user | async)?.avatarUrl" alt="">
+        <img [src]="(userService.loggedUser | async)?.avatarUrl" alt="">
       </div>
       <div class="user-details">
-        <p>{{(user | async)?.name}}</p>
-        <p>{{(user | async)?.email}}</p>
+        <p>{{(userService.loggedUser | async)?.name}}</p>
+        <p>{{(userService.loggedUser | async)?.email}}</p>
         <p>Some other details..</p>
       </div>
     </div>

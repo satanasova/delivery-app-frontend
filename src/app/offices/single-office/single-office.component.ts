@@ -42,7 +42,6 @@ export class SingleOfficeComponent implements OnInit {
         header: 'Packages',
         customDisplayCmp: CustomAccordionComponent,
         cmpProperties: (packages: Package[], office: Office): any => {
-          console.log(packages);
           return {
             header: `${packages.length} Packages`,
             items: packages,
@@ -52,7 +51,6 @@ export class SingleOfficeComponent implements OnInit {
         cmpHandlers: (packages: Package[], office: Office) => {
           return {
             itemClicked: (pkgId: any) => {
-              console.log('item clicked');
               this.router.navigate(['packages', pkgId])
             }
           }
