@@ -13,7 +13,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   // @ViewChild('login') login: any;
   drawer!: NbSidebarComponent;
   drawerState: NbSidebarState = 'collapsed';
-  loggedUser?: any;
+  // loggedUser?: any;
 
   menuTop: NbMenuItem[] = [
     {
@@ -60,7 +60,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     private menuService: NbMenuService,
     private settingsService: SettingsService,
     private themeService: NbThemeService,
-    public userService: UserService) {
+    // public userService: UserService
+    ) {
   }
 
   ngAfterViewInit(): void {

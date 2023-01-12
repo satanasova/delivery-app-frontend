@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 
@@ -8,6 +8,7 @@ import { UserService } from '../user.service';
   styleUrls: ['./user-signup.component.scss']
 })
 export class UserSignupComponent implements OnInit {
+  @Output() logInClicked: EventEmitter<any> = new EventEmitter;
   signupForm: FormGroup;
   email: AbstractControl;
   name: AbstractControl;
@@ -56,8 +57,9 @@ export class UserSignupComponent implements OnInit {
   }
 
   onLogin() {
-    this.userService.userSignupModal?.close();
-    this.userService.openLoginModal();
+    this.logInClicked.emit();
+    // this.userService.userSignupModal?.close();
+    // this.userService.openLoginModal();
   }
 
 }

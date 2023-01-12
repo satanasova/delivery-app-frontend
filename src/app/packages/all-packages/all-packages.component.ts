@@ -14,7 +14,6 @@ import { PackagesService } from '../packages.service';
 export class AllPackagesComponent implements OnInit {
   packages: Package[] = [];
   cols: ColumnConfig<Package>[] = [];
-  user?: Promise<User | null> ;
 
   constructor(private packagesService: PackagesService, private router: Router, public userService: UserService) {
   }

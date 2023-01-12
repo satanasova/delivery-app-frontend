@@ -15,19 +15,20 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ClientsModule } from './clients/clients.module';
 import { UtilsModule } from './utils/utils.module';
 import { HttpClientModule } from '@angular/common/http';
+import { UserHeaderSectionComponent } from './user/user-header-section/user-header-section.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
+    UsersModule,
     TrucksModule,
     PackagesModule,
     DeliveriesModule,
     OfficesModule,
-    UsersModule,
     ClientsModule,
     UtilsModule,
     AppRoutingModule,

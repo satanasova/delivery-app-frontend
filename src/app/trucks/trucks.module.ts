@@ -24,7 +24,6 @@ let routes = [
     NbIconModule,
     HttpClientModule,
     NbCardModule
-    
   ]
 })
 export class TrucksModule { }

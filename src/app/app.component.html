@@ -3,8 +3,9 @@
     <a class="sidebar-toggle" (click)="toggleSidebar()">
       <nb-icon icon="menu-outline"></nb-icon>
     </a>
+    <app-user-header-section></app-user-header-section>
 
-    <nb-user 
+    <!-- <nb-user 
       *ngIf="userService.loggedUser | async"
       (click)="userService.openUserProfileModal($event)"
       [name]="(userService.loggedUser | async)?.name || ''" 
@@ -22,7 +23,7 @@
       *ngIf="!(userService.loggedUser | async)"
       #login>
       Log In
-    </button>
+    </button> -->
   
   </nb-layout-header>
   <nb-sidebar tag="menu" class="sidebar">

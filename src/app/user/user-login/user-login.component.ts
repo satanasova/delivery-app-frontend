@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NbDialogService } from '@nebular/theme';
+import { UserSignupComponent } from '../user-signup/user-signup.component';
 import { UserService } from '../user.service';
 
 @Component({
@@ -8,6 +10,7 @@ import { UserService } from '../user.service';
   styleUrls: ['./user-login.component.scss']
 })
 export class UserLoginComponent implements OnInit {
+  @Output() signUpClicked: EventEmitter<any> = new EventEmitter;
   showPassword: boolean = false;
   loginForm: FormGroup;
   email: AbstractControl;
@@ -40,8 +43,9 @@ export class UserLoginComponent implements OnInit {
   }
 
   onSignup(): void {
-    this.userService.userLoginModal?.close();
-    this.userService.openSignupModal();
+    this.signUpClicked.emit();
+    // this.dialogService.open(UserSignupComponent)
+
   }
 
   onlogin(formValue: any) {

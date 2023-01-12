@@ -7,16 +7,12 @@ import { UserSignupComponent } from './user-signup/user-signup.component';
 import { User } from './user.model';
 import { UsersModule } from './user.module';
 
-@Injectable({
-  providedIn: UsersModule
-})
+@Injectable()
 export class UserService {
   loggedUser: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
-  userProfileModal?: NbDialogRef<any>;
-  userLoginModal?: NbDialogRef<any>;
-  userSignupModal?: NbDialogRef<any>;
 
-  constructor(private dialogService: NbDialogService) {
+
+  constructor() {
     // this.loggedUser = this.getLoggedInUser();
     this.fetchLoggedUser();
   }
@@ -42,28 +38,13 @@ export class UserService {
   logout() {
     // this.loggedUser = undefined;
     this.loggedUser.next(null);
-    this.userProfileModal?.close()
+    // this.userProfileModal?.close()
   }
 
   changeProfileImage(image: any) {
     console.log('changing image of current user')
   }
 
-  //TODO: remove modal from service
-  openUserProfileModal(e: Event) {
-    console.log(e.target);
-    this.userProfileModal = this.dialogService.open(UserProfileComponent, {autoFocus: false});
-  }
-
-  //TODO: remove modal from service
-  openLoginModal() {
-    this.userLoginModal = this.dialogService.open(UserLoginComponent);
-  }
-
-  //TODO: remove modal from service
-  openSignupModal() {
-    this.userSignupModal = this.dialogService.open(UserSignupComponent);
-  }
 }
 
 
