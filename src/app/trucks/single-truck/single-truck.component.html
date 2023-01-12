@@ -1,4 +1,9 @@
 <a goBackBtn>
   <nb-icon icon="arrow-back-outline"></nb-icon>
 </a>
-<p> Showing info for Truck {{truckId}} </p>
+<nb-card *ngIf="truck">
+  <nb-card-header>Truck {{truck.registrationNumber}}</nb-card-header>
+  <nb-card-body>
+    <app-display-item-card  [data]="truck" [itemConfig]="itemConfig"></app-display-item-card>
+  </nb-card-body>
+</nb-card>

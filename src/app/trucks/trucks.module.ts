@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { AllTrucksComponent } from './all-trucks/all-trucks.component';
 import { SingleTruckComponent } from './single-truck/single-truck.component';
 import { RouterModule } from '@angular/router';
-import { GoBackDirective } from '../utils/go-back/go-back.directive';
 import { UtilsModule } from '../utils/utils.module';
-import { NbIconModule } from '@nebular/theme';
+import { NbCardModule, NbIconModule } from '@nebular/theme';
+import { HttpClientModule } from '@angular/common/http';
 
 let routes = [
   {path: 'trucks', component: AllTrucksComponent},
@@ -21,7 +21,10 @@ let routes = [
     CommonModule,
     RouterModule.forChild(routes),
     UtilsModule,
-    NbIconModule
+    NbIconModule,
+    HttpClientModule,
+    NbCardModule
+    
   ]
 })
 export class TrucksModule { }

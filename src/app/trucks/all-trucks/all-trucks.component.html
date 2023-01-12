@@ -1,11 +1,7 @@
-<div>
-  All trucks:
-  <ul>
-    <li *ngFor="let truckId of truckIds">
-      Truck #{{truckId}} - <a [routerLink]="truckId">Open</a>
-    </li>
-  </ul>
-</div>
-
-
+<nb-card size="giant">
+  <nb-card-header>Trucks</nb-card-header>
+  <nb-card-body>
+    <app-smart-table *ngIf="trucks.length > 0" [data]="trucks" [tableConfig]="cols" (itemClick)="truckClicked($event)"></app-smart-table>
+  </nb-card-body>
+</nb-card>
 

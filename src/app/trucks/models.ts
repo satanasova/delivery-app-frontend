@@ -1,8 +1,10 @@
+import { Package } from "../packages/models";
+
 export type Truck = {
   _id: string;
-  regPlate: string;
+  registrationNumber: string;
   size: TruckSize;
-  packages: any[];  //TODO: should be Package[]
+  packages: Package[];  //TODO: should be Package[]
 }
 
 export enum TruckSize {

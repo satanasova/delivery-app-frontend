@@ -1,4 +1,9 @@
+import { TitleCasePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ColumnConfig } from 'src/app/utils/smart-table/models';
+import { Truck } from '../models';
+import { TrucksService } from '../trucks.service';
 
 @Component({
   selector: 'app-all-trucks',
@@ -6,17 +11,56 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./all-trucks.component.scss']
 })
 export class AllTrucksComponent implements OnInit {
-  truckIds: string[] = []
+  trucks: Truck[] = [];
+  cols: ColumnConfig<Truck>[] = [];
 
-  constructor() {  }
+  constructor(private trucksService: TrucksService, private titleCasePipe: TitleCasePipe, private router: Router) {  }
 
   async ngOnInit() {
-    let trucksIdsPromise = new Promise<string[]>((res, rej) => {
-      let truckIdsResult = ['7', '5', '4', '95'];
-      res(truckIdsResult);
-    })
+    this.cols = [
+      {
+        field: '_id',
+        header: '#'
+      },
+      {
+        field: 'registrationNumber',
+        header: 'Reg Number'
+      },
+      {
+        field: 'size',
+        header: 'Size',
+        displayFn: (size: string) => this.titleCasePipe.transform(size),
+        filterConfig: {
+          filterType: 'select',
+          displayFn: (size: string) => size.slice(0,1).toUpperCase()
+        }
+      },
+      {
+        field: 'health',
+        header: 'Health',
+        displayFn: (health: number) => `${health}%`,
+        filterConfig: {
+          filterType: 'range'
+        }
+      },
+      {
+        field: 'status',
+        header: 'Status',
+        displayFn: (status: string) => this.titleCasePipe.transform(status),
+        filterConfig: {
+          filterType: 'select',
+          displayFn: (status: string) => this.titleCasePipe.transform(status)
+        }
+      }
 
-    this.truckIds = await trucksIdsPromise;
+    ]
+
+    this.trucks = await this.trucksService.getAllTrucks()
   }
+
+  truckClicked(truck: Truck) {
+    this.router.navigate(['trucks', truck._id]);
+  }
+
 
 }
