@@ -1,6 +1,9 @@
 <a goBackBtn>
   <nb-icon icon="arrow-back-outline"></nb-icon>
 </a>
+
+<nb-card *ngIf="!truck" size="small" [nbSpinner]="!truck" nbSpinnerStatus="info" nbSpinnerSize="giant"></nb-card>
+
 <nb-card *ngIf="truck">
   <nb-card-header>Truck {{truck.registrationNumber}}</nb-card-header>
   <nb-card-body>

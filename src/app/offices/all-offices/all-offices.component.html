@@ -1,9 +1,6 @@
-<nb-card size="giant"> 
+<nb-card size="giant" [nbSpinner]="offices.length === 0" nbSpinnerStatus="info" nbSpinnerSize="giant"> 
   <nb-card-header> Offices </nb-card-header>
   <nb-card-body>
     <app-smart-table *ngIf="offices.length > 0" (itemClick)="officeClicked($event)" [data]="offices" [tableConfig]="cols"></app-smart-table>
-    <div *ngIf="offices.length === 0">
-      <p-progressSpinner></p-progressSpinner>
-    </div>
   </nb-card-body>
 </nb-card>

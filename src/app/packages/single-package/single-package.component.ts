@@ -138,9 +138,11 @@ export class SinglePackageComponent implements OnInit {
         key: 'recipient',
         header: 'Recipient',
         classes: 'text-link',
-        displayFn: (client: Client): string => client.name,
+        displayFn: (client: Client): string => client ? client.name : '-',
         onClick: (client: Client): boolean => {
-          this.router.navigate(['clients', client._id])
+          if (client) {
+            this.router.navigate(['clients', client._id])
+          }
           return true;
         }
       }

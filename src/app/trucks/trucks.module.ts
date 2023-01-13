@@ -4,7 +4,7 @@ import { AllTrucksComponent } from './all-trucks/all-trucks.component';
 import { SingleTruckComponent } from './single-truck/single-truck.component';
 import { RouterModule } from '@angular/router';
 import { UtilsModule } from '../utils/utils.module';
-import { NbCardModule, NbIconModule } from '@nebular/theme';
+import { NbCardModule, NbIconModule, NbSpinnerModule } from '@nebular/theme';
 import { HttpClientModule } from '@angular/common/http';
 
 let routes = [
@@ -23,7 +23,8 @@ let routes = [
     UtilsModule,
     NbIconModule,
     HttpClientModule,
-    NbCardModule
+    NbCardModule,
+    NbSpinnerModule
   ]
 })
 export class TrucksModule { }

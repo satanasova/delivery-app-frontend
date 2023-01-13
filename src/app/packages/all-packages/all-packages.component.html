@@ -1,12 +1,9 @@
-<nb-card size="giant"> 
+<nb-card size="giant" [nbSpinner]="packages.length === 0" nbSpinnerStatus="info" nbSpinnerSize="giant"> 
   <nb-card-header> 
     <span>Packages</span>
     <button *ngIf="(userService.loggedUser | async)" (click)="onCreatePackage()" nbButton outline status="info">Create Package</button>
   </nb-card-header>
   <nb-card-body>
     <app-smart-table *ngIf="packages.length > 0" (itemClick)="packageClicked($event)" [data]="packages" [tableConfig]="cols"></app-smart-table>
-    <div *ngIf="packages.length === 0">
-      <p-progressSpinner></p-progressSpinner>
-    </div>
   </nb-card-body>
 </nb-card>

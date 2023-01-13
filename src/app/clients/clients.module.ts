@@ -4,7 +4,7 @@ import { AllClientsComponent } from './all-clients/all-clients.component';
 import { SingleClientComponent } from './single-client/single-client.component';
 import { RouterModule } from '@angular/router';
 import { UtilsModule } from '../utils/utils.module';
-import { NbCardModule, NbIconModule } from '@nebular/theme';
+import { NbCardModule, NbIconModule, NbSpinnerModule } from '@nebular/theme';
 
 const routes = [
   {path: 'clients', component: AllClientsComponent},
@@ -21,7 +21,8 @@ const routes = [
     RouterModule.forChild(routes),
     UtilsModule,
     NbCardModule,
-    NbIconModule
+    NbIconModule,
+    NbSpinnerModule
   ]
 })
 export class ClientsModule { }

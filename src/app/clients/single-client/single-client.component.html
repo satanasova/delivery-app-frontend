@@ -2,6 +2,8 @@
   <nb-icon icon="arrow-back-outline"></nb-icon>
 </a>
 
+<nb-card *ngIf="!client" size="small" [nbSpinner]="!client" nbSpinnerStatus="info" nbSpinnerSize="giant"></nb-card>
+
 <nb-card *ngIf="client">
   <nb-card-header>Client {{client.name}}</nb-card-header>
   <nb-card-body>

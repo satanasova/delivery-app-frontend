@@ -1,6 +1,9 @@
 <a goBackBtn>
   <nb-icon icon="arrow-back-outline"></nb-icon>
 </a>
+
+<nb-card *ngIf="!office" size="small" [nbSpinner]="!office" nbSpinnerStatus="info" nbSpinnerSize="giant"></nb-card>
+
 <nb-card *ngIf="office">
   <nb-card-header>Office {{office.name}}</nb-card-header>
   <nb-card-body>
@@ -8,16 +11,3 @@
   </nb-card-body>
 </nb-card>
 
-<div *ngIf="!office">
-  <p-progressSpinner></p-progressSpinner>
-</div>
-
-
-<!-- <nb-accordion>
-  <nb-accordion-header>Header</nb-accordion-header>
-  <nb-accordion-item></nb-accordion-item>
-  <nb-accordion-item></nb-accordion-item>
-  <nb-accordion-item></nb-accordion-item>
-</nb-accordion> -->
-
-<!-- <accordion [header]="'Varna" [items]="[.., .., ..]"></accordion> -->

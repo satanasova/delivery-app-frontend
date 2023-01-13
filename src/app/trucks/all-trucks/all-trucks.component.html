@@ -1,4 +1,4 @@
-<nb-card size="giant">
+<nb-card size="giant" [nbSpinner]="trucks.length === 0" nbSpinnerStatus="info" nbSpinnerSize="giant">
   <nb-card-header>Trucks</nb-card-header>
   <nb-card-body>
     <app-smart-table *ngIf="trucks.length > 0" [data]="trucks" [tableConfig]="cols" (itemClick)="truckClicked($event)"></app-smart-table>

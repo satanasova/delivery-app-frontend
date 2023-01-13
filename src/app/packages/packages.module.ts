@@ -4,9 +4,8 @@ import { AllPackagesComponent } from './all-packages/all-packages.component';
 import { SinglePackageComponent } from './single-package/single-package.component';
 import { RouterModule } from '@angular/router';
 import { UtilsModule } from '../utils/utils.module';
-import { NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule, NbInputModule, NbListModule, NbSelectModule } from '@nebular/theme';
+import { NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule, NbInputModule, NbListModule, NbSelectModule, NbSpinnerModule } from '@nebular/theme';
 import { TableModule} from 'primeng/table';
-import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import { CreatePackageComponent } from './create-package/create-package.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -28,7 +27,6 @@ const routes = [
     RouterModule.forChild(routes),
     UtilsModule,
     TableModule,
-    ProgressSpinnerModule,
     NbCardModule,
     NbIconModule,
     NbListModule,
@@ -36,7 +34,8 @@ const routes = [
     NbDialogModule,
     NbInputModule,
     NbSelectModule,
-    NbCheckboxModule
+    NbCheckboxModule,
+    NbSpinnerModule
   ],
   providers: [ TitleCasePipe ]
 })

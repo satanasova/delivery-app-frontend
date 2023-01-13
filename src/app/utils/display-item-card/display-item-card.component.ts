@@ -62,23 +62,14 @@ export class DisplayItemCardComponent implements OnInit, AfterViewInit {
     })
 
     if (foundViewContainerRef) {
-      console.log('correct el found. should display ');
-      console.log(el, foundViewContainerRef, customDisplayCmp);
-      console.log('with props:');
-      console.log(props);
-      console.log('with handlers');
-      console.log(handlers);
-
       await this.afterViewInitReady; 
       const newComp = foundViewContainerRef.createComponent(customDisplayCmp);
-      console.log(newComp);
       Object.entries(props).forEach(([propName, propVal]) => newComp.setInput(propName, propVal))
       Object.entries(handlers).forEach(([handlerName, handlerFn]) => {
         const eventEmitter = (newComp.instance as any)[handlerName];
         eventEmitter.subscribe((emittedData: any) => handlerFn(emittedData))
         
       })
-
 
       this.handledCustomComponentElements.push(el)
     }
