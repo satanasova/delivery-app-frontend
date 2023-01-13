@@ -1,3 +1,4 @@
+import { Client } from "../clients/models";
 import { Office } from "../offices/models";
 
 export type Package = {
@@ -14,6 +15,7 @@ export type Package = {
   createdAt: string;
   updatedAt: string;
   isDeleted: boolean;
+  recipient?: Client;
 }
 
 export enum PackageSize {
