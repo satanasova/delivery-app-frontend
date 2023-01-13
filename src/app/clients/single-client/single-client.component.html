@@ -1,1 +1,10 @@
-<p>single-client works!</p>
+<a goBackBtn>
+  <nb-icon icon="arrow-back-outline"></nb-icon>
+</a>
+
+<nb-card *ngIf="client">
+  <nb-card-header>Client {{client.name}}</nb-card-header>
+  <nb-card-body>
+    <app-display-item-card  [data]="client" [itemConfig]="itemConfig"></app-display-item-card>
+  </nb-card-body>
+</nb-card>

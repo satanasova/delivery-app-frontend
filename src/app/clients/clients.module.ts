@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { AllClientsComponent } from './all-clients/all-clients.component';
 import { SingleClientComponent } from './single-client/single-client.component';
 import { RouterModule } from '@angular/router';
+import { UtilsModule } from '../utils/utils.module';
+import { NbCardModule, NbIconModule } from '@nebular/theme';
 
 const routes = [
   {path: 'clients', component: AllClientsComponent},
-  {path: 'clients/:id', component: SingleClientComponent}
+  {path: 'clients/:clientId', component: SingleClientComponent}
 ]
 
 @NgModule({
@@ -16,7 +18,10 @@ const routes = [
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    UtilsModule,
+    NbCardModule,
+    NbIconModule
   ]
 })
 export class ClientsModule { }

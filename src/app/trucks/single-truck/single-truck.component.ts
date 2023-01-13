@@ -17,11 +17,11 @@ export class SingleTruckComponent implements OnInit {
   constructor(private route: ActivatedRoute, private trucksService: TrucksService, private titleCasePipe: TitleCasePipe) {
     // this.truckId = (this.route.params as any)['value'].truckId;
     this.route.params.subscribe(async ({truckId}) => {
+      console.log(truckId);
       if(truckId) {
         this.truck = await this.trucksService.getSingleTruck(truckId)
       }
     })
-
   }
 
   ngOnInit(): void {
