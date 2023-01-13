@@ -31,8 +31,6 @@ export class PackagesService {
   }
 
   createPackage(pkg: any) {
-    pkg['recipient'] = '63be79e453fc4a551b02af41'
-    console.log(pkg);
     this.http.post('http://localhost:3000/packages/', pkg).subscribe(data => console.log(data))
   }
 }

@@ -33,6 +33,14 @@
         <p *ngIf="destinationOffice.dirty && destinationOffice.hasError('valueDiffer')" class="caption status-danger error-message">Destination office shoud be different from origin office</p>
       </div>
 
+      <div *ngIf="clients.length > 0">
+        <label for="recipient">Recipient:</label>
+        <nb-select id="recipient" class="form-input" placeholder="recipient" [status]="recipient.touched && recipient.invalid ? 'danger' : 'basic'"  [formControl]="recipient">
+          <nb-option *ngFor="let client of clients" [value]="client._id">{{client.name}}</nb-option>
+        </nb-select> 
+        <p *ngIf="recipient.touched && recipient.hasError('required')" class="caption status-danger error-message">Recipient is required</p>
+      </div>
+
       <div>
         <nb-checkbox [formControl]="isFragile">Fragile</nb-checkbox>
       </div>

@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { NbCheckboxComponent } from '@nebular/theme';
+import { ClientsService } from 'src/app/clients/clients.service';
+import { Client } from 'src/app/clients/models';
 import { Office } from 'src/app/offices/models';
 import { OfficesService } from 'src/app/offices/offices.service';
 import { Package, PackageSize } from '../models';
@@ -14,21 +16,24 @@ import { PackagesService } from '../packages.service';
 export class CreatePackageComponent implements OnInit {
   sizes: PackageSize[] = Object.values(PackageSize);
   offices: Office[] = [];
+  clients: Client[] = [];
   createPkgForm: FormGroup;
   size: AbstractControl;
   originOffice: AbstractControl;
   destinationOffice: AbstractControl;
   description: AbstractControl;
   isFragile: AbstractControl;
+  recipient: AbstractControl;
   
 
-  constructor(private officesService: OfficesService, private fb: FormBuilder, private packagesService: PackagesService) { 
+  constructor(private officesService: OfficesService, private fb: FormBuilder, private packagesService: PackagesService, private clientsService: ClientsService) { 
     this.createPkgForm = fb.group({
       'size': ['', Validators.required],
       'description': [''],
       'isFragile': [false],
       'originOffice': ['', Validators.required],
       'destinationOffice': ['', Validators.required],
+      'recipient': ['', Validators.required],
     }, {validator: [differFields('originOffice', 'destinationOffice')]})
 
     this.size = this.createPkgForm.controls['size'];
@@ -36,10 +41,12 @@ export class CreatePackageComponent implements OnInit {
     this.destinationOffice = this.createPkgForm.controls['destinationOffice'];
     this.description = this.createPkgForm.controls['description'];
     this.isFragile = this.createPkgForm.controls['isFragile'];
+    this.recipient = this.createPkgForm.controls['recipient'];
   }
 
   async ngOnInit(): Promise<void> {
     this.offices = await this.officesService.getAllOffices();
+    this.clients = await this.clientsService.getAllClients();
   }
 
   get isFormValid() {

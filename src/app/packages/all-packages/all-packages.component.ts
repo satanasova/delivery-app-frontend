@@ -58,7 +58,8 @@ export class AllPackagesComponent implements OnInit {
           filterType: 'select',
           uniqueFn: (office: any) => office._id
         }
-      },      {
+      },
+      {
         field: 'destinationOffice', 
         header: 'Destination Office',
         classes: 'text-link',
@@ -73,6 +74,23 @@ export class AllPackagesComponent implements OnInit {
           displayFn: (office: any): string => office.name,
           filterType: 'select',
           uniqueFn: (office: any) => office._id
+        }
+      },
+      {
+        field: 'recipient', 
+        header: 'Recipient',
+        classes: 'text-link',
+        displayFn: (client: any): string => client ? client.name : '-',
+        onClick: (client: any, pkg: any): boolean => {
+          if (client) {
+            this.router.navigate(['clients', client._id]);
+          }
+          return true;
+        },
+        filterConfig: {
+          displayFn: (client: any): string => client ? client.name : '-',
+          filterType: 'select',
+          uniqueFn: (client: any) => client && client._id
         }
       },
       {

@@ -1,6 +1,7 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Client } from 'src/app/clients/models';
 import { Office } from 'src/app/offices/models';
 import { ItemConfig } from 'src/app/utils/display-item-card/models';
 import { Package } from '../models';
@@ -130,6 +131,16 @@ export class SinglePackageComponent implements OnInit {
         displayFn: (office: Office): string => office.name,
         onClick: (office: Office): boolean => {
           this.router.navigate(['offices', office._id])
+          return true;
+        }
+      },
+      {
+        key: 'recipient',
+        header: 'Recipient',
+        classes: 'text-link',
+        displayFn: (client: Client): string => client.name,
+        onClick: (client: Client): boolean => {
+          this.router.navigate(['clients', client._id])
           return true;
         }
       }
