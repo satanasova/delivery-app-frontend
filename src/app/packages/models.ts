@@ -15,7 +15,7 @@ export type Package = {
   createdAt: string;
   updatedAt: string;
   isDeleted: boolean;
-  recipient?: Client;
+  recipient: Client;
 }
 
 export enum PackageSize {

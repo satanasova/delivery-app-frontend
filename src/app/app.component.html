@@ -4,27 +4,6 @@
       <nb-icon icon="menu-outline"></nb-icon>
     </a>
     <app-user-header-section></app-user-header-section>
-
-    <!-- <nb-user 
-      *ngIf="userService.loggedUser | async"
-      (click)="userService.openUserProfileModal($event)"
-      [name]="(userService.loggedUser | async)?.name || ''" 
-      showName=false 
-      [picture]="(userService.loggedUser | async)?.avatarUrl || ''"
-      #user>
-    </nb-user>
-
-    <button 
-      nbButton 
-      hero 
-      status="primary"  
-      size="small"
-      (click)="userService.openLoginModal()" 
-      *ngIf="!(userService.loggedUser | async)"
-      #login>
-      Log In
-    </button> -->
-  
   </nb-layout-header>
   <nb-sidebar tag="menu" class="sidebar">
     <nb-menu tag='menu-bottom' [items]="menuTop"></nb-menu>
@@ -33,6 +12,7 @@
   <nb-sidebar tag="drawer" class="sidebar drawer" [state]="drawerState" right #drawer><!-- no --></nb-sidebar>
   <nb-layout-column >
     <router-outlet></router-outlet>
+    <app-chat-window *ngIf="userService.loggedUser | async"></app-chat-window>
   </nb-layout-column>
 </nb-layout>
 

@@ -1,0 +1,26 @@
+::ng-deep .chat-container {
+  position: relative;
+  .chat-min-icon {
+    position: absolute;
+    cursor: pointer;
+    top: 16px;
+    right: 20px;
+    height: 24px;
+  }
+  .chat-minimized {
+    height: auto;
+    .scrollable {
+      display: none;
+    }
+    .form {
+      display: none;
+    }
+  }
+  .chat-badge {
+    border-radius: 50%;
+    left: 110px !important;
+    top: 19px !important;
+  }
+
+}
+

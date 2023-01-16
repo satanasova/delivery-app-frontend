@@ -19,11 +19,12 @@ export class AllPackagesComponent implements OnInit {
   }
 
   async ngOnInit() {
+    // return;
     this.cols = [
-      {
-        field: '_id',
-        header: '#'
-      },
+      // {
+      //   field: '_id',
+      //   header: '#'
+      // },
       {
         field: 'size', 
         header: 'Size',

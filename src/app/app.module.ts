@@ -15,7 +15,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ClientsModule } from './clients/clients.module';
 import { UtilsModule } from './utils/utils.module';
 import { HttpClientModule } from '@angular/common/http';
-import { UserHeaderSectionComponent } from './user/user-header-section/user-header-section.component';
+import { ChatModule } from './chat/chat.module';
 
 @NgModule({
   declarations: [
@@ -42,7 +42,8 @@ import { UserHeaderSectionComponent } from './user/user-header-section/user-head
     NbMenuModule.forRoot(),
     NbCardModule,
     NbButtonModule,
-    NbUserModule
+    NbUserModule, 
+    ChatModule
   ],
   providers: [],
   bootstrap: [AppComponent]

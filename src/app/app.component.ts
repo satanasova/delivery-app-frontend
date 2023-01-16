@@ -60,7 +60,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private menuService: NbMenuService,
     private settingsService: SettingsService,
     private themeService: NbThemeService,
-    // public userService: UserService
+    public userService: UserService
     ) {
   }
 

@@ -25,8 +25,12 @@
     justify-content: space-between;
     max-height: 90vh;
   }
-
-  
 }
 
+app-chat-window {
+  width: 400px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
 
