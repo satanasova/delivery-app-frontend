@@ -41,7 +41,7 @@ export class ChatService {
         sender: userMathRandom,
         date: new Date(),
       },])
-    }, 10000);
+    }, 5000);
 
     setTimeout(() => {
       clearInterval(interval);
