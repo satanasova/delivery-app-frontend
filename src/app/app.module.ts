@@ -16,6 +16,7 @@ import { ClientsModule } from './clients/clients.module';
 import { UtilsModule } from './utils/utils.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ChatModule } from './chat/chat.module';
+import { MapModule } from './map/map.module';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ChatModule } from './chat/chat.module';
     NbCardModule,
     NbButtonModule,
     NbUserModule, 
-    ChatModule
+    ChatModule,
+    MapModule
   ],
   providers: [],
   bootstrap: [AppComponent]
