@@ -19,14 +19,26 @@ export class DrawerComponent implements OnInit {
   ngOnInit(): void {
     console.log('drawer init');
     this.drawerService.drawerOpened.subscribe(([component, inputs]) => {
-      if(this.container){
-        this.container.clear();
-        const newComp = this.container.createComponent(component);
-        if(inputs) {
-          Object.entries(inputs).forEach(([inputName, inputValue]) => newComp.setInput(inputName, inputValue));
-        }
-      }
+      this.createComponent(component, inputs);
     });
+  }
+
+  createComponent(component: any, inputs: {[inputName: string]: string}) {
+    if(!this.container) {
+      return;
+    }
+    
+    this.container.clear();
+    const newComp = this.container.createComponent(component);
+    if(inputs) {
+      Object.entries(inputs).forEach(([inputName, inputValue]) => newComp.setInput(inputName, inputValue));
+    }
+
+    return newComp
+  }
+
+  onClose() {
+    this.drawerService.closeDrawer();
   }
 
 }

@@ -1,1 +1,4 @@
-<p *ngIf="office">{{office.name}}</p>
+<div *ngIf="office">
+  <h5>Office {{office.name}}</h5>
+  <p>{{office.packages.length}} Package{{office.packages.length !== 1 ? 's' : ''}}</p>
+</div>

@@ -19,4 +19,8 @@ export class DrawerService {
     this.drawerOpened.emit([component, inputs]);
   }
 
+  closeDrawer() {
+    this.sidebarService.collapse('right-drawer')
+  }
+
 }

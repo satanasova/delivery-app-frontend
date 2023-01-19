@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NbSidebarModule } from '@nebular/theme';
+import { NbIconModule, NbSidebarModule } from '@nebular/theme';
 import { DrawerComponent } from './drawer/drawer.component';
 import { OfficesModule } from '../offices/offices.module';
 
@@ -13,7 +13,8 @@ import { OfficesModule } from '../offices/offices.module';
   imports: [
     CommonModule,
     NbSidebarModule,
-    OfficesModule
+    OfficesModule,
+    NbIconModule
   ],
   exports: [DrawerComponent]
 })
