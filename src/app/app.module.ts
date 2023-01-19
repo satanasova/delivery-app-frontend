@@ -17,6 +17,7 @@ import { UtilsModule } from './utils/utils.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ChatModule } from './chat/chat.module';
 import { MapModule } from './map/map.module';
+import { DrawerModule } from './drawer/drawer.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { MapModule } from './map/map.module';
     OfficesModule,
     ClientsModule,
     UtilsModule,
+    DrawerModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,

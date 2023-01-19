@@ -9,7 +9,9 @@
     <nb-menu tag='menu-bottom' [items]="menuTop"></nb-menu>
     <nb-menu tag='menu-bottom' [items]="menuBottom" class="sidebar-menu-bottom"></nb-menu>
   </nb-sidebar>
-  <nb-sidebar tag="drawer" class="sidebar drawer" [state]="drawerState" right #drawer><!-- no --></nb-sidebar>
+  <nb-sidebar fixed tag="right-drawer" class="sidebar drawer" state="collapsed" right #drawer>
+    <app-drawer></app-drawer>
+  </nb-sidebar>
   <nb-layout-column >
     <router-outlet></router-outlet>
     <app-chat-window *ngIf="userService.loggedUser | async"></app-chat-window>

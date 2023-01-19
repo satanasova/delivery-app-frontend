@@ -9,11 +9,8 @@ import { SettingsService } from './utils/settings/settings.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  // @ViewChild('user') userbtn: any;
-  // @ViewChild('login') login: any;
-  drawer!: NbSidebarComponent;
-  drawerState: NbSidebarState = 'collapsed';
-  // loggedUser?: any;
+  // drawer!: NbSidebarComponent;
+  // drawerState: NbSidebarState = 'expanded';
 
   menuTop: NbMenuItem[] = [
     {
@@ -64,16 +61,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     ) {
   }
 
-  ngAfterViewInit(): void {
-    // if(document.querySelector('nb-user')){
-    //   document.querySelector('nb-user').click();
-    // }
-    
-    // console.log(this.userbtn.nativeElement);
-    // let loginbtn: HTMLButtonElement = document.querySelector('button[hero]')
-    // loginbtn?.click()
-    // console.log(this.login.nativeElement);
-  }
+  ngAfterViewInit(): void {}
 
   async ngOnInit() {
     this.settingsService.onSettingsChanged((settings) => {

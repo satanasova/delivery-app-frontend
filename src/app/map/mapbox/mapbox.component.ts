@@ -1,6 +1,8 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Output } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
+import { DrawerService } from 'src/app/drawer/drawer.service';
 import { Office } from 'src/app/offices/models';
+import { OfficePreviewComponent } from 'src/app/offices/office-preview/office-preview.component';
 import { OfficesService } from 'src/app/offices/offices.service';
 import { MapService } from '../map.service';
 
@@ -385,11 +387,9 @@ export class MapboxComponent implements OnInit, AfterViewInit {
         }
     ]
   }
+  route = this.routeFromPostman.points.map(points => Object.values(points.points).reverse());
 
-  route = this.routeFromPostman.points.map(points => Object.values(points.points).reverse())
-  markers: any[] = [];
-
-  constructor(private mapService: MapService, private officesService: OfficesService) {
+  constructor(private mapService: MapService, private officesService: OfficesService, private drawerService: DrawerService) {
   }
 
   async ngOnInit() {
@@ -400,13 +400,13 @@ export class MapboxComponent implements OnInit, AfterViewInit {
         const newMarker = new mapboxgl.Marker({color:'#3366ff'})
         newMarker.setLngLat({lng: office.lng, lat: office.lat});
         newMarker.addTo(this.map)
-        this.markers.push(newMarker)
+        newMarker.getElement().setAttribute('office-id', office._id);
       })
     }
   }
 
   ngAfterViewInit(): void {
-    this.map = this.mapService.createMap({
+    this.map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/dark-v11',
     //   style: 'mapbox://styles/mapbox/streets-v12',
@@ -446,11 +446,10 @@ export class MapboxComponent implements OnInit, AfterViewInit {
   }
 
   onClick(event: any) {
-    const target = event.target.closest('.mapboxgl-marker');
-    if(target){
-        const clickedMarker = this.markers.find(marker => marker._element === target)
-        console.log(target);
-        console.log(clickedMarker._lngLat);
+    const markerTarget = event.target.closest('.mapboxgl-marker');
+    if(markerTarget){
+      const officeId = markerTarget.getAttribute('office-id');
+      this.drawerService.openDrawer(OfficePreviewComponent, {'officeId': officeId})
     }
   }
 }

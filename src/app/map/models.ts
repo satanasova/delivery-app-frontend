@@ -1,6 +1,6 @@
-export type MapboxSetup = {
-  container: string;
-  style: string;
-  center: [number, number];
-  zoom: number
+import { Office } from "../offices/models";
+
+export type OfficeMarker = {
+  element: HTMLElement;
+  office: Office
 }

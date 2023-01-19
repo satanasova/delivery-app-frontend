@@ -5,6 +5,7 @@ import { SingleOfficeComponent } from './single-office/single-office.component';
 import { RouterModule } from '@angular/router';
 import { UtilsModule } from '../utils/utils.module';
 import { NbAccordionModule, NbCardModule, NbIconModule, NbSpinnerModule} from '@nebular/theme';
+import { OfficePreviewComponent } from './office-preview/office-preview.component';
 
 
 
@@ -17,6 +18,7 @@ const routes = [
   declarations: [
     AllOfficesComponent,
     SingleOfficeComponent,
+    OfficePreviewComponent
   ],
   imports: [
     CommonModule,
@@ -27,6 +29,6 @@ const routes = [
     NbAccordionModule,
     NbSpinnerModule
   ],
-  providers: []
+  exports: [OfficePreviewComponent]
 })
 export class OfficesModule { }
