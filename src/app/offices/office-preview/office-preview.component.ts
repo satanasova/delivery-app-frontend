@@ -1,6 +1,9 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { Office } from 'src/app/offices/models';
 import { OfficesService } from 'src/app/offices/offices.service';
+import { Package } from 'src/app/packages/models';
+import { PackagesService } from 'src/app/packages/packages.service';
 
 @Component({
   selector: 'app-office-preview',
@@ -10,8 +13,9 @@ import { OfficesService } from 'src/app/offices/offices.service';
 export class OfficePreviewComponent implements OnInit, OnChanges  {
   @Input() officeId?: string;
   office?: Office;
+  packages?: Package[];
 
-  constructor(private officesService: OfficesService) {
+  constructor(private officesService: OfficesService, private pkgService: PackagesService, private router: Router) {
     // console.log(this.officeId);
   }
 
@@ -23,6 +27,29 @@ export class OfficePreviewComponent implements OnInit, OnChanges  {
     if(this.officeId) {
       this.office = await this.officesService.getOffice(this.officeId)
     }
+
+    if(this.office) {
+      // const packagesIds: string[] = this.office.packages.map(pkgID => pkgID.toString());
+      const packagesIds = [
+        '63c16f3014f965051f0746d2',
+        '63c16f3114f965051f0747ce',
+        '63c16f3114f965051f07481c',
+        '63c16f3014f965051f0746d2',
+        '63c16f3114f965051f0747ce',
+        '63c16f3114f965051f07481c',
+        '63c16f3114f965051f07481c',
+        '63c16f3114f965051f07481c',
+        '63c16f3114f965051f07481c'
+      ]
+
+      this.packages = await Promise.all(packagesIds.map((pkgId) => {
+        return this.pkgService.getSinglePackage(pkgId)
+      }));
+    }
+  }
+
+  onPkgClicked(pkg: Package) {
+    this.router.navigate(['packages', pkg._id])
   }
 
 }

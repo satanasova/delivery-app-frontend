@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { UtilsModule } from '../utils/utils.module';
 import { NbAccordionModule, NbCardModule, NbIconModule, NbSpinnerModule} from '@nebular/theme';
 import { OfficePreviewComponent } from './office-preview/office-preview.component';
+import { TableModule } from 'primeng/table';
 
 
 
@@ -27,7 +28,8 @@ const routes = [
     NbCardModule,
     NbIconModule,
     NbAccordionModule,
-    NbSpinnerModule
+    NbSpinnerModule,
+    TableModule
   ],
   exports: [OfficePreviewComponent]
 })

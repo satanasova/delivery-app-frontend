@@ -11,6 +11,7 @@ import { PreviewTypes } from './models';
 })
 export class DrawerService {
   drawerOpened: EventEmitter<any> = new EventEmitter()
+  drawerClosed: EventEmitter<any> = new EventEmitter()
 
   constructor(private sidebarService: NbSidebarService) { }
 
@@ -20,7 +21,8 @@ export class DrawerService {
   }
 
   closeDrawer() {
-    this.sidebarService.collapse('right-drawer')
+    this.sidebarService.collapse('right-drawer');
+    this.drawerClosed.emit('right-drawer');
   }
 
 }

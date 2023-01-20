@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { DrawerService } from 'src/app/drawer/drawer.service';
 import { Office } from 'src/app/offices/models';
@@ -12,8 +12,26 @@ import { MapService } from '../map.service';
   styleUrls: ['./mapbox.component.scss']
 })
 export class MapboxComponent implements OnInit, AfterViewInit {
+  @ViewChild('mapContainer', {read: ViewContainerRef}) mapContainer?: ViewContainerRef;
+
+  drawerOpened: boolean = false;
+
+  mapContainerResizeObserver: ResizeObserver = new ResizeObserver(entries => {
+    entries.forEach(entry => {
+      if(!this.drawerOpened) {
+        // console.log('resizing');
+        this.resizeMap();
+        this.centerMap();
+      } else {
+        this.resizeMap();
+      }
+    })
+  });
+
+
   map: any;
   offices: Office[] = [];
+
   routeFromPostman = {
     "totalDistance": 145.65,
     "points": [
@@ -414,7 +432,6 @@ export class MapboxComponent implements OnInit, AfterViewInit {
       zoom: 6.5, // starting zoom
     });
 
-
     this.map.on('load', () => {
       this.map.addSource('route', {
         'type': 'geojson',
@@ -443,13 +460,51 @@ export class MapboxComponent implements OnInit, AfterViewInit {
       });
   
     })
+
+    if (this.mapContainer) {
+      this.mapContainerResizeObserver.observe(this.mapContainer.element.nativeElement)
+    }
+
+    this.drawerService.drawerClosed.subscribe((drawer) => this.drawerOpened = false)
   }
 
   onClick(event: any) {
     const markerTarget = event.target.closest('.mapboxgl-marker');
     if(markerTarget){
       const officeId = markerTarget.getAttribute('office-id');
-      this.drawerService.openDrawer(OfficePreviewComponent, {'officeId': officeId})
+      const office = this.offices.find(office => office._id === officeId);
+
+      this.drawerService.openDrawer(OfficePreviewComponent, {'officeId': officeId});
+      this.drawerOpened = true;
+
+      if(office) {
+        this.resizeMap();
+        this.moveCenterMap([office.lng, office.lat])
+        // console.log('moving the center');
+      }
+
     }
+  }
+
+  resizeMap() {
+    setTimeout(() => {
+      this.map.resize();
+      console.log('map resized');
+    }, 0);
+  }
+
+  centerMap() {
+    setTimeout(() => {
+      this.map.flyTo({center: [25.4858, 42.7339]});
+      console.log('map centered');
+    }, 0)
+  }
+
+  moveCenterMap(coordinates: number[]) {
+    setTimeout(() => {
+      this.map.flyTo({center: coordinates});
+      console.log('map moved');
+      // this.drawerOpened = false;
+    }, 0)
   }
 }

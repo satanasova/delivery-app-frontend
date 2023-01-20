@@ -4,7 +4,7 @@ import { Office } from "../offices/models";
 export type Package = {
   _id: string;
   size: PackageSize;
-  status: string;
+  status: PackageStatus;
   description?: string;
   originOffice: Office;
   destinationOffice: Office;
@@ -22,4 +22,10 @@ export enum PackageSize {
   S = 'small',
   M = 'medium',
   L = 'large'
+}
+
+export enum PackageStatus {
+  RECEIVED = 'received',
+  DISPATCHED = 'dispatched',
+  DELIVERED = 'delivered',
 }

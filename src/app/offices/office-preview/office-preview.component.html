@@ -1,4 +1,26 @@
 <div *ngIf="office">
-  <h5>Office {{office.name}}</h5>
-  <p>{{office.packages.length}} Package{{office.packages.length !== 1 ? 's' : ''}}</p>
+  <h5 class="header" >Office {{office.name}}</h5>
+  <!-- <pre>
+    {{office.packages | json}}
+  </pre> -->
+  <p-table [value]="packages">
+    <ng-template pTemplate="caption">{{office.packages.length}} Package{{office.packages.length !== 1 ? 's' : ''}}</ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <!-- <th>#</th> -->
+        <th>Size</th>
+        <th>Status</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-package>
+      <tr (click)="onPkgClicked(package)">
+        <!-- <td>{{package._id}}</td> -->
+        <td>{{package.size}}</td>
+        <td>{{package.status}}</td>
+      </tr>
+    </ng-template>
+
+
+  </p-table>
 </div>
+

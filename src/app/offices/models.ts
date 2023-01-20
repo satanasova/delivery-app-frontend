@@ -7,7 +7,7 @@ export type Office = {
   phone: string;
   lat: number;
   lng: number;
-  packages: Package[]; 
+  // packages: Package[]; 
   owner: any;
   date: Date;
   availability: boolean;
