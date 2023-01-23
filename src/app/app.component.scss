@@ -19,11 +19,32 @@
 
 
 ::ng-deep nb-sidebar {
-  .scrollable {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    max-height: 90vh;
+  &.menu {
+    &.expanded {
+      width: 150px;
+
+      .main-container {
+        width: inherit;
+      }
+    }
+    .scrollable {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      max-height: 90vh;
+    }  
+  }
+  
+  &.drawer.expanded {
+    width: 300px;
+
+    .main-container {
+      width: inherit;
+
+      .scrollable {
+        padding: 0;
+      }
+    }
   }
 }
 

@@ -26,6 +26,10 @@ export class PackagesService {
     return firstValueFrom((this.http.get<Package>(`http://localhost:3000/packages/${packageId}`)))
   }
 
+  getPackagesInOffice(officeId: string): Promise<Package[]> {
+    return firstValueFrom((this.http.get<Package[]>(`http://localhost:3000/packages/in-office/${officeId}`)))
+  }
+
   openCreatePackageModal() {
     this.createPackageModal = this.dialogService.open(CreatePackageComponent)
   }

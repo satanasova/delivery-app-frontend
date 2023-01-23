@@ -18,13 +18,12 @@ export class MapboxComponent implements OnInit, AfterViewInit {
 
   mapContainerResizeObserver: ResizeObserver = new ResizeObserver(entries => {
     entries.forEach(entry => {
-      if(!this.drawerOpened) {
-        // console.log('resizing');
+			if(!this.drawerOpened) {
         this.resizeMap();
         this.centerMap();
       } else {
-        this.resizeMap();
-      }
+				this.resizeMap();
+			} 
     })
   });
 
@@ -478,33 +477,27 @@ export class MapboxComponent implements OnInit, AfterViewInit {
       this.drawerOpened = true;
 
       if(office) {
-        this.resizeMap();
-        this.moveCenterMap([office.lng, office.lat])
-        // console.log('moving the center');
+				this.resizeMap();
+				this.moveCenterMap([office.lng, office.lat]);
       }
-
     }
   }
 
   resizeMap() {
     setTimeout(() => {
       this.map.resize();
-      console.log('map resized');
     }, 0);
   }
 
   centerMap() {
     setTimeout(() => {
       this.map.flyTo({center: [25.4858, 42.7339]});
-      console.log('map centered');
     }, 0)
   }
 
   moveCenterMap(coordinates: number[]) {
     setTimeout(() => {
       this.map.flyTo({center: coordinates});
-      console.log('map moved');
-      // this.drawerOpened = false;
     }, 0)
   }
 }
