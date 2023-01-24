@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DeliveriesService } from '../deliveries.service';
+import { Delivery } from '../models';
 
 @Component({
   selector: 'app-all-deliveries',
@@ -6,10 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./all-deliveries.component.scss']
 })
 export class AllDeliveriesComponent implements OnInit {
+  deliveries: Delivery[] = [];
 
-  constructor() { }
+  constructor(private deliveriesService: DeliveriesService) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.deliveries = await this.deliveriesService.getAllDeliveries();
+    console.log(this.deliveries);
   }
 
 }
