@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NbAccordionComponent } from '@nebular/theme';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { Package } from 'src/app/packages/models';
+import { PackagesService } from 'src/app/packages/packages.service';
 import { CustomAccordionComponent } from 'src/app/utils/custom-accordion/custom-accordion.component';
 import { ItemConfig } from 'src/app/utils/display-item-card/models';
 import { Office } from '../models';
@@ -17,10 +18,11 @@ export class SingleOfficeComponent implements OnInit {
   office?: Office;
   itemConfig: ItemConfig[] = [];
 
-  constructor(private route: ActivatedRoute, private officesService: OfficesService, private router: Router) {
+  constructor(private route: ActivatedRoute, private officesService: OfficesService, private pkgService: PackagesService, private router: Router) {
     this.route.params.subscribe(async ({ officeId }) => {
       if (officeId) {
         this.office = await this.officesService.getOffice(officeId);
+        this.office.realPackages = await this.pkgService.getPackagesInOffice(officeId);
       }
     })
 
@@ -38,13 +40,13 @@ export class SingleOfficeComponent implements OnInit {
         header: 'Address'
       },
       {
-        key: 'packages',
+        key: 'realPackages',
         header: 'Packages',
         customDisplayCmp: CustomAccordionComponent,
         cmpProperties: (packages: Package[], office: Office): any => {
           return {
             header: `${packages.length} Packages`,
-            items: packages,
+            items: packages.map(pkg => pkg._id),
             class: 'value-list'
           }
         },
