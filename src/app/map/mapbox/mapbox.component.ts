@@ -99,7 +99,7 @@ export class MapboxComponent implements OnInit, AfterViewInit {
 
       (await this.deliveries).forEach((delivery: Delivery) => {
         const truckMarker = new mapboxgl.Marker({color: '#ff0000'});
-        truckMarker.setLngLat(this.calculateTruckPoints(delivery));
+        truckMarker.setLngLat(this.calculateTruckPoint(delivery));
         truckMarker.addTo(this.map);
         truckMarker.getElement().setAttribute('delivery-id', delivery._id);
       })
@@ -147,37 +147,41 @@ export class MapboxComponent implements OnInit, AfterViewInit {
     }, 0)
   }
 
-  calculateTruckPoints(delivery: Delivery): GeoPoint  {
-    console.log('calculate');
-    console.log(delivery);
-
-    const deliveryStartDate = + new Date(delivery.departureDate) + 2*60*60*100
-    const now = + new Date()
+  calculateTruckPoint(delivery: Delivery): GeoPoint  {
+    let truckLatLng: GeoPoint;
+    const deliveryStartDate = +new Date(delivery.departureDate);
+    const now = +new Date()
     const hoursPassed = (now - deliveryStartDate) / (60*60*1000);
-    console.log('delivery started', new Date(deliveryStartDate));
-    console.log('now', new Date(now));
-    console.log('timepast', hoursPassed);
-
-    const velocity = 120;
+    const velocity = 90;
     const distancePassed = hoursPassed * velocity;
-    console.log('distance past', distancePassed);
+    const pathPoints = delivery.route.path.points;
+    const currPathPoint = pathPoints.find((pathPoint: PathPoint) => distancePassed === pathPoint.totalDistance);
+    const startPathPoint = pathPoints[0];
+    const endPathPoint = pathPoints[pathPoints.length-1];
 
-    const pathPoints = delivery.route.path.points
-    // const startPathPoint: PathPoint = pathPoints.find((pathPoint: PathPoint, idx: number) => pathPoint.totalDistance > distancePassed);
-    const endPathPoint: PathPoint = pathPoints.find((pathPoint: PathPoint) => pathPoint.totalDistance > distancePassed);
-    const startPathPoint: PathPoint = pathPoints[pathPoints.indexOf(endPathPoint)-1]
-    const pathPointsDistance = endPathPoint.difference;
-    const distancePassedIntoPathPoints = distancePassed - startPathPoint.totalDistance;
-    const distancePassedPerc = (distancePassedIntoPathPoints/pathPointsDistance)
-    console.log(startPathPoint,endPathPoint);
-    console.log('distance between two path points', pathPointsDistance);
-    console.log('distance passed into two path points', distancePassedIntoPathPoints);
-    console.log(distancePassedPerc);
-
-    const truckMarkerLat = startPathPoint.points.lat + (endPathPoint.points.lat - startPathPoint.points.lat) * distancePassedPerc
-    const truckMarkerLng = startPathPoint.points.lng + (endPathPoint.points.lng - startPathPoint.points.lng) * distancePassedPerc
-    console.log(truckMarkerLng, truckMarkerLat);
+    if(distancePassed < startPathPoint.totalDistance) {
+      truckLatLng = startPathPoint.points;
+    } else if(distancePassed > endPathPoint.totalDistance) {
+      truckLatLng = endPathPoint.points
+    } else {
+      if(currPathPoint) {
+        truckLatLng = currPathPoint.points
+      } else {
+        const maxPathPoint: PathPoint = pathPoints.find((pathPoint: PathPoint) => pathPoint.totalDistance > distancePassed);
+        const minPathPoint: PathPoint = pathPoints[pathPoints.indexOf(maxPathPoint)-1]
+        const totalPointsDistanceDelta = maxPathPoint.difference;
+        const currentDistanceDelta = distancePassed - minPathPoint.totalDistance;
+        const currentDistanceDeltaPerc = (currentDistanceDelta/totalPointsDistanceDelta)
+  
+        const totalLatDelta = maxPathPoint.points.lat - minPathPoint.points.lat;
+        const totalLngDelta = maxPathPoint.points.lng - minPathPoint.points.lng;
+        const truckLat = minPathPoint.points.lat + (totalLatDelta) * currentDistanceDeltaPerc
+        const truckLng = minPathPoint.points.lng + (totalLngDelta) * currentDistanceDeltaPerc
+        
+        truckLatLng = {lat: truckLat, lng: truckLng}
+      }
+    }
     
-    return {lat: truckMarkerLat, lng: truckMarkerLng}
+    return truckLatLng
   }
 }
