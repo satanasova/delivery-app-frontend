@@ -59,7 +59,7 @@ export class AllDeliveriesComponent implements OnInit {
     console.log(this.deliveries);
   }
 
-  deliveryClicked(event: any) {
-    console.log(event);
+  deliveryClicked(delivery: Delivery) {
+    this.router.navigate(['deliveries', delivery._id ])
   }
 }

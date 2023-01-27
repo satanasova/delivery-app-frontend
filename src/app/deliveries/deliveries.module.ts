@@ -21,6 +21,7 @@ const routes = [
   ],
   imports: [
     CommonModule,
+    UtilsModule,
     RouterModule.forChild(routes),
     UtilsModule,
     NbCardModule,
