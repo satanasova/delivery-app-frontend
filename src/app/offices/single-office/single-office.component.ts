@@ -23,9 +23,13 @@ export class SingleOfficeComponent implements OnInit {
       if (officeId) {
         this.office = await this.officesService.getOffice(officeId);
         this.office.realPackages = await this.pkgService.getPackagesInOffice(officeId);
+        console.log('pkgs ready');
       }
     })
 
+  }
+
+  ngOnInit(): void {
     this.itemConfig = [
       {
         key: '_id',
@@ -44,9 +48,10 @@ export class SingleOfficeComponent implements OnInit {
         header: 'Packages',
         customDisplayCmp: CustomAccordionComponent,
         cmpProperties: (packages: Package[], office: Office): any => {
+          console.log(packages);
           return {
-            header: `${packages.length} Packages`,
-            items: packages.map(pkg => pkg._id),
+            header: `${packages?.length || 0} Packages`,
+            items: packages && packages.map(pkg => pkg._id),
             class: 'value-list'
           }
         },
@@ -79,9 +84,6 @@ export class SingleOfficeComponent implements OnInit {
 
     ]
 
-  }
-
-  ngOnInit(): void {
   }
 
 }

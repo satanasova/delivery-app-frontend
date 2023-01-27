@@ -1,0 +1,59 @@
+<div *ngIf="delivery" class="delivery-preview">
+
+  <div class="delivery-info">
+    <h5>
+      Delivery
+      <nb-icon icon="link-2-outline" class="text-link" (click)="onDeliveryClick()"></nb-icon>
+    </h5>
+    <p>#{{delivery._id}}</p>
+    <p>
+      {{delivery.originOffice.name.slice(0,3) | uppercase}} &rarr; {{delivery.destinationOffice.name.slice(0,3) | uppercase}}
+    </p>
+  </div>
+
+  <div class="truck-info">
+    <h5>
+      Truck
+      <nb-icon icon="link-2-outline" class="text-link" (click)="onTruckClick(delivery.truck)"></nb-icon>
+    </h5>
+    <p>REG № {{delivery.truck.registrationNumber}}</p>
+    <!-- <nb-icon icon="car-outline" class="truck-icon"></nb-icon> -->
+    <div class="truck-icon">
+      <div class="truck-front"></div>
+      <div class="truck-trunk"></div>
+      <div class="truck-tire back"></div>
+      <div class="truck-tire front"></div>
+    </div>
+  </div>
+
+  <div class="packages-info">
+    <nb-accordion >
+      <nb-accordion-item>
+        <nb-accordion-item-header>{{delivery.packages.length}} Package{{delivery.packages.length !== 1 ? 's' : ''}}</nb-accordion-item-header>
+        <nb-accordion-item-body *ngFor="let pkg of delivery.packages" (click)="onPkgClicked(pkg)" class="text-link">
+          {{pkg}}
+          <!-- <p-table *ngIf="delivery.packages.length > 0" [value]="delivery.packages">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Size</th>
+                <th>Status</th>
+                <th>Price</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-package>
+              <tr (click)="onPkgClicked(package)">
+                <td class="text-link">{{package.size.slice(0,1).toUpperCase()}}</td>
+                <td class="text-link">{{package.status | titlecase}}</td>
+                <td class="text-link">{{package.price}} BGN</td>
+              </tr>
+            </ng-template>
+          </p-table> -->
+      
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+    </nb-accordion>
+  
+  </div>
+
+
+

@@ -1,0 +1,59 @@
+.delivery-info, .truck-info {
+  text-align: center;
+}
+
+.packages-info {
+  margin-top: 2rem;
+}
+
+h5 {
+  margin-bottom: 0;
+}
+
+.truck-icon {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  width: 250px;
+  height: 150px;
+  margin: 0 auto;
+
+  .truck-trunk {
+    box-sizing: border-box;
+    display: block;
+    width: 75%;
+    height: 75%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 2px solid white;
+  }
+
+  .truck-front {
+    box-sizing: border-box;
+    display: block;
+    width: 25%;
+    height: 50%;
+    position: absolute;
+    right: 0;
+    bottom: 25%;
+    border: 2px solid white;
+  }
+  
+  .truck-tire {
+    box-sizing: border-box;
+    display: block;
+    width: 15%;
+    height: 25%;
+    border-radius: 50%;
+    border: 2px solid white;
+    position: absolute;
+    bottom: 0;
+    &.back {
+      left: 10%;
+    }
+    &.front {
+      right: 15%;
+    }
+  }
+}

@@ -1,1 +1,6 @@
-<p>Deliveries</p>
+<nb-card size="giant" [nbSpinner]="deliveries.length === 0" nbSpinnerStatus="info" nbSpinnerSize="giant"> 
+  <nb-card-header> Deliveries </nb-card-header>
+  <nb-card-body>
+    <app-smart-table *ngIf="deliveries.length > 0" (itemClick)="deliveryClicked($event)" [data]="deliveries" [tableConfig]="cols"></app-smart-table>
+  </nb-card-body>
+</nb-card>

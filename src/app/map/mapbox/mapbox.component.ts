@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { DeliveriesService } from 'src/app/deliveries/deliveries.service';
+import { DeliveryPreviewComponent } from 'src/app/deliveries/delivery-preview/delivery-preview.component';
 import { Delivery, GeoPoint, PathPoint } from 'src/app/deliveries/models';
 import { DrawerService } from 'src/app/drawer/drawer.service';
 import { Office } from 'src/app/offices/models';
@@ -42,10 +43,11 @@ export class MapboxComponent implements OnInit, AfterViewInit {
 
     if (this.offices.length > 0) {
       this.offices.forEach((office: Office) => {
-        const newMarker = new mapboxgl.Marker({ color: '#3366ff' })
-        newMarker.setLngLat({ lng: office.lng, lat: office.lat });
-        newMarker.addTo(this.map)
-        newMarker.getElement().setAttribute('office-id', office._id);
+        const newOfficeMarker = new mapboxgl.Marker({ color: '#3366ff' })
+        newOfficeMarker.setLngLat({ lng: office.lng, lat: office.lat });
+        newOfficeMarker.addTo(this.map)
+        newOfficeMarker.getElement().classList.add('office-marker')
+        newOfficeMarker.getElement().setAttribute('office-id', office._id);
       })
     }
   }
@@ -98,10 +100,13 @@ export class MapboxComponent implements OnInit, AfterViewInit {
       });
 
       (await this.deliveries).forEach((delivery: Delivery) => {
-        const truckMarker = new mapboxgl.Marker({color: '#ff0000'});
-        truckMarker.setLngLat(this.calculateTruckPoint(delivery));
-        truckMarker.addTo(this.map);
-        truckMarker.getElement().setAttribute('delivery-id', delivery._id);
+        const newTruckMarker = new mapboxgl.Marker({color: '#ff0000'});
+        const newTruckMarkerLngLat = this.calculateTruckPoint(delivery);
+        newTruckMarker.setLngLat(newTruckMarkerLngLat);
+        newTruckMarker.addTo(this.map);
+        newTruckMarker.getElement().classList.add('truck-marker');
+        newTruckMarker.getElement().setAttribute('delivery-id', delivery._id);
+        newTruckMarker.getElement().setAttribute('truck-location', JSON.stringify(newTruckMarkerLngLat));
       })
 
     })
@@ -114,9 +119,11 @@ export class MapboxComponent implements OnInit, AfterViewInit {
   }
 
   onClick(event: any) {
-    const markerTarget = event.target.closest('.mapboxgl-marker');
-    if (markerTarget) {
-      const officeId = markerTarget.getAttribute('office-id');
+    const officeMarkerTarget = event.target.closest('.office-marker');
+    const truckMarkerTarget = event.target.closest('.truck-marker');
+
+    if (officeMarkerTarget) {
+      const officeId = officeMarkerTarget.getAttribute('office-id');
       const office = this.offices.find(office => office._id === officeId);
 
       this.drawerService.openDrawer(OfficePreviewComponent, { 'officeId': officeId });
@@ -126,6 +133,19 @@ export class MapboxComponent implements OnInit, AfterViewInit {
         this.resizeMap();
         this.moveCenterMap([office.lng, office.lat]);
       }
+    }
+
+    if (truckMarkerTarget) {
+      const deliveryId = truckMarkerTarget.getAttribute('delivery-id');
+      const truckLngLat = JSON.parse(truckMarkerTarget.getAttribute('truck-location'));
+      
+      this.drawerService.openDrawer(DeliveryPreviewComponent, {'deliveryId': deliveryId});
+      this.drawerOpened = true;
+
+      console.log(truckMarkerTarget);
+
+      this.resizeMap();
+      this.moveCenterMap(truckLngLat)
     }
   }
 
