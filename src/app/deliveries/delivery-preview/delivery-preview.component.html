@@ -17,13 +17,24 @@
       <nb-icon icon="link-2-outline" class="text-link" (click)="onTruckClick(delivery.truck)"></nb-icon>
     </h5>
     <p>REG № {{delivery.truck.registrationNumber}}</p>
-    <!-- <nb-icon icon="car-outline" class="truck-icon"></nb-icon> -->
-    <div class="truck-icon">
+    <div class="truck-icon-container">
+      <!-- <nb-icon icon="car" class="truck-icon truck-icon-fill" status="success"></nb-icon> -->
+      <nb-icon icon="car-outline" class="truck-icon truck-icon-stroke">
+
+      </nb-icon>
+      <div class="truck-icon-outer-fill">
+        <div class="truck-icon-inner-fill" [ngStyle]="{'height.%': delivery.truck.health}"></div>
+        <p class="truck-icon-fullnes">{{delivery.packages.length}}/{{delivery.truck.size === "small" ? 20 : delivery.truck.size === "medium" ? 50 : 100}}</p>
+        <p class="truck-icon-perc">{{delivery.truck.health}}%</p>
+      </div>
+    </div>
+
+    <!-- <div class="truck-icon">
       <div class="truck-front"></div>
       <div class="truck-trunk"></div>
       <div class="truck-tire back"></div>
       <div class="truck-tire front"></div>
-    </div>
+    </div> -->
   </div>
 
   <div class="packages-info">

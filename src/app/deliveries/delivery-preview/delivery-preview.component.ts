@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Truck } from 'src/app/trucks/models';
 import { DeliveriesService } from '../deliveries.service';
@@ -15,6 +15,7 @@ export class DeliveryPreviewComponent implements OnInit, OnChanges {
 
   constructor(private deliveriesService: DeliveriesService, private router: Router) { }
 
+
   ngOnInit(): void {
   }
 
@@ -23,6 +24,8 @@ export class DeliveryPreviewComponent implements OnInit, OnChanges {
       this.delivery = await this.deliveriesService.getDelivery(this.deliveryId);
       console.log(this.delivery);
     }
+
+    
   }
 
   onDeliveryClick() {

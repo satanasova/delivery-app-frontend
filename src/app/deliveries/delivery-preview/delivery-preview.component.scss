@@ -10,50 +10,89 @@ h5 {
   margin-bottom: 0;
 }
 
-.truck-icon {
-  box-sizing: border-box;
+.truck-icon-container {
   position: relative;
-  display: block;
-  width: 250px;
-  height: 150px;
-  margin: 0 auto;
 
-  .truck-trunk {
-    box-sizing: border-box;
-    display: block;
-    width: 75%;
-    height: 75%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    border: 2px solid white;
+  .truck-icon {
+    font-size: 200px;
+    stroke: rgb(34,43,69)
   }
 
-  .truck-front {
-    box-sizing: border-box;
-    display: block;
-    width: 25%;
-    height: 50%;
+  .truck-icon-outer-fill {
     position: absolute;
-    right: 0;
-    bottom: 25%;
-    border: 2px solid white;
-  }
-  
-  .truck-tire {
-    box-sizing: border-box;
-    display: block;
-    width: 15%;
-    height: 25%;
-    border-radius: 50%;
-    border: 2px solid white;
-    position: absolute;
-    bottom: 0;
-    &.back {
-      left: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 33%;
+    height: 46%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-71%, -68%);
+
+    .truck-icon-inner-fill {
+      position: absolute;
+      bottom: 0;
+      background-color: green;
+      width: 100%;
+      height: 50%;
     }
-    &.front {
-      right: 15%;
+
+    .truck-icon-perc, .truck-icon-fullnes {
+      z-index: 1;
+      font-size: 20px;
+      font-weight: 600;
+      margin: 2px;
     }
   }
 }
+
+
+
+// .truck-icon {
+//   box-sizing: border-box;
+//   position: relative;
+//   display: block;
+//   width: 250px;
+//   height: 150px;
+//   margin: 0 auto;
+
+//   .truck-trunk {
+//     box-sizing: border-box;
+//     display: block;
+//     width: 75%;
+//     height: 75%;
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     border: 2px solid white;
+//   }
+
+//   .truck-front {
+//     box-sizing: border-box;
+//     display: block;
+//     width: 25%;
+//     height: 50%;
+//     position: absolute;
+//     right: 0;
+//     bottom: 25%;
+//     border: 2px solid white;
+//   }
+  
+//   .truck-tire {
+//     box-sizing: border-box;
+//     display: block;
+//     width: 15%;
+//     height: 25%;
+//     border-radius: 50%;
+//     border: 2px solid white;
+//     position: absolute;
+//     bottom: 0;
+//     &.back {
+//       left: 10%;
+//     }
+//     &.front {
+//       right: 15%;
+//     }
+//   }
+// }

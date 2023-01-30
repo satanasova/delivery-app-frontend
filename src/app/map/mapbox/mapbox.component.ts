@@ -39,17 +39,6 @@ export class MapboxComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     this.offices = await this.officesService.getAllOffices();
-
-
-    if (this.offices.length > 0) {
-      this.offices.forEach((office: Office) => {
-        const newOfficeMarker = new mapboxgl.Marker({ color: '#3366ff' })
-        newOfficeMarker.setLngLat({ lng: office.lng, lat: office.lat });
-        newOfficeMarker.addTo(this.map)
-        newOfficeMarker.getElement().classList.add('office-marker')
-        newOfficeMarker.getElement().setAttribute('office-id', office._id);
-      })
-    }
   }
 
   async ngAfterViewInit() {
@@ -62,17 +51,13 @@ export class MapboxComponent implements OnInit, AfterViewInit {
     });
 
     this.map.on('load', async () => {
-      console.log('map loaded');
-      await this.deliveries;
-      console.log('deliveries loaded');
+      if (this.offices.length > 0) {
+        this.showOfficesOnMap(this.offices)
+      }
 
-      const routes = (await this.deliveries).map((delivery: Delivery) => {
-        // {points: {lat:13,lng:12}, desdf}
-        return delivery.route.path.points.map((point: any) => [point.points.lng, point.points.lat])
-      });
-
-      routes.forEach((route: any[], idx) => {
-        this.map.addSource(`route${idx}`, {
+      (await this.deliveries).map((delivery: Delivery) => {
+        const route =  delivery.route.path.points.map((point: any) => [point.points.lng, point.points.lat])
+        this.map.addSource(`route${delivery._id}`, {
           'type': 'geojson',
           'data': {
             'type': 'Feature',
@@ -85,10 +70,11 @@ export class MapboxComponent implements OnInit, AfterViewInit {
         });
   
         this.map.addLayer({
-          'id': `route${idx}`,
+          'id': `route${delivery._id}`,
           'type': 'line',
-          'source': `route${idx}`,
+          'source': `route${delivery._id}`,
           'layout': {
+            'visibility': 'none',
             'line-join': 'round',
             'line-cap': 'round'
           },
@@ -100,13 +86,7 @@ export class MapboxComponent implements OnInit, AfterViewInit {
       });
 
       (await this.deliveries).forEach((delivery: Delivery) => {
-        const newTruckMarker = new mapboxgl.Marker({color: '#ff0000'});
-        const newTruckMarkerLngLat = this.calculateTruckPoint(delivery);
-        newTruckMarker.setLngLat(newTruckMarkerLngLat);
-        newTruckMarker.addTo(this.map);
-        newTruckMarker.getElement().classList.add('truck-marker');
-        newTruckMarker.getElement().setAttribute('delivery-id', delivery._id);
-        newTruckMarker.getElement().setAttribute('truck-location', JSON.stringify(newTruckMarkerLngLat));
+        this.showTruckOnMap(delivery)
       })
 
     })
@@ -138,11 +118,11 @@ export class MapboxComponent implements OnInit, AfterViewInit {
     if (truckMarkerTarget) {
       const deliveryId = truckMarkerTarget.getAttribute('delivery-id');
       const truckLngLat = JSON.parse(truckMarkerTarget.getAttribute('truck-location'));
+
+      this.showRouteOnMap(deliveryId);
       
       this.drawerService.openDrawer(DeliveryPreviewComponent, {'deliveryId': deliveryId});
       this.drawerOpened = true;
-
-      console.log(truckMarkerTarget);
 
       this.resizeMap();
       this.moveCenterMap(truckLngLat)
@@ -204,4 +184,35 @@ export class MapboxComponent implements OnInit, AfterViewInit {
     
     return truckLatLng
   }
+
+  showOfficesOnMap(offices: Office[]) {
+    offices.forEach((office: Office) => {
+      const newOfficeMarker = new mapboxgl.Marker({ color: '#3366ff' })
+      newOfficeMarker.setLngLat({ lng: office.lng, lat: office.lat });
+      newOfficeMarker.addTo(this.map)
+      newOfficeMarker.getElement().classList.add('office-marker')
+      newOfficeMarker.getElement().setAttribute('office-id', office._id);
+    })
+  }
+
+  showTruckOnMap(delivery: Delivery) {
+    const newTruckMarker = new mapboxgl.Marker({color: '#ff0000'});
+        const newTruckMarkerLngLat = this.calculateTruckPoint(delivery);
+        newTruckMarker.setLngLat(newTruckMarkerLngLat);
+        newTruckMarker.addTo(this.map);
+        newTruckMarker.getElement().classList.add('truck-marker');
+        newTruckMarker.getElement().setAttribute('delivery-id', delivery._id);
+        newTruckMarker.getElement().setAttribute('truck-location', JSON.stringify(newTruckMarkerLngLat));
+  }
+
+  showRouteOnMap(deliveryId: string) {
+      const routeLayers = this.map.getStyle().layers.filter((layer: any) => layer.id.includes('route'));
+      
+      routeLayers.forEach((layer: any) => {
+        this.map.setLayoutProperty(layer.id,'visibility','none')
+      })
+
+      this.map.setLayoutProperty(`route${deliveryId}`,'visibility','visible')
+  }
+
 }
