@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Output, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
+import { map } from 'rxjs';
 import { DeliveriesService } from 'src/app/deliveries/deliveries.service';
 import { DeliveryPreviewComponent } from 'src/app/deliveries/delivery-preview/delivery-preview.component';
 import { Delivery, GeoPoint, PathPoint } from 'src/app/deliveries/models';
@@ -7,6 +8,7 @@ import { DrawerService } from 'src/app/drawer/drawer.service';
 import { Office } from 'src/app/offices/models';
 import { OfficePreviewComponent } from 'src/app/offices/office-preview/office-preview.component';
 import { OfficesService } from 'src/app/offices/offices.service';
+import { XPromise } from 'src/app/utils/custom-promise';
 import { MapService } from '../map.service';
 
 @Component({
@@ -16,15 +18,18 @@ import { MapService } from '../map.service';
 })
 export class MapboxComponent implements OnInit, AfterViewInit {
   @ViewChild('mapContainer', { read: ViewContainerRef }) mapContainer?: ViewContainerRef;
+  // @ViewChildren('truckMarker') truckMarkers?: QueryList<any>;
   map: any;
   offices: Office[] = [];
   deliveries: Promise<Delivery[]>;
   drawerOpened: boolean = false;
+  mapReady: XPromise<any> = new XPromise<any>(() => {})
   mapContainerResizeObserver: ResizeObserver = new ResizeObserver(entries => {
     entries.forEach(entry => {
       if (!this.drawerOpened) {
         this.resizeMap();
         this.centerMap();
+        this.hideAllRoutes();
       } else {
         this.resizeMap();
       }
@@ -42,6 +47,7 @@ export class MapboxComponent implements OnInit, AfterViewInit {
   }
 
   async ngAfterViewInit() {
+
     this.map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/dark-v11',
@@ -51,12 +57,59 @@ export class MapboxComponent implements OnInit, AfterViewInit {
     });
 
     this.map.on('load', async () => {
+      this.mapReady.resolve()
       if (this.offices.length > 0) {
         this.showOfficesOnMap(this.offices)
       }
 
+      (await this.deliveries).forEach((delivery: Delivery) => {
+        this.showTruckOnMap(delivery)
+      });
+
       (await this.deliveries).map((delivery: Delivery) => {
-        const route =  delivery.route.path.points.map((point: any) => [point.points.lng, point.points.lat])
+        // const lastPointMarker =  new mapboxgl.Marker({color: 'yellow'});
+        // lastPointMarker.setLngLat(delivery.lastPathPointPassed.points);
+        // lastPointMarker.addTo(this.map)
+
+        // const routeCoordinates = delivery.route.path.points.map((point: any) => [point.points.lng, point.points.lat]);
+        const routePathPoints = delivery.route.path.points;
+
+        const routeTraveledPathPoints = routePathPoints.slice(0,routePathPoints.indexOf(delivery.lastPathPointPassed) + 1);
+        const routeTraveledCoordinates = routeTraveledPathPoints.map((point: any) => [point.points.lng, point.points.lat]);
+        routeTraveledCoordinates.push([delivery.truckLoc.lng, delivery.truckLoc.lat])
+
+        const routeToGoPathPoints = routePathPoints.slice(routePathPoints.indexOf(delivery.lastPathPointPassed) + 1);
+        const routeToGoCoordinates = routeToGoPathPoints.map((point: any) => [point.points.lng, point.points.lat]);
+        routeToGoCoordinates.unshift([delivery.truckLoc.lng, delivery.truckLoc.lat])
+
+        this.map.addSource(`route-traveled${delivery._id}`, {
+          'type': 'geojson',
+          'data': {
+            'type': 'Feature',
+            'properties': {},
+            'geometry': {
+              'type': 'LineString',
+              coordinates: routeTraveledCoordinates
+              // coordinates: routeCoordinates
+            }
+          }
+        });
+  
+        this.map.addLayer({
+          'id': `route-traveled${delivery._id}`,
+          'type': 'line',
+          'source': `route-traveled${delivery._id}`,
+          'layout': {
+            'visibility': 'none',
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          'paint': {
+            'line-color': '#6E9140',
+            'line-width': 3
+          }
+        });
+
         this.map.addSource(`route${delivery._id}`, {
           'type': 'geojson',
           'data': {
@@ -64,7 +117,7 @@ export class MapboxComponent implements OnInit, AfterViewInit {
             'properties': {},
             'geometry': {
               'type': 'LineString',
-              coordinates: route
+              coordinates: routeToGoCoordinates
             }
           }
         });
@@ -79,15 +132,11 @@ export class MapboxComponent implements OnInit, AfterViewInit {
             'line-cap': 'round'
           },
           'paint': {
-            'line-color': '#00ff00',
+            'line-color': '#914531',
             'line-width': 3
           }
         });
       });
-
-      (await this.deliveries).forEach((delivery: Delivery) => {
-        this.showTruckOnMap(delivery)
-      })
 
     })
 
@@ -98,9 +147,10 @@ export class MapboxComponent implements OnInit, AfterViewInit {
     this.drawerService.drawerClosed.subscribe((drawer) => this.drawerOpened = false)
   }
 
-  onClick(event: any) {
+  async onClick(event: any) {
     const officeMarkerTarget = event.target.closest('.office-marker');
-    const truckMarkerTarget = event.target.closest('.truck-marker');
+    const truckMarkerTarget = event.target.classList.contains('truck-marker') && event.target;
+    console.log(event.target);
 
     if (officeMarkerTarget) {
       const officeId = officeMarkerTarget.getAttribute('office-id');
@@ -115,79 +165,93 @@ export class MapboxComponent implements OnInit, AfterViewInit {
       }
     }
 
-    if (truckMarkerTarget) {
-      const deliveryId = truckMarkerTarget.getAttribute('delivery-id');
-      const truckLngLat = JSON.parse(truckMarkerTarget.getAttribute('truck-location'));
+    // when package is created - close modal and popu-up toast - Package Created Successfully 
+    // when centering map - reset zoom
+    // when opening office and delivery - centering is not correct
+    
 
-      this.showRouteOnMap(deliveryId);
+    if (truckMarkerTarget) {
+      console.log(truckMarkerTarget);
+      const deliveryId = truckMarkerTarget.getAttribute('delivery-id');
+      const delivery = (await this.deliveries).find(dl => dl._id === deliveryId)
+      const truckLngLat = delivery?.truckLoc;
+
       
       this.drawerService.openDrawer(DeliveryPreviewComponent, {'deliveryId': deliveryId});
       this.drawerOpened = true;
+      this.hideAllRoutes();
+      this.showRouteOnMap(deliveryId);
 
       this.resizeMap();
       this.moveCenterMap(truckLngLat)
     }
   }
 
-  resizeMap() {
-    setTimeout(() => {
-      this.map.resize();
-    }, 0);
+  async resizeMap() {
+    await this.mapReady
+    this.map.resize();
+    
   }
 
-  centerMap() {
-    setTimeout(() => {
-      this.map.flyTo({ center: [25.4858, 42.7339] });
-    }, 0)
+  async centerMap() {
+    await this.mapReady
+    this.map.flyTo({ center: [25.4858, 42.7339] });
+    
   }
 
-  moveCenterMap(coordinates: number[]) {
-    setTimeout(() => {
-      this.map.flyTo({ center: coordinates });
-    }, 0)
+  async moveCenterMap(coordinates: number[]) {
+    await this.mapReady
+    this.map.flyTo({ center: coordinates });
+    
   }
 
-  calculateTruckPoint(delivery: Delivery): GeoPoint  {
+  calculateTruckPoint(delivery: Delivery): { truckLatLng: GeoPoint; lastPathPointPassed: {}; }  {
     let truckLatLng: GeoPoint;
     const deliveryStartDate = +new Date(delivery.departureDate);
     const now = +new Date()
     const hoursPassed = (now - deliveryStartDate) / (60*60*1000);
     const velocity = 90;
-    const distancePassed = hoursPassed * velocity;
+    let distancePassed = hoursPassed * velocity;
     const pathPoints = delivery.route.path.points;
     const currPathPoint = pathPoints.find((pathPoint: PathPoint) => distancePassed === pathPoint.totalDistance);
     const startPathPoint = pathPoints[0];
     const endPathPoint = pathPoints[pathPoints.length-1];
+    let lastPathPointPassed = {}
 
     if(distancePassed < startPathPoint.totalDistance) {
       truckLatLng = startPathPoint.points;
+      lastPathPointPassed = startPathPoint;
     } else if(distancePassed > endPathPoint.totalDistance) {
-      truckLatLng = endPathPoint.points
+      truckLatLng = endPathPoint.points;
+      lastPathPointPassed = endPathPoint;
+      distancePassed = endPathPoint.distancePassed
     } else {
       if(currPathPoint) {
-        truckLatLng = currPathPoint.points
+        truckLatLng = currPathPoint.points;
+        lastPathPointPassed = currPathPoint;
       } else {
         const maxPathPoint: PathPoint = pathPoints.find((pathPoint: PathPoint) => pathPoint.totalDistance > distancePassed);
-        const minPathPoint: PathPoint = pathPoints[pathPoints.indexOf(maxPathPoint)-1]
+        const minPathPoint: PathPoint = pathPoints[pathPoints.indexOf(maxPathPoint)-1];
+        lastPathPointPassed = minPathPoint;
         const totalPointsDistanceDelta = maxPathPoint.difference;
         const currentDistanceDelta = distancePassed - minPathPoint.totalDistance;
-        const currentDistanceDeltaPerc = (currentDistanceDelta/totalPointsDistanceDelta)
+        const currentDistanceDeltaPerc = (currentDistanceDelta/totalPointsDistanceDelta);
   
         const totalLatDelta = maxPathPoint.points.lat - minPathPoint.points.lat;
         const totalLngDelta = maxPathPoint.points.lng - minPathPoint.points.lng;
-        const truckLat = minPathPoint.points.lat + (totalLatDelta) * currentDistanceDeltaPerc
-        const truckLng = minPathPoint.points.lng + (totalLngDelta) * currentDistanceDeltaPerc
+        const truckLat = minPathPoint.points.lat + (totalLatDelta) * currentDistanceDeltaPerc;
+        const truckLng = minPathPoint.points.lng + (totalLngDelta) * currentDistanceDeltaPerc;
         
-        truckLatLng = {lat: truckLat, lng: truckLng}
+        truckLatLng = {lat: truckLat, lng: truckLng};
       }
     }
     
-    return truckLatLng
+    return {truckLatLng, lastPathPointPassed}
   }
 
   showOfficesOnMap(offices: Office[]) {
     offices.forEach((office: Office) => {
-      const newOfficeMarker = new mapboxgl.Marker({ color: '#3366ff' })
+      const newOfficeMarker = new mapboxgl.Marker({ color: '#4E5F91' })
       newOfficeMarker.setLngLat({ lng: office.lng, lat: office.lat });
       newOfficeMarker.addTo(this.map)
       newOfficeMarker.getElement().classList.add('office-marker')
@@ -196,23 +260,54 @@ export class MapboxComponent implements OnInit, AfterViewInit {
   }
 
   showTruckOnMap(delivery: Delivery) {
-    const newTruckMarker = new mapboxgl.Marker({color: '#ff0000'});
-        const newTruckMarkerLngLat = this.calculateTruckPoint(delivery);
-        newTruckMarker.setLngLat(newTruckMarkerLngLat);
-        newTruckMarker.addTo(this.map);
-        newTruckMarker.getElement().classList.add('truck-marker');
-        newTruckMarker.getElement().setAttribute('delivery-id', delivery._id);
-        newTruckMarker.getElement().setAttribute('truck-location', JSON.stringify(newTruckMarkerLngLat));
+    // const truckMarkerEl = this.truckMarkers?.find(tm => tm.el.nativeElement.getAttribute('id') === delivery._id).el.nativeElement;
+    const {truckLatLng, lastPathPointPassed} = this.calculateTruckPoint(delivery);
+    
+    const newTruckMarkerEl = document.createElement('div');
+    newTruckMarkerEl.style.width = '27px'
+    newTruckMarkerEl.style.height = '41px'
+    newTruckMarkerEl.style.backgroundImage = 'url(../../../assets/images/truck-marker.svg)'
+    newTruckMarkerEl.style.top = '-15px';
+    // newTruckMarkerEl.style.position = 'relative';
+    
+
+    newTruckMarkerEl.classList.add('truck-marker');
+    newTruckMarkerEl.setAttribute('delivery-id', delivery._id);
+    
+    const newTruckMarker = new mapboxgl.Marker(newTruckMarkerEl)
+    newTruckMarker.setLngLat(truckLatLng);
+    newTruckMarker.addTo(this.map);
+    // newTruckMarker.getElement().classList.add('truck-marker');
+
+    delivery.truckLoc = truckLatLng;
+    delivery.lastPathPointPassed = lastPathPointPassed;
   }
 
-  showRouteOnMap(deliveryId: string) {
-      const routeLayers = this.map.getStyle().layers.filter((layer: any) => layer.id.includes('route'));
-      
-      routeLayers.forEach((layer: any) => {
-        this.map.setLayoutProperty(layer.id,'visibility','none')
-      })
+  async showRouteOnMap(deliveryId: string) {
+    await this.mapReady
+    this.map.setLayoutProperty(`route${deliveryId}`,'visibility','visible');
+    this.map.setLayoutProperty(`route-traveled${deliveryId}`,'visibility','visible')
 
-      this.map.setLayoutProperty(`route${deliveryId}`,'visibility','visible')
+  }
+
+  async hideAllRoutes() {
+    await this.mapReady
+    const routeLayers = this.map.getStyle().layers.filter((layer: any) => layer.id.includes('route'));
+    const routeTraveledLayers = this.map.getStyle().layers.filter((layer: any) => layer.id.includes('route-traveled'));
+
+    if(routeLayers){
+      routeLayers.forEach((layer: any) => {
+        // console.log(layer);
+        this.map.setLayoutProperty(layer.id,'visibility','none')
+      });
+    }
+
+    if(routeTraveledLayers){
+      routeTraveledLayers.forEach((layer: any) => {
+        // console.log(layer);
+        this.map.setLayoutProperty(layer.id,'visibility','none')
+      });
+    }
   }
 
 }

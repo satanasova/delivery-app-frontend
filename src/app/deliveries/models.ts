@@ -10,7 +10,10 @@ export type Delivery = {
   departureDate: Date;
   packages: string[] | Package[];
   status: DeliveryStatus,
-  route: any // TO DO: Route type
+  route: any, // TO DO: Route type
+  truckLoc?: any;
+  distancePassed?: any;
+  lastPathPointPassed: any;
 }
 
 export type Route = {

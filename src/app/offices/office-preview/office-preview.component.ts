@@ -31,8 +31,8 @@ export class OfficePreviewComponent implements OnInit, OnChanges  {
       this.packages = await this.pkgService.getPackagesInOffice(this.officeId);
       this.receivedPackages = this.packages.filter((pkg: Package) => pkg.status === PackageStatus.RECEIVED);
       this.deliveredPackages = this.packages.filter((pkg: Package) => pkg.status === PackageStatus.DELIVERED);
-      console.log(this.receivedPackages);
-      console.log(this.deliveredPackages);
+      // console.log(this.receivedPackages);
+      // console.log(this.deliveredPackages);
     }
 
     if(this.office) {

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MapboxComponent } from './mapbox/mapbox.component';
+import { NbIconModule } from '@nebular/theme';
 
 
 
@@ -9,7 +10,8 @@ import { MapboxComponent } from './mapbox/mapbox.component';
     MapboxComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    NbIconModule
   ],
   exports: [MapboxComponent]
 })

@@ -7,7 +7,7 @@
 <nb-card *ngIf="office">
   <nb-card-header>Office {{office.name}}</nb-card-header>
   <nb-card-body>
-    <app-display-item-card [data]="office" [itemConfig]="itemConfig"></app-display-item-card>
+    <app-display-item-card *ngIf="office.realPackages" [data]="office" [itemConfig]="itemConfig"></app-display-item-card>
   </nb-card-body>
 </nb-card>
 
