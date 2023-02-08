@@ -4,7 +4,7 @@ import { AllPackagesComponent } from './all-packages/all-packages.component';
 import { SinglePackageComponent } from './single-package/single-package.component';
 import { RouterModule } from '@angular/router';
 import { UtilsModule } from '../utils/utils.module';
-import { NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule, NbInputModule, NbListModule, NbSelectModule, NbSpinnerModule } from '@nebular/theme';
+import { NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule, NbInputModule, NbListModule, NbSelectModule, NbSpinnerModule, NbToastrModule } from '@nebular/theme';
 import { TableModule} from 'primeng/table';
 import { CreatePackageComponent } from './create-package/create-package.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -35,7 +35,8 @@ const routes = [
     NbInputModule,
     NbSelectModule,
     NbCheckboxModule,
-    NbSpinnerModule
+    NbSpinnerModule,
+    NbToastrModule.forRoot()
   ],
   providers: [ TitleCasePipe ]
 })

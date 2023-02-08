@@ -34,6 +34,10 @@ export class PackagesService {
     this.createPackageModal = this.dialogService.open(CreatePackageComponent)
   }
 
+  closeCreatePackageModal() {
+    this.createPackageModal?.close();
+  }
+
   createPackage(pkg: any) {
     this.http.post('http://localhost:3000/packages/', pkg).subscribe(data => console.log(data))
   }

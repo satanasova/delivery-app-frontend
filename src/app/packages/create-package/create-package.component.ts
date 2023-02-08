@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { NbCheckboxComponent } from '@nebular/theme';
+import { NbGlobalPhysicalPosition, NbToastrService } from '@nebular/theme';
+import { PositionOptions } from 'mapbox-gl';
 import { ClientsService } from 'src/app/clients/clients.service';
 import { Client } from 'src/app/clients/models';
 import { Office } from 'src/app/offices/models';
@@ -26,7 +27,7 @@ export class CreatePackageComponent implements OnInit {
   recipient: AbstractControl;
   
 
-  constructor(private officesService: OfficesService, private fb: FormBuilder, private packagesService: PackagesService, private clientsService: ClientsService) { 
+  constructor(private officesService: OfficesService, private fb: FormBuilder, private packagesService: PackagesService, private clientsService: ClientsService, private toastrService: NbToastrService) { 
     this.createPkgForm = fb.group({
       'size': ['', Validators.required],
       'description': [''],
@@ -55,8 +56,12 @@ export class CreatePackageComponent implements OnInit {
 
   
   onSubmit(pkg: Package) {
-    this.packagesService.createPackage(pkg);
+  //  this.packagesService.createPackage(pkg);
+   this.packagesService.closeCreatePackageModal();
+   this.toastrService.success('','Package created!', {position: NbGlobalPhysicalPosition.TOP_RIGHT, duration: 10000, icon: 'cube-outline'})
   }
+
+  
 }
 
 function differFields(propNameA: string, propNameB: string): ValidatorFn {

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit, Output, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import { map } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { DeliveriesService } from 'src/app/deliveries/deliveries.service';
 import { DeliveryPreviewComponent } from 'src/app/deliveries/delivery-preview/delivery-preview.component';
 import { Delivery, GeoPoint, PathPoint } from 'src/app/deliveries/models';
@@ -18,24 +18,24 @@ import { MapService } from '../map.service';
 })
 export class MapboxComponent implements OnInit, AfterViewInit {
   @ViewChild('mapContainer', { read: ViewContainerRef }) mapContainer?: ViewContainerRef;
-  // @ViewChildren('truckMarker') truckMarkers?: QueryList<any>;
   map: any;
   offices: Office[] = [];
   deliveries: Promise<Delivery[]>;
   drawerOpened: boolean = false;
-  mapReady: XPromise<any> = new XPromise<any>(() => {})
+  mapReady: XPromise<any> = new XPromise<any>(() => {});
+
   mapContainerResizeObserver: ResizeObserver = new ResizeObserver(entries => {
-    entries.forEach(entry => {
+    entries.forEach(async (entry) => {
       if (!this.drawerOpened) {
+        console.log('observer');
         this.resizeMap();
         this.centerMap();
         this.hideAllRoutes();
       } else {
-        this.resizeMap();
+        console.log('drawer opened - do nothing');
       }
     })
   });
-
 
   constructor(private mapService: MapService, private officesService: OfficesService, private drawerService: DrawerService, private deliveriesService: DeliveriesService) {
     console.log('start fetching deliveries');
@@ -150,11 +150,12 @@ export class MapboxComponent implements OnInit, AfterViewInit {
   async onClick(event: any) {
     const officeMarkerTarget = event.target.closest('.office-marker');
     const truckMarkerTarget = event.target.classList.contains('truck-marker') && event.target;
-    console.log(event.target);
+    // console.log(event.target);
 
     if (officeMarkerTarget) {
       const officeId = officeMarkerTarget.getAttribute('office-id');
       const office = this.offices.find(office => office._id === officeId);
+      this.hideAllRoutes();
 
       this.drawerService.openDrawer(OfficePreviewComponent, { 'officeId': officeId });
       this.drawerOpened = true;
@@ -171,7 +172,7 @@ export class MapboxComponent implements OnInit, AfterViewInit {
     
 
     if (truckMarkerTarget) {
-      console.log(truckMarkerTarget);
+      // console.log(truckMarkerTarget);
       const deliveryId = truckMarkerTarget.getAttribute('delivery-id');
       const delivery = (await this.deliveries).find(dl => dl._id === deliveryId)
       const truckLngLat = delivery?.truckLoc;
@@ -188,21 +189,31 @@ export class MapboxComponent implements OnInit, AfterViewInit {
   }
 
   async resizeMap() {
-    await this.mapReady
-    this.map.resize();
-    
+    await this.mapReady;
+
+    setTimeout(() => {
+      console.time('resize');
+      console.log('map resized');
+      this.map.resize();
+    }, 0)
   }
 
   async centerMap() {
     await this.mapReady
-    this.map.flyTo({ center: [25.4858, 42.7339] });
-    
+
+    setTimeout(() => {
+      this.map.flyTo({ center: [25.4858, 42.7339], zoom: 6.5 });
+      console.log('map centered');
+    }, 0)
   }
 
   async moveCenterMap(coordinates: number[]) {
     await this.mapReady
-    this.map.flyTo({ center: coordinates });
     
+    setTimeout(() => {
+      this.map.flyTo({ center: coordinates, zoom: 8 });
+      console.log('map moved');
+    }, 0)
   }
 
   calculateTruckPoint(delivery: Delivery): { truckLatLng: GeoPoint; lastPathPointPassed: {}; }  {
