@@ -38,7 +38,8 @@ export class PackagesService {
     this.createPackageModal?.close();
   }
 
-  createPackage(pkg: any) {
-    this.http.post('http://localhost:3000/packages/', pkg).subscribe(data => console.log(data))
+  createPackage(pkg: any): Promise<Package> {
+    return firstValueFrom(this.http.post<Package>('http://localhost:3000/packages/', pkg));
+   
   }
 }

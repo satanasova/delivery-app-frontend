@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NbGlobalPhysicalPosition, NbToastrService } from '@nebular/theme';
 import { PositionOptions } from 'mapbox-gl';
 import { ClientsService } from 'src/app/clients/clients.service';
@@ -27,7 +28,7 @@ export class CreatePackageComponent implements OnInit {
   recipient: AbstractControl;
   
 
-  constructor(private officesService: OfficesService, private fb: FormBuilder, private packagesService: PackagesService, private clientsService: ClientsService, private toastrService: NbToastrService) { 
+  constructor(private officesService: OfficesService, private fb: FormBuilder, private packagesService: PackagesService, private clientsService: ClientsService, private toastrService: NbToastrService, private router: Router) { 
     this.createPkgForm = fb.group({
       'size': ['', Validators.required],
       'description': [''],
@@ -55,10 +56,19 @@ export class CreatePackageComponent implements OnInit {
   }
 
   
-  onSubmit(pkg: Package) {
-  //  this.packagesService.createPackage(pkg);
-   this.packagesService.closeCreatePackageModal();
-   this.toastrService.success('','Package created!', {position: NbGlobalPhysicalPosition.TOP_RIGHT, duration: 10000, icon: 'cube-outline'})
+  async onSubmit(pkg: Package) {
+    const createdPkg: Package = await this.packagesService.createPackage(pkg);
+    this.packagesService.closeCreatePackageModal();
+
+    const toast = this.toastrService.success(
+      `From office ${createdPkg.originOffice.name} to office ${createdPkg.destinationOffice.name}`, 
+      'Package created!', 
+      {position: NbGlobalPhysicalPosition.TOP_RIGHT, duration: 10000, icon: 'cube-outline'});
+    
+    toast.onClick().subscribe(() => {
+      this.router.navigate(['packages', createdPkg._id])
+    })
+  
   }
 
   
