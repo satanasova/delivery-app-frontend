@@ -14,10 +14,13 @@ import { UsersModule } from './user/user.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ClientsModule } from './clients/clients.module';
 import { UtilsModule } from './utils/utils.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ChatModule } from './chat/chat.module';
 import { MapModule } from './map/map.module';
 import { DrawerModule } from './drawer/drawer.module';
+import { AuthModule } from './auth/auth.module';
+import { HeadersInterceptor } from './auth/headers-interceptor';
+import { UserService } from './user/user.service';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,7 @@ import { DrawerModule } from './drawer/drawer.module';
     UtilsModule,
     DrawerModule,
     AppRoutingModule,
+    AuthModule,
     BrowserAnimationsModule,
     HttpClientModule,
     NbThemeModule.forRoot({ name: 'dark' }),

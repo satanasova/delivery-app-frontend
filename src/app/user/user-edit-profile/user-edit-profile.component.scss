@@ -1,0 +1,76 @@
+.user-edit-profile-popup {
+  width: 80vw;
+  &--header {
+    text-align: center;
+  }
+  &--body {
+    padding: 2rem 5rem;
+    .user-display {
+      display: flex;
+      justify-content: space-around;
+      align-items: baseline;
+      padding: 0 4rem;
+
+      .edit-header {
+        display: flex;
+        align-items: baseline;
+        p {
+          font-size: 20px;
+        }
+      }
+
+      .user-avatar-section {
+        flex: 1;
+        padding-right: 3rem;
+        border-right: 1px solid;
+        .edit-header {
+          justify-content: space-between;
+          .edit-btn {
+            font-size: 18px;
+          }
+        }
+        .user-avatar {
+          text-align: center;
+          img {
+            width: 20vw;
+            height: 20vw;
+            object-fit: cover;
+            object-position: top;
+            border-radius: 50%;
+            border: var(--user-picture-box-border-width) solid var(--user-picture-box-border-color);
+          }
+        }
+      }
+
+      .user-details {
+        flex: 1;
+        padding-left: 3rem;
+        &-row {
+          .edit-header {
+            p {
+              padding-right: .5rem;
+              margin-bottom: 0;
+            }
+          }
+
+        }
+
+      }
+    }
+    .user-actions {
+      text-align: center;
+      padding-top: 3rem;
+      button {
+        margin: 1rem;
+        min-width: 15vw;
+      }
+    }
+
+    
+  }
+  
+}
+
+.file-input {
+  display: none;
+}

@@ -1,7 +1,7 @@
 <nb-card class="popup user-login-popup" accent="info" >
   <nb-card-header class="popup--header user-login-popup--header">Login</nb-card-header>
   <nb-card-body class="popup--body user-login-popup--body">
-    <form (ngSubmit)="loginForm.valid && userService.login(emailInput.value, passwordInput.value)" [formGroup]="loginForm" class="form">
+    <form (ngSubmit)="loginForm.valid && onlogin()" [formGroup]="loginForm" class="form">
       <input class="form-input" 
         type="email" 
         nbInput 
@@ -9,8 +9,7 @@
         required
         minlength="6"
         name="email"
-        [formControl]="email"
-        #emailInput>
+        [formControl]="email">
       <p *ngIf="email.touched && email.hasError('required')" class="caption status-danger error-message">Email is required</p>
       <p *ngIf="email.touched && email.hasError('email')" class="caption status-danger error-message">Email format is not valid</p>
   
@@ -21,8 +20,7 @@
           nbInput 
           placeholder="password"
           name="password"
-          [formControl]="password"
-          #passwordInput>
+          [formControl]="password">
 
         <nb-icon (click)="toggleShowPassword()" nbSuffix nbButton ghost [icon]="showPassword ? 'eye-outline' : 'eye-off-outline'"></nb-icon>
       </nb-form-field>

@@ -37,13 +37,21 @@ export class UserHeaderSectionComponent implements OnInit {
 
   openLoginModal() {
     this.userLoginModal = this.dialogService.open(UserLoginComponent);
-    const subsciption = (this.userLoginModal.componentRef.instance as UserLoginComponent).signUpClicked.subscribe(() => {
+
+    const subsciptionSignup = (this.userLoginModal.componentRef.instance as UserLoginComponent).signUpClicked.subscribe(() => {
       this.userLoginModal?.close();
       this.openSignupModal();
-      subsciption.unsubscribe();
+      subsciptionSignup.unsubscribe();
+    });
+
+    const subsciptionLogin = (this.userLoginModal.componentRef.instance as UserLoginComponent).loginClicked.subscribe(() => {
+      this.userLoginModal?.close();
+      subsciptionLogin.unsubscribe();
     })
+
     this.userLoginModal.onClose.subscribe(() => {
-      subsciption.unsubscribe();
+      subsciptionSignup.unsubscribe();
+      subsciptionLogin.unsubscribe();
     })
   }
 

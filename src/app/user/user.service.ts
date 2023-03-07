@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
+import { HttpBackend, HttpClient } from '@angular/common/http';
+import { Injectable, Injector } from '@angular/core';
 import { NbDialogRef, NbDialogService } from '@nebular/theme';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { XPromise } from '../utils/custom-promise';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserSignupComponent } from './user-signup/user-signup.component';
@@ -10,20 +12,42 @@ import { UsersModule } from './user.module';
 @Injectable()
 export class UserService {
   loggedUser: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+  authToken?: string;
+  http: HttpClient;
 
 
-  constructor() {
+  constructor(private httpBackend: HttpBackend) {
+    this.http = new HttpClient(httpBackend);
     // this.loggedUser = this.getLoggedInUser();
-    this.fetchLoggedUser();
+    this.fetchUserFromStorage();
   }
 
-  fetchLoggedUser() {
-    const userHaci: User = {id:'23', name: 'Haci Hacev', email: 'hackohackob@gmail.com', avatarUrl: 'https://ih1.redbubble.net/image.2253860100.5603/poster,504x498,f8f8f8-pad,600x600,f8f8f8.jpg'};
-    this.loggedUser?.next(userHaci)
+  fetchUserFromStorage() {
+    // TODO: try to get logged user from localStorage and if the token has not expired - push it in the behaviour subject
+    // this.loggedUser?.next(userHaci)
+    this.http.get('http://localhost:3000/api/request-info').subscribe(data => console.log(data))
   }
 
-  login(username: any, password: any) {
-    console.log('login for user', username, password);
+  login(email: any, password: any) {
+    const loginResponse = new Promise<object | string>((res, rej) => {
+      if (Math.random() < 0.5) {
+        //TODO get user and token ?
+        const userData = {
+          user: { id: '24', name: 'Pecka Shmecka', email, avatarUrl: 'https://ih1.redbubble.net/image.2253860100.5603/poster,504x498,f8f8f8-pad,600x600,f8f8f8.jpg' },
+          token: `${email.split('@')[0]}#10010${Math.round(Math.random() * 100)}`
+        }
+        this.loggedUser.next(userData.user);
+        this.authToken = userData.token;
+        res(userData)
+      } else {
+        rej('wrong pass')
+      }
+    })
+
+    // const loginResult = await loginResponse
+    // console.log(loginResponse);
+
+    return loginResponse
     // http request
     // get user
     // this.loggedUser.next(user)
@@ -41,8 +65,12 @@ export class UserService {
     // this.userProfileModal?.close()
   }
 
-  changeProfileImage(image: any) {
-    console.log('changing image of current user')
+  postNewProfilePicture(fileToUpload: File) {
+    const formData: FormData = new FormData();
+    formData.append('fileKey', fileToUpload, fileToUpload.name)
+    console.log('changing image of current user');
+    // TODO
+    // post formData to some endpoint
   }
 
 }

@@ -11,6 +11,7 @@ import { UserService } from '../user.service';
 })
 export class UserLoginComponent implements OnInit {
   @Output() signUpClicked: EventEmitter<any> = new EventEmitter;
+  @Output() loginClicked: EventEmitter<any> = new EventEmitter;
   showPassword: boolean = false;
   loginForm: FormGroup;
   email: AbstractControl;
@@ -19,10 +20,10 @@ export class UserLoginComponent implements OnInit {
 
   constructor(private fb: FormBuilder, public userService: UserService) {
     this.loginForm = this.fb.group({
-      'email': ['', Validators.compose([
+      'email': ['siyana.atanasov@gmail.com', Validators.compose([
         Validators.required, Validators.email,
       ])],
-      'password': ['', Validators.compose([
+      'password': ['peckatrycka', Validators.compose([
         Validators.required, Validators.minLength(6)
       ])]
     });
@@ -48,8 +49,12 @@ export class UserLoginComponent implements OnInit {
 
   }
 
-  onlogin(formValue: any) {
-    console.log(formValue);
+  async onlogin() {
+    // console.log(this.email, this.password);
+    const loggedUser = await this.userService.login(this.email.value, this.password.value);
+    this.loginClicked.emit();
+    console.log(loggedUser);
   }
+
 
 }

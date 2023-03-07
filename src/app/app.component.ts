@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { NbMenuItem, NbMenuService, NbSidebarComponent, NbSidebarService, NbSidebarState, NbThemeService } from '@nebular/theme';
 import { UserService } from './user/user.service';
@@ -57,7 +58,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     private menuService: NbMenuService,
     private settingsService: SettingsService,
     private themeService: NbThemeService,
-    public userService: UserService
+    public userService: UserService,
+    private http: HttpClient
     ) {
   }
 
@@ -80,5 +82,12 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   toggleSidebar() {
     this.sidebarService.toggle(true, 'menu')
+  }
+
+  testRequest() {
+    this.http.get('http://localhost:3000/api/request-info').subscribe((res: any) => {
+      console.log(res);
+      console.log(res['headers'])
+    })
   }
 }

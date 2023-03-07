@@ -67,11 +67,6 @@ export class MapboxComponent implements OnInit, AfterViewInit {
       });
 
       (await this.deliveries).map((delivery: Delivery) => {
-        // const lastPointMarker =  new mapboxgl.Marker({color: 'yellow'});
-        // lastPointMarker.setLngLat(delivery.lastPathPointPassed.points);
-        // lastPointMarker.addTo(this.map)
-
-        // const routeCoordinates = delivery.route.path.points.map((point: any) => [point.points.lng, point.points.lat]);
         const routePathPoints = delivery.route.path.points;
 
         const routeTraveledPathPoints = routePathPoints.slice(0,routePathPoints.indexOf(delivery.lastPathPointPassed) + 1);
@@ -165,11 +160,6 @@ export class MapboxComponent implements OnInit, AfterViewInit {
         this.moveCenterMap([office.lng, office.lat]);
       }
     }
-
-    // when package is created - close modal and popu-up toast - Package Created Successfully 
-    // when centering map - reset zoom
-    // when opening office and delivery - centering is not correct
-    
 
     if (truckMarkerTarget) {
       // console.log(truckMarkerTarget);

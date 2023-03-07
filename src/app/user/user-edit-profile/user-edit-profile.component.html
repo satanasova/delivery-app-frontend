@@ -1,0 +1,45 @@
+<nb-card class="user-edit-profile-popup" accent="info" >
+  <nb-card-header class="user-edit-profile-popup--header">Edit Profile</nb-card-header>
+  <nb-card-body class="user-edit-profile-popup--body">
+    <div class="user-display">
+      <div class="user-avatar-section">
+        <div class="edit-header">
+          <p>Profile Picture</p>
+          <div>
+            <input class="file-input" type="file" (change)="changeAvatar($event.target.files)" accept="image/png, image/jpeg, image/jpg" #fileUpload>
+            <a class="edit-btn text-link" (click)="fileUpload.click()">Edit</a>
+          </div>
+        </div>
+
+        <div class="user-avatar">
+          <img [src]="newAvatarUrl || (userService.loggedUser | async)?.avatarUrl" alt="">
+        </div>
+      </div>
+      
+      <div class="user-details">
+        <div class="user-details-row">
+          <div class="edit-header"> 
+            <p>Name</p>
+            <nb-icon icon="edit-2-outline" class="text-link"></nb-icon>
+          </div>
+          <p>{{(userService.loggedUser | async)?.name}}</p>  
+        </div>
+        
+        <div class="user-details-row">
+          <div class="edit-header">
+            <p>Email</p>
+            <span><nb-icon icon="edit-2-outline" class="text-link"></nb-icon></span>
+          </div>
+          <p>{{(userService.loggedUser | async)?.email}}</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="user-actions">
+      <button (click)="onSave()" nbButton outline status="info" focus="false">Save</button>
+      <button (click)="onClose()" nbButton outline status="danger">Close</button>
+    </div>
+    
+  </nb-card-body>
+</nb-card>
