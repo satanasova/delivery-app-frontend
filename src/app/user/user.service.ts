@@ -14,6 +14,8 @@ export class UserService {
   loggedUser: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
   authToken?: string;
   http: HttpClient;
+  userData = {
+  }
 
 
   constructor(private httpBackend: HttpBackend) {
@@ -36,9 +38,10 @@ export class UserService {
           user: { id: '24', name: 'Pecka Shmecka', email, avatarUrl: 'https://ih1.redbubble.net/image.2253860100.5603/poster,504x498,f8f8f8-pad,600x600,f8f8f8.jpg' },
           token: `${email.split('@')[0]}#10010${Math.round(Math.random() * 100)}`
         }
+
         this.loggedUser.next(userData.user);
         this.authToken = userData.token;
-        res(userData)
+        res(this.userData)
       } else {
         rej('wrong pass')
       }
@@ -65,12 +68,20 @@ export class UserService {
     // this.userProfileModal?.close()
   }
 
-  postNewProfilePicture(fileToUpload: File) {
-    const formData: FormData = new FormData();
-    formData.append('fileKey', fileToUpload, fileToUpload.name)
-    console.log('changing image of current user');
+  updateUserDetails({...details}) {
+    console.log(details);
+    const user = this.loggedUser.value;
+    if (user) {
+      Object.keys(details).forEach((key: string) => {
+        (user as any)[key] = details[key]
+      })
+      this.loggedUser.next(user);
+    }
+
+  
+    console.log('changing details of current user');
     // TODO
-    // post formData to some endpoint
+    // post new details to some endpoint
   }
 
 }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserSignupComponent } from './user-signup/user-signup.component';
 import { UserLoginComponent } from './user-login/user-login.component';
-import { NbButtonModule, NbCardModule, NbDialogModule, NbFormFieldModule, NbIconModule, NbInputModule, NbUserModule } from '@nebular/theme';
+import { NbButtonModule, NbCardModule, NbDialogModule, NbFormFieldModule, NbIconModule, NbInputModule, NbToastrModule, NbUserModule } from '@nebular/theme';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UtilsModule } from '../utils/utils.module';
 import { UserHeaderSectionComponent } from './user-header-section/user-header-section.component';
@@ -31,7 +31,8 @@ import { UserEditProfileComponent } from './user-edit-profile/user-edit-profile.
     NbIconModule,
     UtilsModule,
     NbDialogModule,
-    NbUserModule
+    NbUserModule,
+    NbToastrModule.forRoot()
   ],
   exports: [UserHeaderSectionComponent],
   providers: [UserService],

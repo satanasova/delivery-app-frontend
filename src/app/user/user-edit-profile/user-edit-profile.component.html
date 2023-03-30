@@ -12,25 +12,45 @@
         </div>
 
         <div class="user-avatar">
-          <img [src]="newAvatarUrl || (userService.loggedUser | async)?.avatarUrl" alt="">
+          <img [src]="avatarUrl || loggedUser?.avatarUrl" alt="">
         </div>
       </div>
       
       <div class="user-details">
         <div class="user-details-row">
-          <div class="edit-header"> 
-            <p>Name</p>
-            <nb-icon icon="edit-2-outline" class="text-link"></nb-icon>
-          </div>
-          <p>{{(userService.loggedUser | async)?.name}}</p>  
+          <p>Name</p>
+          <input class="form-input" nbInput size="small" [(ngModel)]="name">
         </div>
         
         <div class="user-details-row">
-          <div class="edit-header">
-            <p>Email</p>
-            <span><nb-icon icon="edit-2-outline" class="text-link"></nb-icon></span>
-          </div>
-          <p>{{(userService.loggedUser | async)?.email}}</p>
+          <p>Email</p>
+          <input class="form-input" nbInput size="small" [(ngModel)]="email">
+        </div>
+
+        <div class="user-details-row">
+          <p>Change Password</p>
+
+          <nb-form-field class="form-input">
+            <input type="password" nbInput placeholder="old password" [(ngModel)]="oldPassword" #oldPasswordInput>
+            <nb-icon (click)="togglePasswordFieldVisibility(oldPasswordInput)" nbSuffix nbButton ghost [icon]="oldPasswordInput.type==='password' ? 'eye-outline' : 'eye-off-outline'"></nb-icon>
+          </nb-form-field>
+          <!-- <p *ngIf="password.touched && password.hasError('required')" class="caption status-danger error-message">Password is required</p>
+          <p *ngIf="password.touched && password.hasError('minlength')" class="caption status-danger error-message">Password should be at least 6 charecters long</p> -->
+
+
+          <nb-form-field class="form-input">
+            <input type="password" nbInput placeholder="password" [(ngModel)]="password" #passwordInput>
+            <nb-icon (click)="togglePasswordFieldVisibility(passwordInput)" nbSuffix nbButton ghost [icon]="passwordInput.type==='password' ? 'eye-outline' : 'eye-off-outline'"></nb-icon>
+          </nb-form-field>
+          <!-- <p *ngIf="password.touched && password.hasError('required')" class="caption status-danger error-message">Password is required</p>
+          <p *ngIf="password.touched && password.hasError('minlength')" class="caption status-danger error-message">Password should be at least 6 charecters long</p> -->
+    
+          <nb-form-field class="form-input">
+            <input  type="password"  nbInput  placeholder="confirm password" [(ngModel)]="confirmedPassword" #confirmedPasswordInput>
+            <nb-icon (click)="togglePasswordFieldVisibility(confirmedPasswordInput)" nbSuffix nbButton ghost [icon]="confirmedPasswordInput.type==='password' ? 'eye-outline' : 'eye-off-outline'"></nb-icon>
+          </nb-form-field>
+          <!-- <p *ngIf="confirmedPassword.touched && confirmedPassword.hasError('required')" class="caption status-danger error-message">Confirmed password is required</p>
+          <p *ngIf="confirmedPassword.touched && confirmedPassword.hasError('valueMatch')" class="caption status-danger error-message">Confirmed password should match Password</p> -->
         </div>
       </div>
 

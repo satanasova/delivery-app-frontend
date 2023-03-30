@@ -1,3 +1,3 @@
-<nb-user *ngIf="user" (click)="openUserProfileModal()" [name]="user.name || ''"  showName=false  [picture]="user.avatarUrl || ''"></nb-user>
+<nb-user *ngIf="user" (click)="openUserProfileModal()" [name]="user.name || ''"  showName=false  [picture]="user.avatarUrl.changingThisBreaksApplicationSecurity || user.avatarUrl"></nb-user>
 
 <button *ngIf="!user" (click)="openLoginModal()" nbButton hero status="primary" size="small"> Log In </button>
