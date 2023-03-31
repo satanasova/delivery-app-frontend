@@ -16,18 +16,18 @@ export class PackagesService {
 
   async getAllPackages(ignoreCache = false): Promise<Package[]> {
     // if (this.allPackages.length === 0 || ignoreCache) {
-      this.allPackages = (await firstValueFrom(this.http.get<Package[]>('http://localhost:3000/packages/')));
+      this.allPackages = (await firstValueFrom(this.http.get<Package[]>('http://http://77.71.12.146:3000/packages/')));
     // } 
     
     return this.allPackages;
   }  
 
   getSinglePackage(packageId: string): Promise<Package> {
-    return firstValueFrom((this.http.get<Package>(`http://localhost:3000/packages/${packageId}`)))
+    return firstValueFrom((this.http.get<Package>(`http://http://77.71.12.146:3000/packages/${packageId}`)))
   }
 
   getPackagesInOffice(officeId: string): Promise<Package[]> {
-    return firstValueFrom((this.http.get<Package[]>(`http://localhost:3000/packages/in-office/${officeId}`)))
+    return firstValueFrom((this.http.get<Package[]>(`http://http://77.71.12.146:3000/packages/in-office/${officeId}`)))
   }
 
   openCreatePackageModal() {
@@ -39,7 +39,7 @@ export class PackagesService {
   }
 
   createPackage(pkg: any): Promise<Package> {
-    return firstValueFrom(this.http.post<Package>('http://localhost:3000/packages/', pkg));
+    return firstValueFrom(this.http.post<Package>('http://http://77.71.12.146:3000/packages/', pkg));
    
   }
 }

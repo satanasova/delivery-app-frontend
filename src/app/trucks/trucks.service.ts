@@ -12,12 +12,12 @@ export class TrucksService {
   constructor(private http: HttpClient) { }
 
   async getAllTrucks() {
-    this.allTrucks = await firstValueFrom(this.http.get<Truck[]>('http://localhost:3000/trucks/'));
+    this.allTrucks = await firstValueFrom(this.http.get<Truck[]>('http://http://77.71.12.146:3000/trucks/'));
 
     return this.allTrucks;
   }
 
   getSingleTruck(truckId: string): Promise<Truck> {
-    return firstValueFrom(this.http.get<Truck>(`http://localhost:3000/trucks/${truckId}`));
+    return firstValueFrom(this.http.get<Truck>(`http://http://77.71.12.146:3000/trucks/${truckId}`));
   }
 }

@@ -85,7 +85,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   testRequest() {
-    this.http.get('http://localhost:3000/api/request-info').subscribe((res: any) => {
+    this.http.get('http://http://77.71.12.146:3000/api/request-info').subscribe((res: any) => {
       console.log(res);
       console.log(res['headers'])
     })

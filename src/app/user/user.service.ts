@@ -27,7 +27,7 @@ export class UserService {
   fetchUserFromStorage() {
     // TODO: try to get logged user from localStorage and if the token has not expired - push it in the behaviour subject
     // this.loggedUser?.next(userHaci)
-    this.http.get('http://localhost:3000/api/request-info').subscribe(data => console.log(data))
+    this.http.get('http://http://77.71.12.146:3000/api/request-info').subscribe(data => console.log(data))
   }
 
   login(email: any, password: any) {

@@ -11,12 +11,12 @@ export class OfficesService {
   constructor(private http: HttpClient) { }
 
   getAllOffices(): Promise<Office[]> {
-    return firstValueFrom(this.http.get<Office[]>('http://localhost:3000/offices/'))
+    return firstValueFrom(this.http.get<Office[]>('http://http://77.71.12.146:3000/offices/'))
   }
 
   getOffice(officeId: string): Promise<Office> {
-    this.http.get<Office>(`http://localhost:3000/offices/${officeId}`).subscribe((data) => {
+    this.http.get<Office>(`http://http://77.71.12.146:3000/offices/${officeId}`).subscribe((data) => {
     })
-    return firstValueFrom(this.http.get<Office>(`http://localhost:3000/offices/${officeId}`))
+    return firstValueFrom(this.http.get<Office>(`http://http://77.71.12.146:3000/offices/${officeId}`))
   }
 } 
