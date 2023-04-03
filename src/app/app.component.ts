@@ -66,6 +66,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {}
 
   async ngOnInit() {
+    console.log('app component init');
     this.settingsService.onSettingsChanged((settings) => {
       this.themeService.changeTheme(settings.theme);
     });
