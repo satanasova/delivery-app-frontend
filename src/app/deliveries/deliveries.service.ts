@@ -12,10 +12,10 @@ export class DeliveriesService {
   
 
   getAllDeliveries(): Promise<Delivery[]> {
-    return firstValueFrom(this.http.get<Delivery[]>('http://http://77.71.12.146:3000/deliveries/'))
+    return firstValueFrom(this.http.get<Delivery[]>('http://77.71.12.146:3000/deliveries/'))
   }
 
   getDelivery(deliveryId: string) {
-    return firstValueFrom(this.http.get<Delivery>(`http://http://77.71.12.146:3000/deliveries/${deliveryId}`))
+    return firstValueFrom(this.http.get<Delivery>(`http://77.71.12.146:3000/deliveries/${deliveryId}`))
   }
 }
