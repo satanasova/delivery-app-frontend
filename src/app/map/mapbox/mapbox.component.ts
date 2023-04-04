@@ -89,7 +89,7 @@ export class MapboxComponent implements OnInit, AfterViewInit {
             }
           }
         });
-  
+
         this.map.addLayer({
           'id': `route-traveled${delivery._id}`,
           'type': 'line',
@@ -116,7 +116,7 @@ export class MapboxComponent implements OnInit, AfterViewInit {
             }
           }
         });
-  
+
         this.map.addLayer({
           'id': `route${delivery._id}`,
           'type': 'line',
@@ -167,7 +167,7 @@ export class MapboxComponent implements OnInit, AfterViewInit {
       const delivery = (await this.deliveries).find(dl => dl._id === deliveryId)
       const truckLngLat = delivery?.truckLoc;
 
-      
+
       this.drawerService.openDrawer(DeliveryPreviewComponent, {'deliveryId': deliveryId});
       this.drawerOpened = true;
       this.hideAllRoutes();
@@ -199,7 +199,7 @@ export class MapboxComponent implements OnInit, AfterViewInit {
 
   async moveCenterMap(coordinates: number[]) {
     await this.mapReady
-    
+
     setTimeout(() => {
       this.map.flyTo({ center: coordinates, zoom: 8 });
       console.log('map moved');
@@ -237,16 +237,16 @@ export class MapboxComponent implements OnInit, AfterViewInit {
         const totalPointsDistanceDelta = maxPathPoint.difference;
         const currentDistanceDelta = distancePassed - minPathPoint.totalDistance;
         const currentDistanceDeltaPerc = (currentDistanceDelta/totalPointsDistanceDelta);
-  
+
         const totalLatDelta = maxPathPoint.points.lat - minPathPoint.points.lat;
         const totalLngDelta = maxPathPoint.points.lng - minPathPoint.points.lng;
         const truckLat = minPathPoint.points.lat + (totalLatDelta) * currentDistanceDeltaPerc;
         const truckLng = minPathPoint.points.lng + (totalLngDelta) * currentDistanceDeltaPerc;
-        
+
         truckLatLng = {lat: truckLat, lng: truckLng};
       }
     }
-    
+
     return {truckLatLng, lastPathPointPassed}
   }
 
@@ -263,18 +263,18 @@ export class MapboxComponent implements OnInit, AfterViewInit {
   showTruckOnMap(delivery: Delivery) {
     // const truckMarkerEl = this.truckMarkers?.find(tm => tm.el.nativeElement.getAttribute('id') === delivery._id).el.nativeElement;
     const {truckLatLng, lastPathPointPassed} = this.calculateTruckPoint(delivery);
-    
+
     const newTruckMarkerEl = document.createElement('div');
     newTruckMarkerEl.style.width = '27px'
     newTruckMarkerEl.style.height = '41px'
     newTruckMarkerEl.style.backgroundImage = 'url(../../../assets/images/truck-marker.svg)'
     newTruckMarkerEl.style.top = '-15px';
     // newTruckMarkerEl.style.position = 'relative';
-    
+
 
     newTruckMarkerEl.classList.add('truck-marker');
     newTruckMarkerEl.setAttribute('delivery-id', delivery._id);
-    
+
     const newTruckMarker = new mapboxgl.Marker(newTruckMarkerEl)
     newTruckMarker.setLngLat(truckLatLng);
     newTruckMarker.addTo(this.map);

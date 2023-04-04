@@ -41,7 +41,7 @@ import { UserService } from './user/user.service';
     AuthModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    NbThemeModule.forRoot({ name: 'dark' }),
+    NbThemeModule.forRoot({ name: 'dark'}),
     NbLayoutModule,
     NbEvaIconsModule,
     NbIconModule,
@@ -49,9 +49,10 @@ import { UserService } from './user/user.service';
     NbMenuModule.forRoot(),
     NbCardModule,
     NbButtonModule,
-    NbUserModule, 
+    NbUserModule,
     ChatModule,
-    MapModule
+    MapModule,
+    NbThemeModule.forRoot({ name: 'corporate' })
   ],
   providers: [],
   bootstrap: [AppComponent]

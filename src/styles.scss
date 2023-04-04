@@ -28,7 +28,7 @@
       &:last-child {
         border-bottom: 0;
       }
-      
+
       &>* {
         padding: var(--list-item-padding);
         &.key-list {
@@ -42,6 +42,15 @@
     }
   }
 
+  nb-layout .layout .layout-container .content .columns nb-layout-column {
+    padding: 0!important;
+  }
+
+  // nb-layout-header.fixed~.layout-container {
+  //   padding-top: 0!important;
+  // }
+
+
   .nb-form-control-container {
     max-width: unset;
     [nbInput].size-medium:not(.input-full-width){
@@ -54,10 +63,10 @@
     &--header {
       text-align: center;
     }
-  
+
     &--body {
       padding: 2rem 5rem;
-  
+
       .form {
         display: flex;
         flex-direction: column;
@@ -77,7 +86,7 @@
           margin-top: -13px;
           padding: 5px;
           min-width: 50vw;
-      
+
           // margin: 0 auto;
           // margin-top: -16px;
           // width: 50% !important;
@@ -90,7 +99,7 @@
           // border: 1px solid var(--text-danger-color);
         }
       }
-  
+
       .social-buttons {
         display: flex;
         flex-direction: column;
@@ -114,21 +123,21 @@
     //   // width: $size;
     //   // height: $size;
     // }
-  
+
     // &::-webkit-scrollbar-thumb {
     //   background: color-info-500;
     //   cursor: pointer;
     //   border-radius: $border-radius;
     // }
-  
+
     // &::-webkit-scrollbar-track {
     //   background: $bg;
     // }
-  
+
     // &::-webkit-scrollbar-corner {
     //   background: $bg;
     // }
   }
-  
+
 };
 /* You can add global styles to this file, and also import other style files */
