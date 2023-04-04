@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Delivery } from './models';
 
 @Injectable({
@@ -9,13 +10,13 @@ import { Delivery } from './models';
 export class DeliveriesService {
 
   constructor(private http: HttpClient) { }
-  
+
 
   getAllDeliveries(): Promise<Delivery[]> {
-    return firstValueFrom(this.http.get<Delivery[]>('http://77.71.12.146:3000/deliveries/'))
+    return firstValueFrom(this.http.get<Delivery[]>(`${environment.apiURL}/deliveries/`))
   }
 
   getDelivery(deliveryId: string) {
-    return firstValueFrom(this.http.get<Delivery>(`http://77.71.12.146:3000/deliveries/${deliveryId}`))
+    return firstValueFrom(this.http.get<Delivery>(`${environment.apiURL}/deliveries/${deliveryId}`))
   }
 }

@@ -2,6 +2,7 @@ import { HttpBackend, HttpClient } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { NbDialogRef, NbDialogService } from '@nebular/theme';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { XPromise } from '../utils/custom-promise';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
@@ -27,7 +28,7 @@ export class UserService {
   fetchUserFromStorage() {
     // TODO: try to get logged user from localStorage and if the token has not expired - push it in the behaviour subject
     // this.loggedUser?.next(userHaci)
-    this.http.get('http://77.71.12.146:3000/api/request-info').subscribe(data => console.log(data))
+    this.http.get(`${environment.apiURL}/api/request-info`).subscribe(data => console.log(data))
   }
 
   login(email: any, password: any) {
@@ -78,7 +79,7 @@ export class UserService {
       this.loggedUser.next(user);
     }
 
-  
+
     console.log('changing details of current user');
     // TODO
     // post new details to some endpoint
