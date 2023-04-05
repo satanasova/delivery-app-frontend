@@ -267,7 +267,7 @@ export class MapboxComponent implements OnInit, AfterViewInit {
     const newTruckMarkerEl = document.createElement('div');
     newTruckMarkerEl.style.width = '27px'
     newTruckMarkerEl.style.height = '41px'
-    newTruckMarkerEl.style.backgroundImage = 'url(../../../assets/images/truck-marker.svg)'
+    newTruckMarkerEl.style.backgroundImage = 'url(./assets/images/truck-marker.svg)'
     newTruckMarkerEl.style.top = '-15px';
     // newTruckMarkerEl.style.position = 'relative';
 
