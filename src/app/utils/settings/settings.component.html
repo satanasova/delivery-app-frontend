@@ -4,7 +4,7 @@
     <nb-card class="theme-select">
       <nb-card-header>Change Theme:</nb-card-header>
       <nb-card-body>
-        <nb-radio-group [(ngModel)]="themeOption">
+        <nb-radio-group name="theme" [(ngModel)]="themeOption">
           <nb-radio 
             *ngFor="let themeOption of themeOptions"
             [value]="themeOption.value">
@@ -14,18 +14,26 @@
       </nb-card-body>
     </nb-card>
 
-    <nb-card class="Language-select">
-      <nb-card-header>Chnage Language:</nb-card-header>
+    <nb-card class="language-select">
+      <nb-card-header>Change Language:</nb-card-header>
       <nb-card-body>
-        <nb-radio-group [(ngModel)]="langOption">
+        <nb-radio-group name="lang" [(ngModel)]="langOption">
           <nb-radio 
             *ngFor="let langOption of languageOptions"
-            [value]="langOption.value"
-            [checked]="langOption.checked">
+            [value]="langOption.value">
             {{ langOption.label }}
           </nb-radio>
         </nb-radio-group>
       </nb-card-body>
     </nb-card>
+
+    <nb-card class="api-url-change">
+      <nb-card-header>Change API URL:</nb-card-header>
+      <nb-card-body>
+        <input nbInput [(ngModel)]="apiURL" size="large" type="text">
+        <button nbButton (click)="changeUrl()" size="small">Change</button>
+      </nb-card-body>
+    </nb-card>
+
   </nb-card-body>
 </nb-card>

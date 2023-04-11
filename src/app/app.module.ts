@@ -51,8 +51,7 @@ import { UserService } from './user/user.service';
     NbButtonModule,
     NbUserModule,
     ChatModule,
-    MapModule,
-    NbThemeModule.forRoot({ name: 'corporate' })
+    MapModule
   ],
   providers: [],
   bootstrap: [AppComponent]
