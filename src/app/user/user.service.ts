@@ -9,6 +9,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserSignupComponent } from './user-signup/user-signup.component';
 import { User } from './user.model';
 import { UsersModule } from './user.module';
+import { SettingsService } from '../utils/settings/settings.service';
 
 @Injectable()
 export class UserService {
@@ -19,7 +20,7 @@ export class UserService {
   }
 
 
-  constructor(private httpBackend: HttpBackend) {
+  constructor(private httpBackend: HttpBackend, private settingsService: SettingsService) {
     this.http = new HttpClient(httpBackend);
     // this.loggedUser = this.getLoggedInUser();
     this.fetchUserFromStorage();
@@ -28,7 +29,7 @@ export class UserService {
   fetchUserFromStorage() {
     // TODO: try to get logged user from localStorage and if the token has not expired - push it in the behaviour subject
     // this.loggedUser?.next(userHaci)
-    this.http.get(`${environment.apiURL}/api/request-info`).subscribe(data => console.log(data))
+    this.http.get(`${this.settingsService.getSetting('apiURL') || environment.apiURL}/api/request-info`).subscribe(data => console.log(data))
   }
 
   login(email: any, password: any) {
