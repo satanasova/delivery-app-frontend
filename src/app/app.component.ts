@@ -3,7 +3,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewContainerR
 import { NbMenuItem, NbMenuService, NbSidebarComponent, NbSidebarService, NbSidebarState, NbThemeService } from '@nebular/theme';
 import { UserService } from './user/user.service';
 import { SettingsService } from './utils/settings/settings.service';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-root',
@@ -88,10 +88,4 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.sidebarService.toggle(true, 'menu')
   }
 
-  testRequest() {
-    this.http.get(`${this.settingsService.getSetting('apiURL') || environment.apiURL}/api/request-info`).subscribe((res: any) => {
-      console.log(res);
-      console.log(res['headers'])
-    })
-  }
 }
