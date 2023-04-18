@@ -24,6 +24,7 @@ export class SettingsComponent implements OnInit {
 
   constructor(private settingsService: SettingsService) { 
     this.settingsService.onSettingsChanged((settings) => {
+      console.log('settings changed');
       this._themeOption = settings.theme;
       this._apiURL = settings.apiURL
     })

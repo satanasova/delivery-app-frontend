@@ -8,11 +8,11 @@ import { SettingsComponent } from './settings.component';
   providedIn: UtilsModule
 })
 export class SettingsService {
-  settingsObs: BehaviorSubject<any> = new BehaviorSubject({});
+  settingsObs: BehaviorSubject<any> = new BehaviorSubject({theme: 'dark'});
 
   constructor(private dialogService: NbDialogService) {
     const savedSettings = localStorage.getItem('settings');
-    if(savedSettings) {
+    if(savedSettings && Object.entries(JSON.parse(savedSettings)).length > 0) {
       this.settingsObs.next(JSON.parse(savedSettings));
     }
     
