@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { NbMenuItem, NbMenuService, NbSidebarComponent, NbSidebarService, NbSidebarState, NbThemeService } from '@nebular/theme';
-import { environment } from 'src/environments/environment';
 import { UserService } from './user/user.service';
 import { SettingsService } from './utils/settings/settings.service';
 
@@ -87,7 +86,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   testRequest() {
-    this.http.get(`${environment.apiURL}/api/request-info`).subscribe((res: any) => {
+    this.http.get(`${this.settingsService.getSetting('apiURL')}/api/request-info`).subscribe((res: any) => {
       console.log(res);
       console.log(res['headers'])
     })
